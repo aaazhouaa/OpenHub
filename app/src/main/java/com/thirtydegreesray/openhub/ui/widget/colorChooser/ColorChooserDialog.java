@@ -213,10 +213,9 @@ public class ColorChooserDialog extends DialogFragment
       }
       invalidateDynamicButtonColors();
       invalidate();
-      //if no done button, click color meaning it's selected
-      if(builder.doneBtn == 0){
-        callback.onColorSelection(ColorChooserDialog.this, getSelectedColor());
-      }
+
+      callback.onColorSelection(ColorChooserDialog.this, getSelectedColor());
+      dismiss();
     }
   }
 
@@ -363,8 +362,8 @@ public class ColorChooserDialog extends DialogFragment
             .title(getTitle())
             .autoDismiss(false)
             .customView(R.layout.md_dialog_colorchooser, false)
-            .negativeText(builder.cancelBtn)
-            .positiveText(builder.doneBtn)
+//            .negativeText(builder.cancelBtn)
+//            .positiveText(builder.doneBtn)
             .neutralText(builder.allowUserCustom ? builder.customBtn : 0)
             .typeface(builder.mediumFont, builder.regularFont)
             .onPositive(

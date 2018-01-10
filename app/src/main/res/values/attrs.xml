@@ -31,8 +31,4 @@
         <attr name="toast_text" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="CircleBackgroundImageView">
-        <attr name="background_color" format="color"/>
-    </declare-styleable>
-
 </resources>

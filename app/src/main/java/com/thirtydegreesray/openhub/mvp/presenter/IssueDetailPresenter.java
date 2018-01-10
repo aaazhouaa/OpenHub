@@ -8,7 +8,6 @@ import com.thirtydegreesray.openhub.dao.DaoSession;
 import com.thirtydegreesray.openhub.http.core.HttpObserver;
 import com.thirtydegreesray.openhub.http.core.HttpProgressSubscriber;
 import com.thirtydegreesray.openhub.http.core.HttpResponse;
-import com.thirtydegreesray.openhub.http.model.IssueRequestModel;
 import com.thirtydegreesray.openhub.mvp.contract.IIssueDetailContract;
 import com.thirtydegreesray.openhub.mvp.model.Issue;
 import com.thirtydegreesray.openhub.mvp.model.IssueEvent;
@@ -44,7 +43,6 @@ public class IssueDetailPresenter extends BasePresenter<IIssueDetailContract.Vie
     @Override
     public void onViewInitialized() {
         super.onViewInitialized();
-        initIssueInfo();
         if (issue == null || issue.getBodyHtml() == null) {
             loadIssueInfo();
         } else {
@@ -84,7 +82,8 @@ public class IssueDetailPresenter extends BasePresenter<IIssueDetailContract.Vie
         mView.showLoading();
     }
 
-    private void initIssueInfo(){
+
+    private void loadIssueInfo() {
         if (issue != null) {
             owner = issue.getRepoAuthorName();
             repoName = issue.getRepoName();
@@ -97,9 +96,6 @@ public class IssueDetailPresenter extends BasePresenter<IIssueDetailContract.Vie
             repoName = arrays[1];
             issueNumber = Integer.parseInt(arrays[3]);
         }
-    }
-
-    private void loadIssueInfo() {
         loadIssueInfo(owner, repoName, issueNumber);
     }
 
@@ -149,15 +145,8 @@ public class IssueDetailPresenter extends BasePresenter<IIssueDetailContract.Vie
                 }
         );
         generalRxHttpExecute(getIssueService().editIssue(issue.getRepoAuthorName(),
-                issue.getRepoName(), issue.getNumber(),
-                IssueRequestModel.generateFromIssue(issue)), subscriber);
+                issue.getRepoName(), issue.getNumber(), issue), subscriber);
     }
 
-    public String getOwner() {
-        return owner;
-    }
 
-    public String getRepoName() {
-        return repoName;
-    }
 }

@@ -75,8 +75,6 @@ public class ColorChooserPreference extends Preference implements ColorChooserDi
                 .customColors(getAccentColors(), null)
                 .preselect(oriColor)
                 .customButton(0)
-                .doneButton(0)
-                .cancelButton(0)
                 .accentMode(true)
                 .show();
     }
@@ -88,7 +86,6 @@ public class ColorChooserPreference extends Preference implements ColorChooserDi
         if (colorChooserCallback != null && oriColor != selectedColor) {
             colorChooserCallback.onColorChanged(oriColor, selectedColor);
         }
-        dialog.dismiss();
     }
 
     @Override
