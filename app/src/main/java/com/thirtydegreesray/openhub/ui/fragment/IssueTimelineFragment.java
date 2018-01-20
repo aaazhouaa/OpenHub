@@ -44,7 +44,6 @@ public class IssueTimelineFragment extends ListFragment<IssueTimelinePresenter, 
     protected void initFragment(Bundle savedInstanceState) {
         super.initFragment(savedInstanceState);
         setLoadMoreEnable(true);
-        setAutoJudgeCanLoadMoreEnable(false);
     }
 
     @Override
@@ -98,10 +97,8 @@ public class IssueTimelineFragment extends ListFragment<IssueTimelinePresenter, 
     @Override
     public void onItemClick(int position, @NonNull View view) {
         super.onItemClick(position, view);
-        if(IssueEvent.Type.commented.equals(adapter.getData().get(position).getType())){
-            ViewerActivity.showMdSource(getActivity(), getString(R.string.comment),
-                    adapter.getData().get(position).getBodyHtml());
-        }
+        ViewerActivity.showMdSource(getActivity(), getString(R.string.comment),
+                adapter.getData().get(position).getBodyHtml());
     }
 
     public void addComment(IssueEvent event){
@@ -113,10 +110,6 @@ public class IssueTimelineFragment extends ListFragment<IssueTimelinePresenter, 
     @Override
     public boolean onItemLongClick(final int position, @NonNull View view) {
         final IssueEvent issueEvent = adapter.getData().get(position);
-        if(!IssueEvent.Type.commented.equals(issueEvent.getType())){
-            return true;
-        }
-
         String[] actions ;
         if(mPresenter.isEditAndDeleteEnable(position) && position != 0){
             actions = new String[]{getString(R.string.share), getString(R.string.edit), getString(R.string.delete)};
@@ -175,11 +168,10 @@ public class IssueTimelineFragment extends ListFragment<IssueTimelinePresenter, 
     }
 
     public void onEditIssue(Issue issue){
-        mPresenter.setIssue(issue);
         adapter.getData().get(0).setBody(issue.getBody());
         adapter.getData().get(0).setBodyHtml(issue.getBodyHtml());
-        adapter.getData().get(0).setParentIssue(issue);
         adapter.notifyItemChanged(0);
+        mPresenter.setIssue(issue);
     }
 
     public ArrayList<String> getIssueUsersExceptMe(){

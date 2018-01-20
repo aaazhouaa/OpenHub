@@ -15,9 +15,7 @@ import android.graphics.drawable.VectorDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.text.SpannableStringBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,10 +24,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.thirtydegreesray.openhub.R;
-import com.thirtydegreesray.openhub.mvp.model.Label;
-import com.thirtydegreesray.openhub.ui.widget.IssueLabelSpan;
-
-import java.util.ArrayList;
 
 /**
  * Created on 2017/8/1.
@@ -170,11 +164,6 @@ public class ViewUtils {
     }
 
     @ColorInt
-    public static int getTitleColor(@NonNull Context context) {
-        return getColorAttr(context, R.attr.title_color);
-    }
-
-    @ColorInt
     public static int getSubTitleColor(@NonNull Context context) {
         return getColorAttr(context, R.attr.subtitle_color);
     }
@@ -217,58 +206,5 @@ public class ViewUtils {
         }
     }
 
-    public static String getRGBColor(int colorValue, boolean withAlpha){
-        int r = ((colorValue >> 16) & 0xff);
-        int g = ((colorValue >>  8) & 0xff);
-        int b = ((colorValue      ) & 0xff);
-        int a = ((colorValue >> 24) & 0xff);
-        String red = Integer.toHexString(r);
-        String green = Integer.toHexString(g);
-        String blue = Integer.toHexString(b);
-        String alpha = Integer.toHexString(a);
-        red = fixColor(red);
-        green = fixColor(green);
-        blue = fixColor(blue);
-        alpha = fixColor(alpha);
-        return withAlpha ? alpha + red + green + blue : red + green + blue;
-    }
-
-    private static String fixColor(@NonNull String colorStr){
-        return colorStr.length() == 1 ? "0" + colorStr : colorStr;
-    }
-
-    public static boolean isLightColor(int color) {
-        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        if (darkness < 0.5) {
-            return true; // It's a light color
-        } else {
-            return false; // It's a dark color
-        }
-    }
-
-    public static int getLabelTextColor(@NonNull Context context, int bgColorValue){
-        if(ViewUtils.isLightColor(bgColorValue)){
-            return context.getResources().getColor(R.color.light_text_color_primary);
-        } else {
-            return context.getResources().getColor(R.color.material_light_white);
-        }
-    }
-
-    @NonNull
-    public static SpannableStringBuilder getLabelsSpan(@NonNull Context context,
-                                                       @Nullable ArrayList<Label> labels){
-        SpannableStringBuilder labelsText  = new SpannableStringBuilder("");
-        if(labels == null){
-            return labelsText;
-        }
-        int start;
-        for(int i = 0; i < labels.size(); i++){
-            Label label = labels.get(i);
-            start = labelsText.length();
-            labelsText.append(label.getName());
-            labelsText.setSpan(new IssueLabelSpan(context, label), start, start + label.getName().length(), 0);
-        }
-        return labelsText;
-    }
 
 }

@@ -8,29 +8,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.thirtydegreesray.dataautoaccess.annotation.AutoAccess;
-import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.inject.component.DaggerActivityComponent;
 import com.thirtydegreesray.openhub.inject.module.ActivityModule;
 import com.thirtydegreesray.openhub.mvp.contract.IEditIssueContract;
 import com.thirtydegreesray.openhub.mvp.model.Issue;
-import com.thirtydegreesray.openhub.mvp.model.Label;
 import com.thirtydegreesray.openhub.mvp.presenter.EditIssuePresenter;
 import com.thirtydegreesray.openhub.ui.activity.base.BaseActivity;
-import com.thirtydegreesray.openhub.ui.widget.ChooseLabelsDialog;
 import com.thirtydegreesray.openhub.util.BundleHelper;
 import com.thirtydegreesray.openhub.util.StringUtils;
-import com.thirtydegreesray.openhub.util.ViewUtils;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,14 +30,12 @@ import butterknife.OnClick;
  */
 
 public class EditIssueActivity extends BaseActivity<EditIssuePresenter>
-        implements IEditIssueContract.View, ChooseLabelsDialog.ChooseLabelsListener {
+        implements IEditIssueContract.View {
 
     @BindView(R.id.title_edit) TextInputEditText titleEdit;
     @BindView(R.id.title_layout) TextInputLayout titleLayout;
     @BindView(R.id.comment_edit) TextInputEditText commentEdit;
     @BindView(R.id.comment_layout) TextInputLayout commentLayout;
-    @BindView(R.id.labels_text) TextView labelsText;
-    @BindView(R.id.edit_labels) LinearLayout editLabelsLay;
 
     public static void showForAdd(@NonNull Activity activity, @NonNull String userId,
                                   @NonNull String repoName, int requestCode) {
@@ -83,22 +71,6 @@ public class EditIssueActivity extends BaseActivity<EditIssuePresenter>
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_confirm, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_commit){
-            if(checkForCommit())
-                mPresenter.commitIssue(titleEdit.getText().toString(), commentEdit.getText().toString());
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         setToolbarBackEnable();
@@ -107,14 +79,6 @@ public class EditIssueActivity extends BaseActivity<EditIssuePresenter>
         commentEdit.setText(mPresenter.getIssueComment());
         titleEdit.setSelection(titleEdit.length());
         commentEdit.setSelection(commentEdit.length());
-
-        boolean isOwner = AppData.INSTANCE.getLoggedUser().getLogin().equals(mPresenter.getRepoOwner());
-        if(isOwner){
-            editLabelsLay.setVisibility(View.VISIBLE);
-            setLabelsText();
-        } else {
-            editLabelsLay.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -127,22 +91,17 @@ public class EditIssueActivity extends BaseActivity<EditIssuePresenter>
         finish();
     }
 
-    @Override
-    public void onLoadLabelsComplete(ArrayList<Label> labels) {
-        new ChooseLabelsDialog(getActivity(), labels, this).show();
-    }
-
-    @OnClick({R.id.markdown_editor_bn, R.id.edit_labels})
+    @OnClick({R.id.markdown_editor_bn, R.id.add_issue_bn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.markdown_editor_bn:
                 MarkdownEditorActivity.show(getActivity(), R.string.edit,
                         MARKDOWN_EDITOR_REQUEST_CODE, commentEdit.getText().toString());
                 break;
-            case R.id.edit_labels:
-                mPresenter.loadLabels();
+            case R.id.add_issue_bn:
+                if(checkForCommit())
+                    mPresenter.commitIssue(titleEdit.getText().toString(), commentEdit.getText().toString());
                 break;
-
         }
     }
 
@@ -173,21 +132,5 @@ public class EditIssueActivity extends BaseActivity<EditIssuePresenter>
         super.onPause();
         titleEditStr = titleEdit.getText().toString();
         commentEditStr = commentEdit.getText().toString();
-    }
-
-    private void setLabelsText(){
-        labelsText.setText(ViewUtils.getLabelsSpan(getActivity(), mPresenter.getLabels()));
-    }
-
-    @Override
-    public void onChooseLabelsComplete(@NonNull ArrayList<Label> labels) {
-        mPresenter.getIssue().setLabels(labels);
-        setLabelsText();
-    }
-
-    @Override
-    public void onShowManageLabels() {
-        LabelManageActivity.show(getActivity(), mPresenter.getRepoOwner(), mPresenter.getRepoName());
-        mPresenter.clearAllLabelsData();
     }
 }
