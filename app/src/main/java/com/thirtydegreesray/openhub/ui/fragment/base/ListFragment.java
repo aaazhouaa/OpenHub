@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -52,6 +53,7 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
     private boolean refreshEnable = true;
     private boolean loadMoreEnable = false;
     private boolean canLoadMore = false;
+    private boolean autoJudgeCanLoadMoreEnable = true;
     private boolean isLoading = false;
     private final int DEFAULT_PAGE_SIZE = 30;
 
@@ -82,10 +84,10 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
                     refreshLayout.setVisibility(View.VISIBLE);
                     layTip.setVisibility(View.GONE);
                     itemCount -= getHeaderSize();
-                    if(loadMoreEnable){
+                    if(loadMoreEnable && autoJudgeCanLoadMoreEnable){
                         canLoadMore = itemCount % getPagerSize() == 0 ;
-                        curPage = itemCount % getPagerSize() == 0 ?
-                                itemCount / getPagerSize() : (itemCount / getPagerSize()) + 1;
+//                        curPage = itemCount % getPagerSize() == 0 ?
+//                                itemCount / getPagerSize() : (itemCount / getPagerSize()) + 1;
                     }
                 }
             }
@@ -108,7 +110,7 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
                 LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                 int lastPosition = linearManager.findLastVisibleItemPosition();
                 if(lastPosition == adapter.getItemCount() - 1){
-                    onLoadMore(curPage + 1);
+                    onLoadMore(++curPage);
                 }
             }
         }
@@ -144,6 +146,7 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
     @Override
     public void onRefresh() {
         refreshLayout.setRefreshing(true);
+        curPage = 1;
         onReLoadData();
     }
 
@@ -152,6 +155,7 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
         refreshLayout.setVisibility(View.VISIBLE);
         layTip.setVisibility(View.GONE);
         refreshLayout.setRefreshing(true);
+        curPage = 1;
         onReLoadData();
     }
 
@@ -160,6 +164,10 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
         errorImage.setVisibility(View.VISIBLE);
         layTip.setVisibility(View.VISIBLE);
         tvTip.setText(errorTip);
+    }
+
+    protected void addVerticalDivider(){
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
     /**
@@ -177,6 +185,11 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
     public void setRefreshEnable(boolean refreshEnable) {
         this.refreshEnable = refreshEnable;
         refreshLayout.setEnabled(refreshEnable);
+    }
+
+    public void setAutoJudgeCanLoadMoreEnable(boolean autoJudgeLoadMoreEnable) {
+        this.autoJudgeCanLoadMoreEnable = autoJudgeLoadMoreEnable;
+        canLoadMore = !autoJudgeLoadMoreEnable;
     }
 
     public int getCurPage() {
@@ -228,7 +241,7 @@ public abstract class ListFragment <P extends IBaseContract.Presenter, A extends
     @Override
     public void scrollToTop() {
         super.scrollToTop();
-        recyclerView.scrollToPosition(0);
+        if(recyclerView != null) recyclerView.scrollToPosition(0);
     }
 
     protected void postNotifyDataSetChanged(){
