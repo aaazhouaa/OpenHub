@@ -115,9 +115,7 @@ public class IssueDetailPresenter extends BasePresenter<IIssueDetailContract.Vie
             @Override
             public void onSuccess(HttpResponse<IssueEvent> response) {
                 mView.showSuccessToast(getString(R.string.comment_success));
-                IssueEvent comment = response.body();
-                comment.setType(IssueEvent.Type.commented);
-                mView.showAddedComment(comment);
+                mView.showAddedComment(response.body());
             }
         };
         generalRxHttpExecute(new IObservableCreator<IssueEvent>() {

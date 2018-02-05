@@ -185,10 +185,9 @@ public class IssueTimelinePresenter extends BasePresenter<IIssueTimelineContract
         if(timeline == null) return null;
         ArrayList<String> users = new ArrayList<String>();
         for(IssueEvent event : timeline){
-            String userLoginId = event.getUser() == null ? event.getActor().getLogin() : event.getUser().getLogin();
-            if(!AppData.INSTANCE.getLoggedUser().getLogin().equals(userLoginId)
-                    && !users.contains(userLoginId)){
-                users.add(userLoginId);
+            if(!AppData.INSTANCE.getLoggedUser().getLogin().equals(event.getUser().getLogin())
+                    && !users.contains(event.getUser().getLogin())){
+                users.add(event.getUser().getLogin());
             }
         }
         return users;
