@@ -96,6 +96,8 @@ An **open source** GitHub Android client app, faster and concise.
 * [GitHub-Trending](https://github.com/thedillonb/GitHub-Trending) Scrapes GitHub's Trending Pages.
 * [RichText](https://github.com/zzhoujay/RichText) Rich text parser for Android, support markdown and html.
 * [jsoup](https://github.com/jhy/jsoup) Java HTML Parser, with best of DOM, CSS, and jquery.
+* [OctoDroid](https://github.com/slapperwan/gh4a) This application provides access to GitHub and lets you stay connected with your network.
+* [FastHub](https://github.com/k0shk0sh/FastHub) FastHub the ultimate GitHub client for Android.
 
 ## Contributions(*Order by commit time*)
 * [moriel5](https://github.com/moriel5) - Hebrew translation
@@ -105,19 +107,12 @@ An **open source** GitHub Android client app, faster and concise.
 * [hiteshnayak305](https://github.com/hiteshnayak305) - Hindi translation
 
 ## License
-    Copyright (C) 2017 ThirtyDegreesRay
+OpenHub:
+> Copyright (C) 2017 ThirtyDegreesRay.
+> Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html).
+> (See the [LICENSE](https://github.com/ThirtyDegreesRay/OpenHub/blob/master/LICENSE) file for the whole license text.)
 
-    Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 license;
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+FastHub(There are 13 files has some code copied from FastHub):
+> Copyright (C) 2017 Kosh.
+> Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html) license.
+> (See the [LICENSE](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE) file for the whole license text.)
