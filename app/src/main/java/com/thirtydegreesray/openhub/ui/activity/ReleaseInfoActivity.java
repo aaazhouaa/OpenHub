@@ -80,11 +80,13 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
                 release.getBody() : release.getBodyHtml(), null);
 
         GlideApp.with(getActivity())
-                .load(release.getAuthor().getAvatarUrl())
+                .load(release.getAuthor() == null
+                        ? null : release.getAuthor().getAvatarUrl())
                 .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
                 .into(userAvatar);
 
-        String time = StringUtils.getNewsTimeStr(getActivity(), release.getPublishedAt());
+        String time = release.getPublishedAt() == null ? ""
+                : StringUtils.getNewsTimeStr(getActivity(), release.getPublishedAt());
         String timeStr = "";
         if (time.contains("-")) {
             timeStr = getString(R.string.released_this)
@@ -95,7 +97,9 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
                     .concat(" ").concat(time);
         }
 
-        String str = release.getAuthor().getLogin().concat(" ").concat(timeStr);
+        String authorLogin = release.getAuthor() == null
+                ? "" : release.getAuthor().getLogin();
+        String str = authorLogin.concat(" ").concat(timeStr);
         SpannableStringBuilder spannable = new SpannableStringBuilder(str);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ViewUtils.getAccentColor(getActivity()));
         spannable.setSpan(colorSpan, 0, release.getAuthor().getLogin().length(),
@@ -141,6 +145,7 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
 
     @OnClick({R2.id.user_name, R2.id.user_avatar})
     public void onUserClick() {
+        if (mPresenter.getRelease() == null || mPresenter.getRelease().getAuthor() == null) return;
         ProfileActivity.show(getActivity(), userAvatar, mPresenter.getRelease().getAuthor().getLogin(),
                 mPresenter.getRelease().getAuthor().getAvatarUrl());
     }
