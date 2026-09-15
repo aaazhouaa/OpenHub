@@ -11,6 +11,7 @@ import com.thirtydegreesray.openhub.mvp.model.DownloadSource;
 import com.thirtydegreesray.openhub.mvp.model.Release;
 import com.thirtydegreesray.openhub.mvp.model.ReleaseAsset;
 import com.thirtydegreesray.openhub.ui.adapter.DownloadSourcesAdapter;
+import com.thirtydegreesray.openhub.util.StringUtils;
 
 import java.util.ArrayList;
 
@@ -43,13 +44,19 @@ public class DownloadSourceDialog {
 
     private static ArrayList<DownloadSource> getDownloadSources(Context context, Release release){
         ArrayList<DownloadSource> sources = new ArrayList<>();
-        for(ReleaseAsset asset : release.getAssets()){
-            sources.add(new DownloadSource(asset.getDownloadUrl(), false, asset.getName(), asset.getSize()));
+        if(release.getAssets() != null){
+            for(ReleaseAsset asset : release.getAssets()){
+                sources.add(new DownloadSource(asset.getDownloadUrl(), false, asset.getName(), asset.getSize()));
+            }
         }
-        sources.add(new DownloadSource(release.getZipballUrl(), true,
-                context.getString(R.string.source_code_zip)));
-        sources.add(new DownloadSource(release.getTarballUrl(), true,
-                context.getString(R.string.source_code_tar)));
+        if(!StringUtils.isBlank(release.getZipballUrl())){
+            sources.add(new DownloadSource(release.getZipballUrl(), true,
+                    context.getString(R.string.source_code_zip)));
+        }
+        if(!StringUtils.isBlank(release.getTarballUrl())){
+            sources.add(new DownloadSource(release.getTarballUrl(), true,
+                    context.getString(R.string.source_code_tar)));
+        }
         return sources;
     }
 
