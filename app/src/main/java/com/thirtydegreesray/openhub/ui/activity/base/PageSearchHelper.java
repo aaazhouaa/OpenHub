@@ -63,10 +63,10 @@ public final class PageSearchHelper {
             if (emptyQuery) {
                 f.showRepositories(restoreOriginal(fragment, data));
             } else {
-                cacheOriginal(fragment, data);
+                ArrayList<Repository> source = sourceOf(fragment, data);
                 ArrayList<Repository> result = new ArrayList<>();
-                if (data != null) {
-                    for (Repository repo : data) {
+                if (source != null) {
+                    for (Repository repo : source) {
                         if (matches(repo.getName(), repo.getDescription(), query)) result.add(repo);
                     }
                 }
@@ -78,10 +78,10 @@ public final class PageSearchHelper {
             if (emptyQuery) {
                 f.showUsers(restoreOriginal(fragment, data));
             } else {
-                cacheOriginal(fragment, data);
+                ArrayList<User> source = sourceOf(fragment, data);
                 ArrayList<User> result = new ArrayList<>();
-                if (data != null) {
-                    for (User user : data) {
+                if (source != null) {
+                    for (User user : source) {
                         if (matches(user.getLogin(), user.getName(), query)) result.add(user);
                     }
                 }
@@ -93,10 +93,10 @@ public final class PageSearchHelper {
             if (emptyQuery) {
                 f.showBookmarks(restoreOriginal(fragment, data));
             } else {
-                cacheOriginal(fragment, data);
+                ArrayList<BookmarkExt> source = sourceOf(fragment, data);
                 ArrayList<BookmarkExt> result = new ArrayList<>();
-                if (data != null) {
-                    for (BookmarkExt bookmark : data) {
+                if (source != null) {
+                    for (BookmarkExt bookmark : source) {
                         if ("user".equals(bookmark.getType())) {
                             if (bookmark.getUser() != null && matches(
                                     bookmark.getUser().getLogin(), bookmark.getUser().getName(), query)) {
@@ -117,10 +117,10 @@ public final class PageSearchHelper {
             if (emptyQuery) {
                 f.showTraceList(restoreOriginal(fragment, data));
             } else {
-                cacheOriginal(fragment, data);
+                ArrayList<TraceExt> source = sourceOf(fragment, data);
                 ArrayList<TraceExt> result = new ArrayList<>();
-                if (data != null) {
-                    for (TraceExt trace : data) {
+                if (source != null) {
+                    for (TraceExt trace : source) {
                         if ("user".equals(trace.getType())) {
                             if (trace.getUser() != null && matches(
                                     trace.getUser().getLogin(), trace.getUser().getName(), query)) {
@@ -138,10 +138,17 @@ public final class PageSearchHelper {
         }
     }
 
-    private static void cacheOriginal(@NonNull BaseFragment fragment, ArrayList<?> data) {
-        if (!ORIGINAL_DATA.containsKey(fragment)) {
-            ORIGINAL_DATA.put(fragment, data);
-        }
+    /**
+     * Returns the unfiltered list for the fragment, caching the adapter's
+     * data the first time so every keystroke filters from the full list.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> ArrayList<T> sourceOf(@NonNull BaseFragment fragment,
+                                             ArrayList<T> adapterData) {
+        ArrayList<T> cached = (ArrayList<T>) ORIGINAL_DATA.get(fragment);
+        if (cached != null) return cached;
+        if (adapterData != null) ORIGINAL_DATA.put(fragment, adapterData);
+        return adapterData;
     }
 
     @SuppressWarnings("unchecked")
