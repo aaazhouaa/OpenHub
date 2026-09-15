@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
+import com.thirtydegreesray.openhub.ui.activity.base.PageSearchHelper;
 import com.thirtydegreesray.openhub.ui.activity.base.PagerActivity;
 import com.thirtydegreesray.openhub.ui.adapter.base.FragmentPagerModel;
 import com.thirtydegreesray.openhub.ui.adapter.base.FragmentViewPagerAdapter;
@@ -44,6 +48,15 @@ public class BookmarksActivity extends PagerActivity {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(pagerAdapter);
         showFirstPager();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_page_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_page_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        PageSearchHelper.attach(this, searchView);
+        return true;
     }
 
     @Override

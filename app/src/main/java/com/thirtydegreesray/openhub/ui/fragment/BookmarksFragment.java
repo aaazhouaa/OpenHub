@@ -100,6 +100,10 @@ public class BookmarksFragment extends ListFragment<BookmarkPresenter, Bookmarks
         }
     }
 
+    public BookmarksAdapter getBookmarksAdapter() {
+        return adapter;
+    }
+
     @Override
     public void notifyItemAdded(int position) {
         if(adapter.getData().size() == 1){

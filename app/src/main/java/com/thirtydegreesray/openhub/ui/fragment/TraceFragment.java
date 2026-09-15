@@ -42,6 +42,10 @@ public class TraceFragment extends ListFragment<TracePresenter, TraceAdapter>
         postNotifyDataSetChanged();
     }
 
+    public TraceAdapter getTraceAdapter() {
+        return adapter;
+    }
+
     @Override
     public void notifyItemAdded(int position) {
         if(adapter.getData().size() == 1){

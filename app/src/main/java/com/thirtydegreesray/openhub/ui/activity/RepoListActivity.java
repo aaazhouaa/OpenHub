@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.appcompat.widget.SearchView;
+
 import com.thirtydegreesray.dataautoaccess.annotation.AutoAccess;
 import com.thirtydegreesray.openhub.AppConfig;
 import com.thirtydegreesray.openhub.R;
@@ -17,6 +19,7 @@ import com.thirtydegreesray.openhub.mvp.contract.base.IBaseContract;
 import com.thirtydegreesray.openhub.mvp.model.Collection;
 import com.thirtydegreesray.openhub.mvp.model.Topic;
 import com.thirtydegreesray.openhub.mvp.model.filter.RepositoriesFilter;
+import com.thirtydegreesray.openhub.ui.activity.base.PageSearchHelper;
 import com.thirtydegreesray.openhub.ui.activity.base.SingleFragmentActivity;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.base.OnDrawerSelectedListener;
@@ -120,6 +123,10 @@ public class RepoListActivity extends SingleFragmentActivity<IBaseContract.Prese
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_page_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_page_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        PageSearchHelper.attach(this, searchView);
         if(isFilterEnable()){
             getMenuInflater().inflate(R.menu.menu_sort, menu);
         } else if(RepositoriesFragment.RepositoriesType.COLLECTION.equals(type)
