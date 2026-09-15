@@ -121,7 +121,7 @@ public class PrefUtils {
     }
 
     public static int getAccentColor(){
-        return getDefaultSp(AppApplication.get()).getInt(ACCENT_COLOR, 1);
+        return getDefaultSp(AppApplication.get()).getInt(ACCENT_COLOR, TEAL);
     }
 
     public static boolean isCacheFirstEnable(){
@@ -169,7 +169,7 @@ public class PrefUtils {
     }
 
     public static boolean isSystemDownloader(){
-        return getDefaultSp(AppApplication.get()).getBoolean(SYSTEM_DOWNLOADER, true);
+        return getDefaultSp(AppApplication.get()).getBoolean(SYSTEM_DOWNLOADER, false);
     }
 
     public static boolean isCustomTabsEnable(){
