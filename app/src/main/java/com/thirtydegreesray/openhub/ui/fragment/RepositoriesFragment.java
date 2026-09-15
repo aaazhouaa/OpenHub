@@ -129,6 +129,10 @@ public class RepositoriesFragment extends ListFragment<RepositoriesPresenter, Re
         postNotifyDataSetChanged();
     }
 
+    public RepositoriesAdapter getRepositoriesAdapter() {
+        return adapter;
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_list;

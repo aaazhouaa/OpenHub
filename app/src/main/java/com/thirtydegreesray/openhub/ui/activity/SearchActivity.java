@@ -54,7 +54,15 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
         context.startActivity(intent);
     }
 
+    public static void show(@NonNull Context context, @NonNull String query) {
+        Intent intent = new Intent(context, SearchActivity.class);
+        intent.putExtra("query", query);
+        context.startActivity(intent);
+    }
+
     private final Map<Integer, List<Integer>> MENU_ID_MAP = new HashMap<>();
+
+    private boolean initialQueryApplied = false;
 
     @AutoAccess boolean isInputMode = true;
     @AutoAccess String[] sortInfos;
@@ -103,7 +111,13 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
                 (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         searchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        searchView.setQuery(mPresenter.getSearchModels().get(0).getQuery(), false);
+        String initialQuery = getIntent().getStringExtra("query");
+        if (!initialQueryApplied && !StringUtils.isBlank(initialQuery)) {
+            initialQueryApplied = true;
+            searchView.setQuery(initialQuery, true);
+        } else {
+            searchView.setQuery(mPresenter.getSearchModels().get(0).getQuery(), false);
+        }
         if (isInputMode) {
             MenuItemCompat.expandActionView(searchItem);
         } else {

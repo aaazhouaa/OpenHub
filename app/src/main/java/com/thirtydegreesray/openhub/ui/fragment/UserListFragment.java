@@ -104,6 +104,10 @@ public class UserListFragment extends ListFragment<UserListPresenter, UsersAdapt
         postNotifyDataSetChanged();
     }
 
+    public UsersAdapter getUsersAdapter() {
+        return adapter;
+    }
+
     @Override
     protected void onLoadMore(int page) {
         super.onLoadMore(page);
