@@ -61,6 +61,7 @@ public class AppUtils {
 
     public static void updateAppLanguage(@NonNull Context context) {
         String lang = PrefUtils.getLanguage();
+        if ("system".equals(lang)) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) updateResources(context, lang);
         updateResourcesLegacy(context, lang);
     }
@@ -85,6 +86,7 @@ public class AppUtils {
 
     @NonNull
     public static Locale getLocale(String language) {
+        if ("system".equals(language)) return Locale.getDefault();
         Locale locale;
         String[] array = language.split("-");
         if (array.length > 1) {

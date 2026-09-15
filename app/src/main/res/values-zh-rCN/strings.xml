@@ -377,4 +377,5 @@
     <string name="add_account">添加账户</string>
     <string name="delete_label_warning">确认要删除这个标签？</string>
 
+    <string name="follow_system">跟随系统</string>
 </resources>

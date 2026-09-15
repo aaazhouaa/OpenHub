@@ -113,11 +113,11 @@ public class PrefUtils {
     }
 
     public static String getLanguage(){
-        return getDefaultSp(AppApplication.get()).getString(LANGUAGE, "en");
+        return getDefaultSp(AppApplication.get()).getString(LANGUAGE, "system");
     }
 
     public static String getStartPage(){
-        return getDefaultSp(AppApplication.get()).getString(START_PAGE, "news");
+        return getDefaultSp(AppApplication.get()).getString(START_PAGE, "starred_repos");
     }
 
     public static int getAccentColor(){
