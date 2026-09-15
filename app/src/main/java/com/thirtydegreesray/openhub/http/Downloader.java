@@ -1,6 +1,5 @@
 package com.thirtydegreesray.openhub.http;
 
-import android.Manifest;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,7 +12,7 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.ui.activity.base.BaseActivity;
@@ -60,20 +59,9 @@ public class Downloader {
                 AppUtils.showDownloadServiceSetting(mContext);
                 return ;
             }
-            if(BaseActivity.getCurActivity() == null){
-                Toasty.error(mContext, mContext.getString(R.string.download_failed), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            new RxPermissions(BaseActivity.getCurActivity())
-                    .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .subscribe(granted -> {
-                        if (granted) {
-                            start();
-                        } else {
-                            Toasty.error(mContext, mContext.getString(R.string.permission_storage_denied),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
+            // DownloadManager writes to the public Download dir itself;
+            // no runtime storage permission is needed
+            start();
         }catch (Exception e){
             Toasty.error(mContext, e.getMessage()).show();
         }
@@ -95,6 +83,14 @@ public class Downloader {
         request.setTitle(title);
 //        request.setDescription("Apk Downloading");
         request.setVisibleInDownloadsUi(true);
+
+        // Draft releases require auth; only send the token to GitHub hosts
+        String downloadUrl = Uri.parse(url).getHost();
+        String token = AppData.INSTANCE.getAccessToken();
+        if (downloadUrl != null && downloadUrl.endsWith("github.com")
+                && !StringUtils.isBlank(token)) {
+            request.addRequestHeader("Authorization", "token " + token);
+        }
 
         request.setDestinationInExternalPublicDir("Download", fileName);
 
