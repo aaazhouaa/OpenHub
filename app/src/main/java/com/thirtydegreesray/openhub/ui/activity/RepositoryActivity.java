@@ -10,9 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,7 +24,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
-import com.thirtydegreesray.openhub.common.GlideApp;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.inject.component.DaggerActivityComponent;
 import com.thirtydegreesray.openhub.inject.module.ActivityModule;
@@ -45,7 +42,6 @@ import com.thirtydegreesray.openhub.ui.fragment.RepoInfoFragment;
 import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.BundleHelper;
-import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.StarWishesHelper;
 import com.thirtydegreesray.openhub.util.StringUtils;
 
@@ -82,7 +78,6 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
                         .build());
     }
 
-    @BindView(R2.id.user_avatar_bg) ImageView userImageViewBg;
     @BindView(R2.id.loader) ProgressBar loader;
     @BindView(R2.id.desc) TextView desc;
     @BindView(R2.id.info) TextView info;
@@ -213,11 +208,6 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
                 p.setMargins(12, 0, 12, 0);
                 tab.setLayoutParams(p);
             }
-
-            GlideApp.with(getActivity())
-                    .load(repo.getOwner().getAvatarUrl())
-                    .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-                    .into(userImageViewBg);
         } else {
             noticeRepositoryUpdated(repo);
         }
