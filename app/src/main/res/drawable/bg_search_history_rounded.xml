@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Rounded corner background for search history dropdown
+  ~ Rounded corner background for search history dropdown.
+  ~ Layered translucent shapes fake a soft drop shadow; a real elevation
+  ~ shadow is invisible on the dark themes used by this app.
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="?attr/card_background" />
-    <corners android:radius="16dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="2dp"
+        android:right="2dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#0F000000" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="3dp"
+        android:left="5dp"
+        android:right="5dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#26000000" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="6dp"
+        android:left="8dp"
+        android:right="8dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/card_background" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+</layer-list>
