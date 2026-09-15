@@ -12,9 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
@@ -24,6 +27,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -44,6 +50,7 @@ import com.thirtydegreesray.openhub.ui.widget.DoubleClickHandler;
 import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.ThemeHelper;
+import com.thirtydegreesray.openhub.util.ViewUtils;
 import com.thirtydegreesray.openhub.util.WindowUtil;
 
 import java.util.List;
@@ -101,6 +108,7 @@ BaseActivity<P extends IBaseContract.Presenter>
         if(getContentView() != 0){
             setContentView(getContentView());
             ButterKnife.bind(getActivity());
+            applySystemBarInsets();
         }
 
         initActivity();
@@ -434,6 +442,44 @@ BaseActivity<P extends IBaseContract.Presenter>
                 finish();
             }
         }, mills);
+    }
+
+    /**
+     * targetSdk 35+ 强制 edge-to-edge。无 fitsSystemWindows 的旧布局需要避让系统栏，
+     * 有 Toolbar 时还要绘制状态栏背景，避免根布局的浅色背景形成白色横条。
+     */
+    private void applySystemBarInsets(){
+        if (Build.VERSION.SDK_INT < 35) return;
+        FrameLayout decorContent = findViewById(android.R.id.content);
+        View content = decorContent.getChildAt(0);
+        if (content == null || content.getFitsSystemWindows()) return;
+
+        int paddingLeft = content.getPaddingLeft();
+        int paddingTop = content.getPaddingTop();
+        int paddingRight = content.getPaddingRight();
+        int paddingBottom = content.getPaddingBottom();
+        View statusBarBackground = null;
+        if (toolbar != null) {
+            statusBarBackground = new View(this);
+            statusBarBackground.setBackgroundColor(ViewUtils.getPrimaryColor(this));
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 0, Gravity.TOP);
+            decorContent.addView(statusBarBackground, params);
+        }
+        View finalStatusBarBackground = statusBarBackground;
+
+        ViewCompat.setOnApplyWindowInsetsListener(content, (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout());
+            v.setPadding(paddingLeft + bars.left, paddingTop + bars.top,
+                    paddingRight + bars.right, paddingBottom + bars.bottom);
+            if (finalStatusBarBackground != null) {
+                ViewGroup.LayoutParams params = finalStatusBarBackground.getLayoutParams();
+                params.height = bars.top;
+                finalStatusBarBackground.setLayoutParams(params);
+            }
+            return WindowInsetsCompat.CONSUMED;
+        });
     }
 
     protected void setToolbarScrollAble(boolean scrollAble) {

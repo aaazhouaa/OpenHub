@@ -4,7 +4,6 @@ package com.thirtydegreesray.openhub.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +34,6 @@ import com.thirtydegreesray.openhub.ui.adapter.base.FragmentPagerModel;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.UserListFragment;
 import com.thirtydegreesray.openhub.util.StringUtils;
-import com.thirtydegreesray.openhub.util.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,7 +115,7 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
         autoCompleteTextView.setThreshold(0);
         autoCompleteTextView.setAdapter(new SearchRecordAdapter(this,
                 R.layout.layout_item_simple_list, mPresenter.getSearchRecordList()));
-        autoCompleteTextView.setDropDownBackgroundDrawable(new ColorDrawable(ViewUtils.getWindowBackground(getActivity())));
+        autoCompleteTextView.setDropDownBackgroundResource(R.drawable.bg_search_history_rounded);
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             onQueryTextSubmit(parent.getAdapter().getItem(position).toString());
         });
