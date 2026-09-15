@@ -484,5 +484,6 @@
 
     <string name="add_account">Add account</string>
     <string name="delete_label_warning">Confirm to delete this label?</string>
+    <string name="cookapk_download_url" translatable="false">https://www.coolapk.com/apk/com.thirtydegreesray.openhub</string>
 
 </resources>

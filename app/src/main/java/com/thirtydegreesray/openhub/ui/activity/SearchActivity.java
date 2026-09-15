@@ -58,6 +58,7 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
 
     @AutoAccess boolean isInputMode = true;
     @AutoAccess String[] sortInfos;
+    private SearchRecordAdapter searchRecordAdapter;
 
     @Override
     protected void initActivity() {
@@ -112,13 +113,16 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
 
         AutoCompleteTextView autoCompleteTextView = searchView
                 .findViewById(androidx.appcompat.R.id.search_src_text);
-        autoCompleteTextView.setThreshold(0);
-        autoCompleteTextView.setAdapter(new SearchRecordAdapter(this,
-                R.layout.layout_item_simple_list, mPresenter.getSearchRecordList()));
-        autoCompleteTextView.setDropDownBackgroundResource(R.drawable.bg_search_history_rounded);
-        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
-            onQueryTextSubmit(parent.getAdapter().getItem(position).toString());
+        searchRecordAdapter = new SearchRecordAdapter(this,
+                R.layout.layout_search_history_item, mPresenter.getSearchRecordList());
+        searchRecordAdapter.setOnRecordClickListener(record -> {
+            autoCompleteTextView.setText(record);
+            autoCompleteTextView.setSelection(record.length());
+            autoCompleteTextView.dismissDropDown();
         });
+        autoCompleteTextView.setThreshold(0);
+        autoCompleteTextView.setAdapter(searchRecordAdapter);
+        autoCompleteTextView.setDropDownBackgroundResource(R.drawable.bg_search_history_rounded);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -253,16 +257,31 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
 
     private class SearchRecordAdapter extends ArrayAdapter<String> {
 
+        interface OnRecordClickListener {
+            void onRecordClick(String record);
+        }
+
+        private OnRecordClickListener clickListener;
+
         public SearchRecordAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
             super(context, resource, objects);
+        }
+
+        void setOnRecordClickListener(OnRecordClickListener listener) {
+            clickListener = listener;
         }
 
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View view = super.getView(position, convertView, parent);
+            String record = getItem(position);
+            view.setOnClickListener(v -> {
+                if (clickListener != null && record != null) {
+                    clickListener.onRecordClick(record);
+                }
+            });
             view.setOnLongClickListener(v -> {
-                String record = getItem(position);
                 if (record != null) {
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.warning_dialog_tile)
