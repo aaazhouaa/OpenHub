@@ -79,6 +79,7 @@
     <string name="custom_tabs_desc">Open in custom tabs instead of outer browser(support chrome, firefox…)</string>
     <string name="use_custom_tabs_tips">If you want to open in outer browser directly, you could change in settings.</string>
     <string name="language">Language</string>
+    <string name="follow_system">Follow system</string>
     <string name="logout">Logout</string>
     <string name="clear_search_history">Clear search history</string>
     <string name="clear_search_history_confirm">Are you sure you want to clear all search history?</string>

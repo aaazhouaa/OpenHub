@@ -14,6 +14,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.widget.SearchView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ import com.thirtydegreesray.openhub.mvp.model.User;
 import com.thirtydegreesray.openhub.mvp.model.filter.RepositoriesFilter;
 import com.thirtydegreesray.openhub.mvp.presenter.MainPresenter;
 import com.thirtydegreesray.openhub.ui.activity.base.BaseDrawerActivity;
+import com.thirtydegreesray.openhub.ui.activity.base.PageSearchHelper;
 import com.thirtydegreesray.openhub.ui.fragment.ActivityFragment;
 import com.thirtydegreesray.openhub.ui.fragment.BookmarksFragment;
 import com.thirtydegreesray.openhub.ui.fragment.CollectionsFragment;
@@ -144,7 +147,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         updateStartDrawerContent(R.menu.activity_main_drawer);
         removeEndDrawer();
         if (mPresenter.isFirstUseAndNoNewsUser()) {
-            selectedPage = R.id.nav_public_news;
+            selectedPage = R.id.nav_starred;
             updateFragmentByNavId(selectedPage);
         } else if(selectedPage != 0){
             updateFragmentByNavId(selectedPage);
@@ -190,6 +193,11 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_page_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_page_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        PageSearchHelper.attach(this, searchView);
+
         getMenuInflater().inflate(R.menu.menu_sort, menu);
         MenuItem menuItem = menu.findItem(R.id.nav_sort);
         menuItem.setVisible(selectedPage == R.id.nav_owned || selectedPage == R.id.nav_starred);
