@@ -9,8 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="end"
-    android:layout_marginTop="20dp">
+    tools:openDrawer="end">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -19,8 +18,7 @@
         <include
             layout="@layout/layout_appbar"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="200dp"/>
+            android:layout_width="match_parent"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
