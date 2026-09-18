@@ -24,6 +24,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -117,6 +118,7 @@ BaseActivity<P extends IBaseContract.Presenter>
         if(isFullScreen){
             intoFullScreen();
         }
+        registerForBack();
     }
 
     @Override
@@ -515,6 +517,21 @@ BaseActivity<P extends IBaseContract.Presenter>
 
     @AutoAccess boolean isFullScreen = false;
 
+    /**
+     * Handles a back gesture that no deeper layer consumed.
+     *
+     * Subclasses used to override onBackPressed(), which Android 16 (API 36) no longer
+     * calls for apps targeting it - the gesture is routed to an OnBackInvokedCallback
+     * instead, so those overrides silently stopped running. Everything now funnels into
+     * this method through a callback registered on the dispatcher, which works on every
+     * version.
+     *
+     * @return true when back was handled here
+     */
+    protected boolean onBackHandled() {
+        return false;
+    }
+
     protected void exitFullScreen() {
         showStatusBar();
         if(toolbar != null) toolbar.setVisibility(View.VISIBLE);
@@ -535,12 +552,29 @@ BaseActivity<P extends IBaseContract.Presenter>
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
-    @Override
-    public void onBackPressed() {
-        if(isFullScreen){
-            exitFullScreen();
-        } else {
-            super.onBackPressed();
-        }
+    /**
+     * Back navigation goes through the dispatcher rather than onBackPressed(), which is
+     * not called at all on Android 16+ for apps targeting API 36. The framework also
+     * registers an OnBackInvokedCallback on our behalf as long as this callback stays
+     * enabled, so the same code path serves both the gesture and the button.
+     */
+    private void registerForBack() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Full screen is the outermost concern: leaving it should not navigate away.
+                if (isFullScreen) {
+                    exitFullScreen();
+                    return;
+                }
+                if (onBackHandled()) return;
+                // Nothing here wants it: disable ourselves, re-dispatch so the next
+                // callback (or the activity finish) handles it, then re-enable. Calling
+                // onBackPressed() with this callback still enabled would loop back here.
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            }
+        });
     }
 }

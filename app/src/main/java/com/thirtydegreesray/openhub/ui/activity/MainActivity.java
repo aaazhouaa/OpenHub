@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -148,10 +147,8 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         removeEndDrawer();
         if (mPresenter.isFirstUseAndNoNewsUser()) {
             selectedPage = R.id.nav_starred;
-            defaultPage = selectedPage;
             updateFragmentByNavId(selectedPage);
         } else if(selectedPage != 0){
-            defaultPage = getDefaultPageNavId();
             updateFragmentByNavId(selectedPage);
         } else {
             int startPageNavId = getStartPageNavIdFromPrefs();
@@ -164,6 +161,9 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
                 updateFragmentByNavId(startPageNavId);
             }
         }
+        // Assigned on every path: back navigation compares against it, and a stale 0
+        // would silently disable the "return to the default page" behaviour.
+        defaultPage = getDefaultPageNavId();
         navViewStart.setCheckedItem(selectedPage);
 
         ImageView avatar = navViewStart.getHeaderView(0).findViewById(R.id.avatar);
@@ -402,24 +402,27 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
      * only pressing back on the default page exits the app.
      */
     @Override
-    public void onBackPressed() {
-        if (drawerLayout == null || (!drawerLayout.isDrawerOpen(GravityCompat.START)
-                && !drawerLayout.isDrawerOpen(GravityCompat.END))) {
-            if (defaultPage != 0 && selectedPage != defaultPage
-                    && FRAGMENT_NAV_ID_LIST.contains(defaultPage)
-                    && FRAGMENT_NAV_ID_LIST.contains(selectedPage)) {
-                updateFragmentByNavId(defaultPage);
-                navViewStart.setCheckedItem(defaultPage);
-                return;
-            }
+    protected boolean onBackHandled() {
+        // The open drawer takes precedence, then the default-page jump.
+        if (super.onBackHandled()) return true;
+        if (isBackToDefaultPage()) {
+            updateFragmentByNavId(defaultPage);
+            navViewStart.setCheckedItem(defaultPage);
+            return true;
         }
-        super.onBackPressed();
+        return false;
+    }
+
+    private boolean isBackToDefaultPage() {
+        return defaultPage != 0 && selectedPage != defaultPage
+                && FRAGMENT_NAV_ID_LIST.contains(defaultPage)
+                && FRAGMENT_NAV_ID_LIST.contains(selectedPage);
     }
 
     /**
-     * The page configured in Settings → start page, used as the "home" page that
+     * The page configured in Settings -> start page, used as the "home" page that
      * back navigation returns to. Start pages outside the main pager (profile,
-     * search, trending, ...) fall back to the news feed.
+     * notifications, trending, ...) fall back to the news feed.
      */
     private int getDefaultPageNavId() {
         int startPageNavId = getStartPageNavIdFromPrefs();

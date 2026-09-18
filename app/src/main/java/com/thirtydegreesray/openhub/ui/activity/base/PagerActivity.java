@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import android.view.KeyEvent;
 
 import com.orhanobut.logger.Logger;
 import com.thirtydegreesray.openhub.R;
@@ -55,15 +54,13 @@ public abstract class PagerActivity<P extends BasePresenter> extends BaseDrawerA
     }
 
     @Override
-    @Deprecated
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    protected boolean onBackHandled() {
         Fragment fragment = pagerAdapter.getCurFragment();
-        if(fragment != null
-                && fragment instanceof IFragmentKeyListener
-                && ((IFragmentKeyListener)fragment).onKeyDown(keyCode, event)){
+        if (fragment instanceof IFragmentKeyListener
+                && ((IFragmentKeyListener) fragment).onBackPressed()) {
             return true;
         }
-        return onMainKeyDown(keyCode, event);
+        return super.onBackHandled();
     }
 
     @Override
@@ -99,12 +96,11 @@ public abstract class PagerActivity<P extends BasePresenter> extends BaseDrawerA
         super.onDestroy();
     }
 
-    protected boolean onMainKeyDown(int keyCode, KeyEvent event){
-        return super.onKeyDown(keyCode, event);
-    }
-
     public interface IFragmentKeyListener {
-        boolean onKeyDown(int keyCode, KeyEvent event);
+        /**
+         * @return true when the fragment consumed back (e.g. moved up one directory)
+         */
+        boolean onBackPressed();
     }
 
     @Override

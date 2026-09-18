@@ -260,9 +260,9 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
     }
 
     @Override
-    public void onBackPressed() {
+    protected boolean onBackHandled() {
         editBn.setVisibility(View.GONE);
-        super.onBackPressed();
+        return false;
     }
 
     @Override
