@@ -15,9 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import androidx.appcompat.app.AlertDialog;
 
 import com.thirtydegreesray.dataautoaccess.annotation.AutoAccess;
 import com.thirtydegreesray.openhub.R;
@@ -29,7 +27,9 @@ import com.thirtydegreesray.openhub.inject.module.ActivityModule;
 import com.thirtydegreesray.openhub.mvp.contract.ISearchContract;
 import com.thirtydegreesray.openhub.mvp.model.SearchModel;
 import com.thirtydegreesray.openhub.mvp.presenter.SearchPresenter;
+import com.thirtydegreesray.openhub.ui.activity.base.PageSearchHelper;
 import com.thirtydegreesray.openhub.ui.activity.base.PagerActivity;
+import com.thirtydegreesray.openhub.ui.adapter.SearchRecordAdapter;
 import com.thirtydegreesray.openhub.ui.adapter.base.FragmentPagerModel;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.UserListFragment;
@@ -67,6 +67,7 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
     @AutoAccess boolean isInputMode = true;
     @AutoAccess String[] sortInfos;
     private SearchRecordAdapter searchRecordAdapter;
+    private AutoCompleteTextView searchSrcText;
 
     @Override
     protected void initActivity() {
@@ -125,18 +126,14 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
         }
         MenuItemCompat.setOnActionExpandListener(searchItem, this);
 
-        AutoCompleteTextView autoCompleteTextView = searchView
+        searchSrcText = searchView
                 .findViewById(androidx.appcompat.R.id.search_src_text);
-        searchRecordAdapter = new SearchRecordAdapter(this,
-                R.layout.layout_search_history_item, mPresenter.getSearchRecordList());
-        searchRecordAdapter.setOnRecordClickListener(record -> {
-            autoCompleteTextView.setText(record);
-            autoCompleteTextView.setSelection(record.length());
-            autoCompleteTextView.dismissDropDown();
-        });
-        autoCompleteTextView.setThreshold(0);
-        autoCompleteTextView.setAdapter(searchRecordAdapter);
-        autoCompleteTextView.setDropDownBackgroundResource(R.drawable.bg_search_history_rounded);
+        searchRecordAdapter = PageSearchHelper.attachHistoryDropDown(this, searchView);
+        // Entering the page already expanded: the expand happened before the listener
+        // above existed, so pop the history once here.
+        if (isInputMode) {
+            PageSearchHelper.showHistory(searchSrcText, searchRecordAdapter);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -195,7 +192,12 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
         search(query);
         setSubTitle(viewPager.getCurrentItem());
         mPresenter.addSearchRecord(query);
+        refreshSearchHistory();
         return true;
+    }
+
+    private void refreshSearchHistory() {
+        if (searchRecordAdapter != null) searchRecordAdapter.reload();
     }
 
     @Override
@@ -267,52 +269,6 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
             return 1;
         }else
             return -1;
-    }
-
-    private class SearchRecordAdapter extends ArrayAdapter<String> {
-
-        interface OnRecordClickListener {
-            void onRecordClick(String record);
-        }
-
-        private OnRecordClickListener clickListener;
-
-        public SearchRecordAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
-            super(context, resource, objects);
-        }
-
-        void setOnRecordClickListener(OnRecordClickListener listener) {
-            clickListener = listener;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            View view = super.getView(position, convertView, parent);
-            String record = getItem(position);
-            view.setOnClickListener(v -> {
-                if (clickListener != null && record != null) {
-                    clickListener.onRecordClick(record);
-                }
-            });
-            view.setOnLongClickListener(v -> {
-                if (record != null) {
-                    new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.warning_dialog_tile)
-                            .setMessage(R.string.delete_search_record_confirm)
-                            .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                mPresenter.removeSearchRecord(record);
-                                clear();
-                                addAll(mPresenter.getSearchRecordList());
-                                notifyDataSetChanged();
-                            })
-                            .setNegativeButton(R.string.cancel, null)
-                            .show();
-                }
-                return true;
-            });
-            return view;
-        }
     }
 
 }

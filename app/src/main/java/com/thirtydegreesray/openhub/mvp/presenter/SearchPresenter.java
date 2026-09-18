@@ -9,11 +9,9 @@ import com.thirtydegreesray.openhub.dao.DaoSession;
 import com.thirtydegreesray.openhub.mvp.contract.ISearchContract;
 import com.thirtydegreesray.openhub.mvp.model.SearchModel;
 import com.thirtydegreesray.openhub.mvp.presenter.base.BasePresenter;
-import com.thirtydegreesray.openhub.util.PrefUtils;
-import com.thirtydegreesray.openhub.util.StringUtils;
+import com.thirtydegreesray.openhub.util.SearchRecordHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -67,55 +65,17 @@ public class SearchPresenter extends BasePresenter<ISearchContract.View>
     @NonNull
     @Override
     public ArrayList<String> getSearchRecordList() {
-        String records = PrefUtils.getSearchRecords();
-        ArrayList<String> recordList = new ArrayList<>();
-        if (!StringUtils.isBlank(records)) {
-            String[] recordArray = records.split("\\$\\$");
-            Collections.addAll(recordList, recordArray);
-        }
-        return recordList;
+        return SearchRecordHelper.getRecords();
     }
 
     @Override
     public void addSearchRecord(@NonNull String record) {
-        if(record.contains("$")){
-            return;
-        }
-        int MAX_SEARCH_RECORD_SIZE = 30;
-        ArrayList<String> recordList = getSearchRecordList();
-        if(recordList.contains(record)){
-            recordList.remove(record);
-        }
-        if(recordList.size() >= MAX_SEARCH_RECORD_SIZE){
-            recordList.remove(recordList.size() - 1);
-        }
-        recordList.add(0, record);
-        StringBuilder recordStr = new StringBuilder("");
-        String lastRecord = recordList.get(recordList.size() - 1);
-        for(String str : recordList){
-            recordStr.append(str);
-            if(!str.equals(lastRecord)){
-                recordStr.append("$$");
-            }
-        }
-        PrefUtils.set(PrefUtils.SEARCH_RECORDS, recordStr.toString());
+        SearchRecordHelper.addRecord(record);
     }
 
     @Override
     public void removeSearchRecord(@NonNull String record) {
-        ArrayList<String> recordList = getSearchRecordList();
-        recordList.remove(record);
-        StringBuilder recordStr = new StringBuilder("");
-        if (!recordList.isEmpty()) {
-            String lastRecord = recordList.get(recordList.size() - 1);
-            for(String str : recordList){
-                recordStr.append(str);
-                if(!str.equals(lastRecord)){
-                    recordStr.append("$$");
-                }
-            }
-        }
-        PrefUtils.set(PrefUtils.SEARCH_RECORDS, recordStr.toString());
+        SearchRecordHelper.removeRecord(record);
     }
 
 }
