@@ -93,25 +93,6 @@ android {
         abortOnError false
     }
 
-    flavorDimensions "default"
-
-    productFlavors {
-        normal {
-            dimension "default"
-            // add app_name int string.xml
-            resValue "string", "app_name", "OpenHub"
-        }
-        fullName {
-            dimension "default"
-            // add app_name int string.xml
-            resValue "string", "app_name", "OpenHub"
-        }
-    }
-
-    productFlavors.all {
-        flavor -> flavor.manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE: name]
-    }
-
 }
 
 repositories {
