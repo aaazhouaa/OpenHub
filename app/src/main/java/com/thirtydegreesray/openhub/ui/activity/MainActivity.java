@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -68,6 +69,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     private final int SETTINGS_REQUEST_CODE = 100;
 
     @AutoAccess int selectedPage ;
+    private int defaultPage = 0;
     private boolean isAccountsAdded = false;
 
     private final List<Integer> FRAGMENT_NAV_ID_LIST = Arrays.asList(
@@ -148,8 +150,10 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         removeEndDrawer();
         if (mPresenter.isFirstUseAndNoNewsUser()) {
             selectedPage = R.id.nav_starred;
+            defaultPage = selectedPage;
             updateFragmentByNavId(selectedPage);
         } else if(selectedPage != 0){
+            defaultPage = getDefaultPageNavId();
             updateFragmentByNavId(selectedPage);
         } else {
             String startPageId = PrefUtils.getStartPage();
@@ -401,6 +405,41 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         if(newYearWishesDialog != null){
             newYearWishesDialog.cancel();
         }
+    }
+
+    /**
+     * Back from a non-default page returns to the default (start) page first;
+     * only pressing back on the default page exits the app.
+     */
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout == null || (!drawerLayout.isDrawerOpen(GravityCompat.START)
+                && !drawerLayout.isDrawerOpen(GravityCompat.END))) {
+            if (defaultPage != 0 && selectedPage != defaultPage
+                    && FRAGMENT_NAV_ID_LIST.contains(defaultPage)
+                    && FRAGMENT_NAV_ID_LIST.contains(selectedPage)) {
+                updateFragmentByNavId(defaultPage);
+                navViewStart.setCheckedItem(defaultPage);
+                return;
+            }
+        }
+        super.onBackPressed();
+    }
+
+    /**
+     * The page configured in Settings → start page, used as the "home" page that
+     * back navigation returns to. Start pages outside the main pager (profile,
+     * search, trending, ...) fall back to the news feed.
+     */
+    private int getDefaultPageNavId() {
+        String startPageId = PrefUtils.getStartPage();
+        int startPageIndex = Arrays.asList(getResources().getStringArray(R.array.start_pages_id))
+                .indexOf(startPageId);
+        if (startPageIndex < 0) return R.id.nav_news;
+        TypedArray typedArray = getResources().obtainTypedArray(R.array.start_pages_nav_id);
+        int startPageNavId = typedArray.getResourceId(startPageIndex, 0);
+        typedArray.recycle();
+        return FRAGMENT_NAV_ID_LIST.contains(startPageNavId) ? startPageNavId : R.id.nav_news;
     }
 
     private boolean isManageAccount = false;
