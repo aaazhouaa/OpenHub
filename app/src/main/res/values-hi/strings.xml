@@ -270,7 +270,6 @@
 
     <string name="unread">अपठित</string>
     <string name="no_notifications_tip">कोई नयी सूचनाएं नहीं।</string>
-    <string name="feedback_and_share">शेयर &#038; फ़ीडबैक</string>
     <string name="share_to_friends">अपने दोस्तों से साझा करें</string>
     <string name="feedback">फ़ीडबैक</string>
 
@@ -437,4 +436,14 @@
     <string name="add_account">खाता जोड़े</string>
     <string name="delete_label_warning">इस लेबल को हटाने की पुष्टि करें?</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">टोकन से लॉगिन करें</string>
+    <string name="personal_access_token_hint">व्यक्तिगत एक्सेस टोकन</string>
+    <string name="follow_system">सिस्टम के अनुसार</string>
+    <string name="clear_search_history">खोज इतिहास साफ़ करें</string>
+    <string name="clear_search_history_confirm">क्या आप वाकई सारा खोज इतिहास साफ़ करना चाहते हैं?</string>
+    <string name="delete_search_record_confirm">यह खोज रिकॉर्ड हटाएँ?</string>
+    <string name="success_deleted">हटा दिया गया</string>
+    <string name="created_pull_request_review_at">%s में पुल रिक्वेस्ट समीक्षा बनाई</string>
+    <string name="icon">आइकन</string>
 </resources>

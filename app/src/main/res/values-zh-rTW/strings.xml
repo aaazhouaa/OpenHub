@@ -228,7 +228,6 @@
     <string name="nothing_to_preview">無可預覽的內容</string>
     <string name="unread">未讀</string>
     <string name="no_notifications_tip">沒有新通知了</string>
-    <string name="feedback_and_share">分享 &#038; 回饋</string>
     <string name="share_to_friends">分享給您的朋友</string>
     <string name="feedback">回饋</string>
     <string name="openhub_wishes">來自OpenHub的祝福</string>
@@ -378,4 +377,15 @@
     <string name="add_account">新增帳戶</string>
     <string name="delete_label_warning">確認要刪除這個標籤？</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">使用令牌登录</string>
+    <string name="personal_access_token_hint">个人访问令牌</string>
+    <string name="follow_system">跟随系统</string>
+    <string name="clear_search_history">清除搜索历史</string>
+    <string name="clear_search_history_confirm">确定要清除全部搜索历史吗？</string>
+    <string name="delete_search_record_confirm">删除这条搜索记录？</string>
+    <string name="success_deleted">已删除</string>
+    <string name="icon">图标</string>
+    <string name="mark_as_read">标记为已读</string>
+    <string name="mark_all_as_read">全部标记为已读</string>
 </resources>

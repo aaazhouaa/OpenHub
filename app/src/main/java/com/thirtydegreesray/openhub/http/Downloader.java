@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.orhanobut.logger.Logger;
 import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
@@ -97,8 +99,11 @@ public class Downloader {
         downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
         downloadId = downloadManager.enqueue(request);
 
-        mContext.registerReceiver(receiver,
-                new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        // ACTION_DOWNLOAD_COMPLETE is a system broadcast; it must be flagged as
+        // exported, and Android 14+ throws without an explicit flag.
+        ContextCompat.registerReceiver(mContext, receiver,
+                new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                ContextCompat.RECEIVER_EXPORTED);
 
         Toasty.success(mContext, mContext.getString(R.string.download_start)).show();
     }
@@ -117,8 +122,10 @@ public class Downloader {
             query.setFilterById(downloadId);
             Cursor c = downloadManager.query(query);
             if (c.moveToFirst()) {
-                int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                switch (status) {
+                int statusColumnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                if (statusColumnIndex >= 0) {
+                    int status = c.getInt(statusColumnIndex);
+                    switch (status) {
                     case DownloadManager.STATUS_PAUSED:
                         break;
                     case DownloadManager.STATUS_PENDING:
@@ -135,6 +142,7 @@ public class Downloader {
                         Toasty.error(mContext, mContext.getString(R.string.download_failed)).show();
                         unregister();
                         break;
+                    }
                 }
             }
             c.close();

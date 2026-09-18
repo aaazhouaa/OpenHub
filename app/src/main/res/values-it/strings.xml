@@ -272,7 +272,6 @@
 
     <string name="unread">Non letto</string>
     <string name="no_notifications_tip">Nessuna nuova notifica</string>
-    <string name="feedback_and_share">Invia feedback &#038; condividi</string>
     <string name="share_to_friends">Condividi con i tuoi amici </string>
     <string name="feedback">Feedback</string>
 
@@ -444,4 +443,14 @@
     
     <string name="add_account">Aggiungi account</string>
     <string name="delete_label_warning">Confermi l\'eliminazione di questa etichetta?</string>
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">ACCEDI CON TOKEN</string>
+    <string name="personal_access_token_hint">Token di accesso personale</string>
+    <string name="follow_system">Segui il sistema</string>
+    <string name="clear_search_history">Cancella cronologia ricerche</string>
+    <string name="clear_search_history_confirm">Sei sicuro di voler cancellare tutta la cronologia delle ricerche?</string>
+    <string name="delete_search_record_confirm">Eliminare questa ricerca?</string>
+    <string name="success_deleted">Eliminato</string>
+    <string name="created_pull_request_review_at">Creata revisione pull request su %s</string>
+    <string name="icon">Icona</string>
 </resources>

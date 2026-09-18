@@ -193,7 +193,6 @@
     <string name="author_location" translatable="false">NanJing,China</string>
     <string name="author_login_id" translatable="false">ThirtyDegreesRay</string>
     <string name="author_avatar_url" translatable="false">https://avatars1.githubusercontent.com/u/9625508?v=4</string>
-    <string name="app_copyright" translatable="false">© 2017 ThirtyDegreesRay</string>
     <string name="follow_on_github" >Volgen op GitHub</string>
     <string name="email" >E-mailadres</string>
     <string name="auth_email_address" translatable="false">rays.yuz@gmail.com</string>
@@ -298,7 +297,6 @@
 
     <string name="unread">Ongelezen</string>
     <string name="no_notifications_tip">Geen ongelezen meldingen.</string>
-    <string name="feedback_and_share">Delen en feedback</string>
     <string name="share_to_friends">Delen met vrienden</string>
     <string name="feedback">Feedback</string>
 
@@ -476,4 +474,14 @@
     <string name="add_account">Account toevoegen</string>
     <string name="delete_label_warning">Weet je zeker dat je dit label wilt verwijderen?</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">INLOGGEN MET TOKEN</string>
+    <string name="personal_access_token_hint">Persoonlijk toegangstoken</string>
+    <string name="follow_system">Systeem volgen</string>
+    <string name="clear_search_history">Zoekgeschiedenis wissen</string>
+    <string name="clear_search_history_confirm">Weet je zeker dat je alle zoekgeschiedenis wilt wissen?</string>
+    <string name="delete_search_record_confirm">Deze zoekopdracht verwijderen?</string>
+    <string name="success_deleted">Verwijderd</string>
+    <string name="created_pull_request_review_at">Pull request-review aangemaakt in %s</string>
+    <string name="icon">Pictogram</string>
 </resources>

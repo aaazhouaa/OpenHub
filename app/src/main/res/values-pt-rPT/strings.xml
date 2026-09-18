@@ -233,7 +233,6 @@
     <string name="compare">Comparar</string>
     <string name="unread">Não lido</string>
     <string name="no_notifications_tip">Sem notificações</string>
-    <string name="feedback_and_share">Partilha e comentários</string>
     <string name="share_to_friends">Partilha para os teus amigos</string>
     <string name="feedback">Comentários</string>
     <string name="openhub_wishes">Desejos de OpenHub</string>
@@ -379,4 +378,14 @@
     <string name="toggle_issue_warning">Confirma que %s este incidente?</string>
     <string name="add_account">Adicionar conta</string>
     <string name="delete_label_warning">Eliminar esta etiqueta?</string>
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">ENTRAR COM TOKEN</string>
+    <string name="personal_access_token_hint">Token de acesso pessoal</string>
+    <string name="follow_system">Seguir o sistema</string>
+    <string name="clear_search_history">Limpar histórico de pesquisa</string>
+    <string name="clear_search_history_confirm">Tem certeza que deseja limpar todo o histórico de pesquisa?</string>
+    <string name="delete_search_record_confirm">Excluir esta pesquisa?</string>
+    <string name="success_deleted">Excluído</string>
+    <string name="created_pull_request_review_at">Criou revisão de pull request em %s</string>
+    <string name="icon">Ícone</string>
 </resources>
