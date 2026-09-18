@@ -121,6 +121,7 @@
         <activity android:name=".ui.activity.AboutActivity" android:label="@string/about"/>
         <activity android:name=".ui.activity.ReleasesActivity" android:label="@string/releases"/>
         <activity android:name=".ui.activity.ViewerActivity"/>
+        <activity android:name=".ui.activity.ImageGalleryActivity"/>
         <activity android:name=".ui.activity.ReleaseInfoActivity"/>
         <activity android:name=".ui.activity.IssuesActivity"/>
         <activity android:name=".ui.activity.IssueDetailActivity"/>
