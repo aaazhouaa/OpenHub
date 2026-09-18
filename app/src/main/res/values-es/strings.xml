@@ -231,7 +231,6 @@
     <string name="compare">Vista de Comparación</string>
     <string name="unread">Sin leer</string>
     <string name="no_notifications_tip">Sin notificaciones nuevas.</string>
-    <string name="feedback_and_share">Compartir y Devolución</string>
     <string name="share_to_friends">Compártelo s tus amigos</string>
     <string name="feedback">Devoluciones</string>
     <string name="openhub_wishes">Deseos de OpenHub</string>
@@ -270,7 +269,7 @@
     <string name="double_click_toolbar_tip">Puede hacer doble clic en el título para volver arriba en la lista.</string>
     <string name="releases_click_tip">Puede hacer doble clic en el título para volver arriba en la lista.</string>
     <string name="created_comment_on_commit">Realizó comentario en commit %s</string>
-    <string name="created_comment_on_issue">Realizó comentario en Issue %s</string>
+    <string name="created_comment_on_issue">Realizó comentario en Issue %d</string>
     <string name="created_repo">Creó Repositorio %s</string>
     <string name="forked_to">Fork realizado desde %s hacia %s</string>
     <string name="starred_repo">Starred %s</string>
@@ -352,18 +351,30 @@
     <string name="delete_tag_at">Eliminó Etiqueta %s en %s</string>
     <string name="delete_branch_at">Eliminó Rama %s en %s</string>
     <string name="published_release_at">Publicó lanzamiento %s en %s</string>
-    <string name="opened_issue_at">Abrió Issue %s en %s</string>
-    <string name="closed_issue_at">Cerró Issue %s en %s</string>
-    <string name="reopened_issue_at">Reabrió Issue %s en %s</string>
-    <string name="edited_issue_at">Editó Issue %s en %s</string>
-    <string name="assigned_issue_at">Asignó Issue %s en %s</string>
-    <string name="unassigned_issue_at">Desasignó Issue %s en %s</string>
-    <string name="labeled_issue_at">Etiquetó Issue %s en %s</string>
-    <string name="unlabeled_issue_at">Desetiquetó Issue %s en %s</string>
+    <string name="opened_issue_at">Abrió Issue %d en %s</string>
+    <string name="closed_issue_at">Cerró Issue %d en %s</string>
+    <string name="reopened_issue_at">Reabrió Issue %d en %s</string>
+    <string name="edited_issue_at">Editó Issue %d en %s</string>
+    <string name="assigned_issue_at">Asignó Issue %d en %s</string>
+    <string name="unassigned_issue_at">Desasignó Issue %d en %s</string>
+    <string name="labeled_issue_at">Etiquetó Issue %d en %s</string>
+    <string name="unlabeled_issue_at">Desetiquetó Issue %d en %s</string>
     <string name="added_member_to">Agregó miembro %s a %s</string>
     <string name="deleted_member_at">Eliminó miembro %s en %s</string>
     <string name="edited_member_at">Editó miembro %s en %s</string>
     <string name="org_blocked_user">Org %s bloqueó usuario %s</string>
     <string name="made_repo_public">%s hecho público</string>
     <string name="org_unblocked_user">Org %s desbloqueó usuario %s</string>
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">INICIAR SESIÓN CON TOKEN</string>
+    <string name="personal_access_token_hint">Token de acceso personal</string>
+    <string name="follow_system">Seguir el sistema</string>
+    <string name="clear_search_history">Borrar historial de búsqueda</string>
+    <string name="clear_search_history_confirm">¿Seguro que quieres borrar todo el historial de búsqueda?</string>
+    <string name="delete_search_record_confirm">¿Eliminar esta búsqueda?</string>
+    <string name="success_deleted">Eliminado</string>
+    <string name="created_pull_request_review_at">Creó una revisión de pull request en %s</string>
+    <string name="icon">Icono</string>
+    <string name="milestoned_issue_at">Añadió el issue %d al hito en %s</string>
+    <string name="demilestoned_issue_at">Quitó el issue %d del hito en %s</string>
 </resources>

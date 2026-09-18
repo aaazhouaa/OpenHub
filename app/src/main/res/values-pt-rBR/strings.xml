@@ -193,7 +193,6 @@
     <string name="author_location" translatable="false">NanJing, China</string>
     <string name="author_login_id" translatable="false">ThirtyDegreesRay</string>
     <string name="author_avatar_url" translatable="false">https://avatars1.githubusercontent.com/u/9625508?v=4</string>
-    <string name="app_copyright" translatable="false">© 2017 ThirtyDegreesRay</string>
     <string name="follow_on_github" >Siga no GitHub</string>
     <string name="email" >E-mail</string>
     <string name="auth_email_address" translatable="false">rays.yuz@gmail.com</string>
@@ -298,7 +297,6 @@
 
     <string name="unread">Não lida</string>
     <string name="no_notifications_tip">Nenhuma nova notificação.</string>
-    <string name="feedback_and_share">Compartilhar &#038; Comentário</string>
     <string name="share_to_friends">Compartilhe com seus amigos</string>
     <string name="cookapk_download_url" translatable="false">https://www.coolapk.com/apk/com.thirtydegreesray.openhub</string>
     <string name="feedback">Comentário</string>
@@ -477,4 +475,14 @@
     <string name="add_account">Adicionar conta</string>
     <string name="delete_label_warning">Confirme para excluir este rótulo?</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">ENTRAR COM TOKEN</string>
+    <string name="personal_access_token_hint">Token de acesso pessoal</string>
+    <string name="follow_system">Seguir o sistema</string>
+    <string name="clear_search_history">Limpar histórico de pesquisa</string>
+    <string name="clear_search_history_confirm">Tem certeza que deseja limpar todo o histórico de pesquisa?</string>
+    <string name="delete_search_record_confirm">Excluir esta pesquisa?</string>
+    <string name="success_deleted">Excluído</string>
+    <string name="created_pull_request_review_at">Criou revisão de pull request em %s</string>
+    <string name="icon">Ícone</string>
 </resources>

@@ -268,7 +268,6 @@
 
     <string name="unread">Nepřečtené</string>
     <string name="no_notifications_tip">Bez nových oznámení.</string>
-    <string name="feedback_and_share">Sdílet a poskytnout zpětnou vazbu</string>
     <string name="share_to_friends">Sdílet s přátely</string>
     <string name="feedback">Zpětná vazba</string>
 
@@ -437,4 +436,14 @@
     <string name="add_account">Přidat účet</string>
     <string name="delete_label_warning">Opravdu chcete smazat tuto nálepku?</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">PŘIHLÁSIT SE TOKENEM</string>
+    <string name="personal_access_token_hint">Osobní přístupový token</string>
+    <string name="follow_system">Podle systému</string>
+    <string name="clear_search_history">Vymazat historii hledání</string>
+    <string name="clear_search_history_confirm">Opravdu chcete vymazat celou historii hledání?</string>
+    <string name="delete_search_record_confirm">Smazat tento záznam hledání?</string>
+    <string name="success_deleted">Smazáno</string>
+    <string name="created_pull_request_review_at">Vytvořena revize pull requestu v %s</string>
+    <string name="icon">Ikona</string>
 </resources>

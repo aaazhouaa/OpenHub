@@ -298,7 +298,6 @@
 
     <string name="unread">Ungelesen</string>
     <string name="no_notifications_tip">Keine neuen Benachrichtigungen.</string>
-    <string name="feedback_and_share">Teilen &amp; Rückmeldung</string>
     <string name="share_to_friends">Teilen mit Ihren Freunden</string>
 
     <string name="feedback">Rückmeldung</string>
@@ -477,4 +476,14 @@
     <string name="add_account">Konto hinzufügen</string>
     <string name="delete_label_warning">Bestätigen, um dieses Label zu löschen?</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">MIT TOKEN ANMELDEN</string>
+    <string name="personal_access_token_hint">Persönlicher Zugriffstoken</string>
+    <string name="follow_system">Systemeinstellung folgen</string>
+    <string name="clear_search_history">Suchverlauf löschen</string>
+    <string name="clear_search_history_confirm">Möchtest du wirklich den gesamten Suchverlauf löschen?</string>
+    <string name="delete_search_record_confirm">Diesen Suchbegriff löschen?</string>
+    <string name="success_deleted">Gelöscht</string>
+    <string name="created_pull_request_review_at">Pull-Request-Review in %s erstellt</string>
+    <string name="icon">Symbol</string>
 </resources>

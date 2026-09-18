@@ -271,7 +271,6 @@
 
     <string name="unread">Непрочитанные</string>
     <string name="no_notifications_tip">Новых уведомлений нет.</string>
-    <string name="feedback_and_share">Поделиться &#038; и оставить отзыв</string>
     <string name="share_to_friends">Поделиться с друзьями</string>
     <string name="feedback">Отзывы</string>
 
@@ -439,4 +438,14 @@
     <string name="add_account">Добавить аккаунт</string>
     <string name="delete_label_warning">Подтвердить удаление данной этикетки?</string>
 
+    <!-- Added to complete translations -->
+    <string name="login_with_pat">ВОЙТИ С ТОКЕНОМ</string>
+    <string name="personal_access_token_hint">Личный токен доступа</string>
+    <string name="follow_system">Как в системе</string>
+    <string name="clear_search_history">Очистить историю поиска</string>
+    <string name="clear_search_history_confirm">Вы уверены, что хотите очистить всю историю поиска?</string>
+    <string name="delete_search_record_confirm">Удалить эту запись поиска?</string>
+    <string name="success_deleted">Удалено</string>
+    <string name="created_pull_request_review_at">Создан отзыв о pull request в %s</string>
+    <string name="icon">Значок</string>
 </resources>

@@ -118,8 +118,6 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     @Override
     protected void initActivity() {
         super.initActivity();
-        if (AppData.INSTANCE.getLoggedUser() != null)
-
         setStartDrawerEnable(true);
         setEndDrawerEnable(true);
         newYearWishesDialog = new NewYearWishesDialog(getActivity());
