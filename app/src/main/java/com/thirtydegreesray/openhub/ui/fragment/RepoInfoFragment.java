@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
@@ -25,6 +27,7 @@ import com.thirtydegreesray.openhub.mvp.model.Branch;
 import com.thirtydegreesray.openhub.mvp.model.Repository;
 import com.thirtydegreesray.openhub.mvp.presenter.RepoInfoPresenter;
 import com.thirtydegreesray.openhub.ui.activity.IssuesActivity;
+import com.thirtydegreesray.openhub.ui.activity.ImageGalleryActivity;
 import com.thirtydegreesray.openhub.ui.activity.ProfileActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepoListActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepositoryActivity;
@@ -34,6 +37,8 @@ import com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView;
 import com.thirtydegreesray.openhub.util.BundleHelper;
 import com.thirtydegreesray.openhub.util.StringUtils;
 import com.thirtydegreesray.openhub.util.ViewUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +50,7 @@ import butterknife.OnClick;
 public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
         implements IRepoInfoContract.View,
         CodeWebView.ContentChangedListener,
+        CodeWebView.OnImageClickListener,
         RepositoryActivity.RepositoryListener {
 
     public static RepoInfoFragment create(Repository repository) {
@@ -92,6 +98,13 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
     @Override
     protected void initFragment(Bundle savedInstanceState) {
         webView.setContentChangedListener(this);
+        // README pictures open in a gallery so they can be paged left/right.
+        webView.setImageClickListener(this);
+    }
+
+    @Override
+    public void onImageClick(@NonNull ArrayList<String> imageUrls, int index) {
+        ImageGalleryActivity.show(getActivity(), imageUrls, index);
     }
 
     @Override
