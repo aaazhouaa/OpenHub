@@ -71,13 +71,13 @@ public abstract class BaseDrawerActivity<P extends IBaseContract.Presenter> exte
     }
 
     @Override
-    public void onBackPressed() {
+    protected boolean onBackHandled() {
         if (drawerLayout != null && (drawerLayout.isDrawerOpen(GravityCompat.START)
                 || drawerLayout.isDrawerOpen(GravityCompat.END))) {
             closeDrawer();
-        } else {
-            super.onBackPressed();
+            return true;
         }
+        return false;
     }
 
     @Override

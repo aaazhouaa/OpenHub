@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.thirtydegreesray.openhub.R;
@@ -127,11 +126,8 @@ public class RepoFilesFragment extends ListFragment<RepoFilesPresenter, RepoFile
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
-            return mPresenter.goBack();
-        }
-        return false;
+    public boolean onBackPressed() {
+        return mPresenter.goBack();
     }
 
     @Override
@@ -144,7 +140,6 @@ public class RepoFilesFragment extends ListFragment<RepoFilesPresenter, RepoFile
     public void onRepositoryInfoUpdated(Repository repository) {
 
     }
-
     @Override
     public void onBranchChanged(Branch branch) {
         if(mPresenter == null){
