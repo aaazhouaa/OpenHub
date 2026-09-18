@@ -154,12 +154,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
             defaultPage = getDefaultPageNavId();
             updateFragmentByNavId(selectedPage);
         } else {
-            String startPageId = PrefUtils.getStartPage();
-            int startPageIndex = Arrays.asList(getResources().getStringArray(R.array.start_pages_id))
-                    .indexOf(startPageId);
-            TypedArray typedArray = getResources().obtainTypedArray(R.array.start_pages_nav_id);
-            int startPageNavId = typedArray.getResourceId(startPageIndex, 0);
-            typedArray.recycle();
+            int startPageNavId = getStartPageNavIdFromPrefs();
             if(FRAGMENT_NAV_ID_LIST.contains(startPageNavId)){
                 selectedPage = startPageNavId;
                 updateFragmentByNavId(selectedPage);
@@ -252,9 +247,6 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
                 break;
             case R.id.nav_trending:
                 TrendingActivity.show(getActivity());
-                break;
-            case R.id.nav_search:
-                SearchActivity.show(getActivity());
                 break;
             case R.id.nav_settings:
                 SettingsActivity.show(getActivity(), SETTINGS_REQUEST_CODE);
@@ -430,14 +422,25 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
      * search, trending, ...) fall back to the news feed.
      */
     private int getDefaultPageNavId() {
+        int startPageNavId = getStartPageNavIdFromPrefs();
+        return FRAGMENT_NAV_ID_LIST.contains(startPageNavId) ? startPageNavId : R.id.nav_news;
+    }
+
+    /**
+     * The nav id the stored start page maps to, or 0 when it no longer exists in
+     * start_pages (e.g. a "search" start page stored before that entry was removed).
+     * Returning 0 instead of letting a -1 index reach the resource arrays keeps
+     * existing installs from crashing on launch.
+     */
+    private int getStartPageNavIdFromPrefs() {
         String startPageId = PrefUtils.getStartPage();
         int startPageIndex = Arrays.asList(getResources().getStringArray(R.array.start_pages_id))
                 .indexOf(startPageId);
-        if (startPageIndex < 0) return R.id.nav_news;
+        if (startPageIndex < 0) return 0;
         TypedArray typedArray = getResources().obtainTypedArray(R.array.start_pages_nav_id);
         int startPageNavId = typedArray.getResourceId(startPageIndex, 0);
         typedArray.recycle();
-        return FRAGMENT_NAV_ID_LIST.contains(startPageNavId) ? startPageNavId : R.id.nav_news;
+        return startPageNavId;
     }
 
     private boolean isManageAccount = false;
