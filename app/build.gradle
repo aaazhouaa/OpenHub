@@ -2,14 +2,27 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.github.gmazzo.buildconfig'
 apply plugin: 'com.jakewharton.butterknife'
 
-def publicPropsFile = rootProject.file("public.properties")
-if (publicPropsFile.exists()) {
-    def publicProps = new Properties()
-    publicProps.load(new FileInputStream(publicPropsFile))
-    publicProps.each { name, value ->
-        project.ext.set(name, value)
-    }
+/**
+ * Loads a {key=value} properties file into the project's ext namespace when present.
+ * local.properties is applied after public.properties, so machine-local values
+ * (e.g. a private signing key) override the committed defaults.
+ */
+def loadProps = { File propsFile ->
+    if (!propsFile.exists()) return
+    def props = new Properties()
+    propsFile.withInputStream { props.load(it) }
+    props.each { name, value -> project.ext.set(name, value.toString()) }
 }
+loadProps(rootProject.file("public.properties"))
+loadProps(rootProject.file("local.properties"))
+
+// Release signing. The committed public keystore is used by default; when no
+// keystore is configured the release build falls back to the debug key.
+def releaseSignPath = project.findProperty('sign_path')
+def hasReleaseSign = releaseSignPath != null && file(releaseSignPath).exists()
+        && project.findProperty('store_password') != null
+        && project.findProperty('key_alias') != null
+        && project.findProperty('key_password') != null
 
 buildConfig {
     // Define custom fields
@@ -47,10 +60,21 @@ android {
     }
 
 
+    signingConfigs {
+        release {
+            if (hasReleaseSign) {
+                storeFile file(releaseSignPath)
+                storePassword project.findProperty('store_password')
+                keyAlias project.findProperty('key_alias')
+                keyPassword project.findProperty('key_password')
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
-            signingConfig signingConfigs.debug
+            signingConfig hasReleaseSign ? signingConfigs.release : signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
