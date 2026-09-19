@@ -25,6 +25,7 @@ import com.thirtydegreesray.openhub.http.IssueService;
 import com.thirtydegreesray.openhub.http.LoginService;
 import com.thirtydegreesray.openhub.http.NotificationsService;
 import com.thirtydegreesray.openhub.http.OpenHubService;
+import com.thirtydegreesray.openhub.http.PullRequestService;
 import com.thirtydegreesray.openhub.http.RepoService;
 import com.thirtydegreesray.openhub.http.SearchService;
 import com.thirtydegreesray.openhub.http.UserService;
@@ -173,6 +174,10 @@ public abstract class BasePresenter<V extends IBaseContract.View> implements IBa
 
     protected IssueService getIssueService() {
         return getServices(IssueService.class);
+    }
+
+    protected PullRequestService getPullRequestService() {
+        return getServices(PullRequestService.class);
     }
 
     protected CommitService getCommitService() {

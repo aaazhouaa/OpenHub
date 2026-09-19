@@ -51,6 +51,17 @@ public class GitHubName {
         return url.substring(url.lastIndexOf("/") + 1);
     }
 
+    public int getNumber(){
+        if(!GitHubHelper.isIssueUrl(url) && !GitHubHelper.isPullRequestUrl(url)){
+            return -1;
+        }
+        try {
+            return Integer.parseInt(url.substring(url.lastIndexOf("/") + 1));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     public String getCommitShaName(){
         if(!GitHubHelper.isCommitUrl(url)){
             return null;

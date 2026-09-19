@@ -24,6 +24,8 @@ import com.thirtydegreesray.openhub.service.ShareBroadcastReceiver;
 import com.thirtydegreesray.openhub.ui.activity.CommitDetailActivity;
 import com.thirtydegreesray.openhub.ui.activity.IssueDetailActivity;
 import com.thirtydegreesray.openhub.ui.activity.ProfileActivity;
+import com.thirtydegreesray.openhub.ui.activity.PullRequestDetailActivity;
+import com.thirtydegreesray.openhub.ui.activity.PullRequestsActivity;
 import com.thirtydegreesray.openhub.ui.activity.ReleaseInfoActivity;
 import com.thirtydegreesray.openhub.ui.activity.ReleasesActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepositoryActivity;
@@ -191,6 +193,9 @@ public class AppOpener {
             RepositoryActivity.show(context, userName, repoName);
         } else if (GitHubHelper.isIssueUrl(url)) {
             IssueDetailActivity.show((Activity) context, url);
+        } else if (GitHubHelper.isPullRequestUrl(url)) {
+            PullRequestDetailActivity.show((Activity) context,
+                    gitHubName.getUserName(), gitHubName.getRepoName(), gitHubName.getNumber());
         } else if (GitHubHelper.isReleasesUrl(url)) {
             ReleasesActivity.show((Activity) context, userName, repoName);
         } else if (GitHubHelper.isReleaseTagUrl(url)) {
