@@ -6,7 +6,7 @@
         android:id="@+id/action_star"
         android:title="@string/star"
         android:icon="@drawable/ic_star_title"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/action_branch"
         android:title="@string/branch_tip"
