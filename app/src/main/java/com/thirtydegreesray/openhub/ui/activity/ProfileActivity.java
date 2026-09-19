@@ -233,8 +233,12 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO Don't know why loader showImage automatic when resume from other page, conflict with screen transition
-//        loader.setVisibility(View.GONE);
+        // Returning from another page re-applies the window transition; if the loader was
+        // left visible (e.g. a load was still in flight), it flashes over the transition.
+        // Once we already have the user, the data is here, so the loader should never be shown.
+        if (mPresenter != null && mPresenter.getUser() != null) {
+            loader.setVisibility(View.GONE);
+        }
     }
 
     @Override
