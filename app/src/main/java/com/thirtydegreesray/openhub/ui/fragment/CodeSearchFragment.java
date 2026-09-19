@@ -12,7 +12,6 @@ import com.thirtydegreesray.openhub.mvp.contract.ICodeSearchContract;
 import com.thirtydegreesray.openhub.mvp.model.CodeSearchItem;
 import com.thirtydegreesray.openhub.mvp.model.SearchModel;
 import com.thirtydegreesray.openhub.mvp.presenter.CodeSearchPresenter;
-import com.thirtydegreesray.openhub.ui.activity.ViewerActivity;
 import com.thirtydegreesray.openhub.ui.adapter.CodeSearchAdapter;
 import com.thirtydegreesray.openhub.ui.fragment.base.ListFragment;
 import com.thirtydegreesray.openhub.util.AppOpener;
@@ -79,12 +78,10 @@ public class CodeSearchFragment extends ListFragment<CodeSearchPresenter, CodeSe
     public void onItemClick(int position, @NonNull View view) {
         super.onItemClick(position, view);
         CodeSearchItem item = adapter.getData().get(position);
-        if (item.getRepository() != null && item.getRepository().getOwner() != null) {
-            ViewerActivity.show(getActivity(), item.getHtmlUrl(),
-                    item.getRepository().getFullName());
-        } else {
-            AppOpener.openInCustomTabsOrBrowser(getActivity(), item.getHtmlUrl());
-        }
+        // The code search API only returns the GitHub blob web page URL, not the raw
+        // content URL, so opening it in the viewer would try to render the whole GitHub
+        // page. Open the blob in the browser/custom tab instead.
+        AppOpener.openInCustomTabsOrBrowser(getActivity(), item.getHtmlUrl());
     }
 
     @Override
