@@ -163,6 +163,11 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
                         mPresenter.getRepository().getOwner().getLogin(),
                         mPresenter.getRepository().getName());
                 return true;
+            case R.id.action_actions:
+                WorkflowRunsActivity.show(getActivity(),
+                        mPresenter.getRepository().getOwner().getLogin(),
+                        mPresenter.getRepository().getName());
+                return true;
             case R.id.action_wiki:
                 WikiActivity.show(getActivity(), mPresenter.getRepository().getOwner().getLogin(),
                         mPresenter.getRepository().getName());
