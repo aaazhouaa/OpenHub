@@ -23,6 +23,11 @@
         android:icon="@drawable/ic_pull"
         app:showAsAction="always"/>
     <item
+        android:id="@+id/action_actions"
+        android:title="@string/actions"
+        android:icon="@drawable/ic_dot"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/action_share"
         android:title="@string/share"
         app:showAsAction="never"/>
