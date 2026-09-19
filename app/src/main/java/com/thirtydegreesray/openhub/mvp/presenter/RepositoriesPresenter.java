@@ -272,8 +272,7 @@ public class RepositoriesPresenter extends BasePagerPresenter<IRepositoriesContr
 
     public RepositoriesFilter getFilter() {
         if (filter == null) {
-            filter = RepositoriesFragment.RepositoriesType.STARRED.equals(type) ?
-                    RepositoriesFilter.DEFAULT_STARRED_REPO : RepositoriesFilter.DEFAULT;
+            filter = RepositoriesFilter.getDefault(type);
         }
         return filter;
     }

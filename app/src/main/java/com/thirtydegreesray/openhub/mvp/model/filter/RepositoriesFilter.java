@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
+import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.ViewUtils;
 
 import java.util.HashMap;
@@ -20,10 +21,8 @@ import java.util.Map;
 
 public class RepositoriesFilter implements Parcelable {
 
-    public final static RepositoriesFilter DEFAULT = new RepositoriesFilter();
-
-    public final static RepositoriesFilter DEFAULT_STARRED_REPO
-            = new RepositoriesFilter().setSort(Sort.Created).setSortDirection(SortDirection.Desc);
+    private final static String PREF_SORT_OWNED = "repositoriesFilterSortOwned";
+    private final static String PREF_SORT_STARRED = "repositoriesFilterSortStarred";
 
     private enum Type{
         All, Owner, Public, Private, Member
@@ -46,7 +45,8 @@ public class RepositoriesFilter implements Parcelable {
     private Sort sort = Sort.Full_name;
     private SortDirection sortDirection = SortDirection.Asc;
 
-    public static RepositoriesFilter generateFromDrawer(@NonNull NavigationView navView){
+    public static RepositoriesFilter generateFromDrawer(@NonNull NavigationView navView,
+                                                        @NonNull RepositoriesFragment.RepositoriesType type){
         RepositoriesFilter filter = new RepositoriesFilter();
         MenuItem typeItem = ViewUtils.getSelectedMenu(navView.getMenu().findItem(R.id.nav_type_chooser));
         if (typeItem != null){
@@ -54,47 +54,10 @@ public class RepositoriesFilter implements Parcelable {
         }
 
         MenuItem sortItem = ViewUtils.getSelectedMenu(navView.getMenu().findItem(R.id.nav_sort));
-        Sort sort = Sort.Full_name;
-        SortDirection sortDirection = SortDirection.Asc;
+        saveSort(type, sortItem);
         if(sortItem != null){
-            switch (sortItem.getItemId()){
-                case R.id.nav_full_name_asc:
-                    sort = Sort.Full_name;
-                    sortDirection = SortDirection.Asc;
-                    break;
-                case R.id.nav_full_name_desc:
-                    sort = Sort.Full_name;
-                    sortDirection = SortDirection.Desc;
-                    break;
-                case R.id.nav_recently_created:
-                    sort = Sort.Created;
-                    sortDirection = SortDirection.Desc;
-                    break;
-                case R.id.nav_previously_created:
-                    sort = Sort.Created;
-                    sortDirection = SortDirection.Asc;
-                    break;
-
-                case R.id.nav_recently_updated:
-                    sort = Sort.Updated;
-                    sortDirection = SortDirection.Desc;
-                    break;
-                case R.id.nav_least_recently_updated:
-                    sort = Sort.Updated;
-                    sortDirection = SortDirection.Asc;
-                    break;
-                case R.id.nav_most_pushed:
-                    sort = Sort.Pushed;
-                    sortDirection = SortDirection.Desc;
-                    break;
-                case R.id.nav_fewest_pushed:
-                    sort = Sort.Pushed;
-                    sortDirection = SortDirection.Asc;
-                    break;
-            }
+            applySortId(filter, sortItem.getItemId());
         }
-        filter.sort = sort;
-        filter.sortDirection = sortDirection;
 
         return filter;
     }
@@ -103,10 +66,11 @@ public class RepositoriesFilter implements Parcelable {
                                   @NonNull RepositoriesFragment.RepositoriesType type){
         if(navView == null) return;
         if(RepositoriesFragment.RepositoriesType.OWNED.equals(type)){
-            //do nothing
+            restoreSavedSort(navView, type, R.id.nav_full_name_asc);
         } else if(RepositoriesFragment.RepositoriesType.PUBLIC.equals(type)){
             navView.getMenu().findItem(R.id.nav_private).setVisible(false);
             navView.getMenu().findItem(R.id.nav_public).setVisible(false);
+            restoreSavedSort(navView, type, R.id.nav_full_name_asc);
         } else if(RepositoriesFragment.RepositoriesType.STARRED.equals(type)){
             navView.getMenu().findItem(R.id.nav_type_chooser).setVisible(false);
             navView.getMenu().findItem(R.id.nav_full_name_asc).setVisible(false);
@@ -114,11 +78,100 @@ public class RepositoriesFilter implements Parcelable {
             navView.getMenu().findItem(R.id.nav_most_pushed).setVisible(false);
             navView.getMenu().findItem(R.id.nav_fewest_pushed).setVisible(false);
 
-            navView.getMenu().findItem(R.id.nav_full_name_asc).setChecked(false);
-            navView.getMenu().findItem(R.id.nav_recently_created).setChecked(true);
             navView.getMenu().findItem(R.id.nav_recently_created).setTitle(R.string.recently_starred);
             navView.getMenu().findItem(R.id.nav_previously_created).setTitle(R.string.previously_starred);
+
+            restoreSavedSort(navView, type, R.id.nav_recently_created);
         }
+    }
+
+    private static void saveSort(@NonNull RepositoriesFragment.RepositoriesType type, MenuItem sortItem) {
+        if (!isSortPersisted(type) || sortItem == null) return;
+        PrefUtils.set(getSortPrefKey(type), sortItem.getItemId());
+    }
+
+    private static void applySortId(@NonNull RepositoriesFilter filter, int sortItemId) {
+        switch (sortItemId) {
+            case R.id.nav_full_name_asc:
+                filter.sort = Sort.Full_name;
+                filter.sortDirection = SortDirection.Asc;
+                break;
+            case R.id.nav_full_name_desc:
+                filter.sort = Sort.Full_name;
+                filter.sortDirection = SortDirection.Desc;
+                break;
+            case R.id.nav_recently_created:
+                filter.sort = Sort.Created;
+                filter.sortDirection = SortDirection.Desc;
+                break;
+            case R.id.nav_previously_created:
+                filter.sort = Sort.Created;
+                filter.sortDirection = SortDirection.Asc;
+                break;
+            case R.id.nav_recently_updated:
+                filter.sort = Sort.Updated;
+                filter.sortDirection = SortDirection.Desc;
+                break;
+            case R.id.nav_least_recently_updated:
+                filter.sort = Sort.Updated;
+                filter.sortDirection = SortDirection.Asc;
+                break;
+            case R.id.nav_most_pushed:
+                filter.sort = Sort.Pushed;
+                filter.sortDirection = SortDirection.Desc;
+                break;
+            case R.id.nav_fewest_pushed:
+                filter.sort = Sort.Pushed;
+                filter.sortDirection = SortDirection.Asc;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static RepositoriesFilter getDefault(@NonNull RepositoriesFragment.RepositoriesType type) {
+        int defaultSortId = RepositoriesFragment.RepositoriesType.STARRED.equals(type)
+                ? R.id.nav_recently_created : R.id.nav_full_name_asc;
+        int sortId = defaultSortId;
+        if (isSortPersisted(type)) {
+            int savedId = getSavedSortId(type);
+            if (savedId != 0) sortId = savedId;
+        }
+        RepositoriesFilter filter = new RepositoriesFilter();
+        applySortId(filter, sortId);
+        return filter;
+    }
+
+    private static boolean isSortPersisted(RepositoriesFragment.RepositoriesType type) {
+        return RepositoriesFragment.RepositoriesType.OWNED.equals(type)
+                || RepositoriesFragment.RepositoriesType.STARRED.equals(type);
+    }
+
+    private static String getSortPrefKey(RepositoriesFragment.RepositoriesType type) {
+        return RepositoriesFragment.RepositoriesType.STARRED.equals(type)
+                ? PREF_SORT_STARRED : PREF_SORT_OWNED;
+    }
+
+    private static int getSavedSortId(RepositoriesFragment.RepositoriesType type) {
+        return PrefUtils.getDefaultSp().getInt(getSortPrefKey(type), 0);
+    }
+
+    private static void restoreSavedSort(@NonNull NavigationView navView,
+                                         @NonNull RepositoriesFragment.RepositoriesType type,
+                                         int defaultSortId) {
+        MenuItem defaultChecked = navView.getMenu().findItem(R.id.nav_full_name_asc);
+        if (defaultChecked != null) defaultChecked.setChecked(false);
+
+        int sortId = defaultSortId;
+        if (isSortPersisted(type)) {
+            int savedId = getSavedSortId(type);
+            if (savedId != 0) sortId = savedId;
+        }
+        MenuItem target = navView.getMenu().findItem(sortId);
+        if (target == null || !target.isVisible()) {
+            target = navView.getMenu().findItem(defaultSortId);
+        }
+        if (target != null) target.setChecked(true);
     }
 
     public String getType() {
