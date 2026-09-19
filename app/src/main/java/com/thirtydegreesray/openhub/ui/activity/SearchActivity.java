@@ -31,6 +31,7 @@ import com.thirtydegreesray.openhub.ui.activity.base.PageSearchHelper;
 import com.thirtydegreesray.openhub.ui.activity.base.PagerActivity;
 import com.thirtydegreesray.openhub.ui.adapter.SearchRecordAdapter;
 import com.thirtydegreesray.openhub.ui.adapter.base.FragmentPagerModel;
+import com.thirtydegreesray.openhub.ui.fragment.CodeSearchFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.UserListFragment;
 import com.thirtydegreesray.openhub.util.StringUtils;
@@ -74,6 +75,7 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
         super.initActivity();
         MENU_ID_MAP.put(0, SearchModel.REPO_SORT_ID_LIST);
         MENU_ID_MAP.put(1, SearchModel.USER_SORT_ID_LIST);
+        MENU_ID_MAP.put(2, SearchModel.CODE_SORT_ID_LIST);
     }
 
     @Override
@@ -252,7 +254,7 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
 
     @Override
     public int getPagerSize() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -267,6 +269,8 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
             return 0;
         }else if(fragment instanceof UserListFragment){
             return 1;
+        }else if(fragment instanceof CodeSearchFragment){
+            return 2;
         }else
             return -1;
     }

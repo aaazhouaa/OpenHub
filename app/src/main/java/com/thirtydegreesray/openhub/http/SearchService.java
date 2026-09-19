@@ -4,6 +4,7 @@ package com.thirtydegreesray.openhub.http;
 
 import androidx.annotation.NonNull;
 
+import com.thirtydegreesray.openhub.mvp.model.CodeSearchItem;
 import com.thirtydegreesray.openhub.mvp.model.Issue;
 import com.thirtydegreesray.openhub.mvp.model.Repository;
 import com.thirtydegreesray.openhub.mvp.model.SearchResult;
@@ -43,6 +44,15 @@ public interface SearchService {
     @NonNull @GET("search/issues")
     @Headers("Accept: application/vnd.github.html,application/vnd.github.VERSION.raw")
     Observable<Response<SearchResult<Issue>>> searchIssues(
+            @Header("forceNetWork") boolean forceNetWork,
+            @Query(value = "q", encoded = true) String query,
+            @Query("sort") String sort,
+            @Query("order") String order,
+            @Query("page") int page
+    );
+
+    @NonNull @GET("search/code")
+    Observable<Response<SearchResult<CodeSearchItem>>> searchCode(
             @Header("forceNetWork") boolean forceNetWork,
             @Query(value = "q", encoded = true) String query,
             @Query("sort") String sort,
