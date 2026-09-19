@@ -101,7 +101,8 @@ public class SearchActivity extends PagerActivity<SearchPresenter>
         setToolbarTitle(getString(R.string.search));
         if(sortInfos == null) {
             sortInfos = new String[]{
-                    getString(R.string.best_match), getString(R.string.best_match)
+                    getString(R.string.best_match), getString(R.string.best_match),
+                    getString(R.string.best_match)
             };
         }
     }
