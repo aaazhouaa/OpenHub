@@ -211,7 +211,7 @@ public class RepositoriesFragment extends ListFragment<RepositoriesPresenter, Re
 
     @Override
     public void onDrawerSelected(@NonNull NavigationView navView, @NonNull MenuItem item) {
-        RepositoriesFilter filter = RepositoriesFilter.generateFromDrawer(navView);
+        RepositoriesFilter filter = RepositoriesFilter.generateFromDrawer(navView, mPresenter.getType());
         mPresenter.loadRepositories(filter);
     }
 
