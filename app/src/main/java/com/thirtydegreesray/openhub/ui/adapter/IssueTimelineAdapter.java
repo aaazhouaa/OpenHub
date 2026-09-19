@@ -268,7 +268,7 @@ public class IssueTimelineAdapter extends BaseAdapter<BaseViewHolder, IssueEvent
         void setMargin(IssueEvent model, int position){
             int topMargin = 0;
             int bottomMargin = 0;
-            if(position - 1 > 0 && data.get(position - 1).getType().equals(IssueEvent.Type.commented)){
+            if(position - 1 >= 0 && data.get(position - 1).getType().equals(IssueEvent.Type.commented)){
                 topMargin = (int) context.getResources().getDimension(R.dimen.spacing_mini);
             }
             if(position + 1 < data.size() && data.get(position +1).getType().equals(IssueEvent.Type.commented)){

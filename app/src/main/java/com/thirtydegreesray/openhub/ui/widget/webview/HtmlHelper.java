@@ -154,6 +154,8 @@ class HtmlHelper {
                         "<style>" +
                             "body{background: " + backgroundColor + ";}" +
                             "a {color:" + accentColor + " !important;}" +
+                            "table {display: block; overflow-x: auto; max-width: 100%;}" +
+                            "img {max-width: 100%;}" +
                             ".highlight pre, pre {" +
                             " word-wrap: " + (wrapCode ? "break-word" : "normal") + "; " +
                             " white-space: " + (wrapCode ? "pre-wrap" : "pre") + "; " +

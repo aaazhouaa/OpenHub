@@ -1,5 +1,6 @@
 package com.thirtydegreesray.openhub.ui.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -8,6 +9,7 @@ import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.ui.activity.MarkdownEditorCallback;
 import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
+import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.StringUtils;
 import com.zzhoujay.richtext.RichText;
 
@@ -16,7 +18,6 @@ import butterknife.BindView;
 /**
  * Created by ThirtyDegreesRay on 2017/9/29 11:52:42
  */
-//FIXME click link cause exception
 public class MarkdownPreviewFragment extends BaseFragment{
 
     public static MarkdownPreviewFragment create(){
@@ -52,7 +53,14 @@ public class MarkdownPreviewFragment extends BaseFragment{
             if(StringUtils.isBlank(getMarkdownEditorCallback().getText())){
                 previewText.setText(R.string.nothing_to_preview);
             }else{
-                RichText.fromMarkdown(getMarkdownEditorCallback().getText()).into(previewText);
+                RichText.fromMarkdown(getMarkdownEditorCallback().getText())
+                        .urlClick(url -> {
+                            if(getActivity() != null){
+                                AppOpener.launchUrl(getActivity(), Uri.parse(url));
+                            }
+                            return true;
+                        })
+                        .into(previewText);
             }
         }
     }
