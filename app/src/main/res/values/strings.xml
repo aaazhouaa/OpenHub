@@ -242,6 +242,11 @@
     <string name="closed">Closed</string>
     <string name="no_issues">No issues</string>
     <string name="issue">Issue</string>
+    <string name="pull_requests">Pull requests</string>
+    <string name="pull_request">Pull request</string>
+    <string name="no_pull_requests">No pull requests</string>
+    <string name="conversation">Conversation</string>
+    <string name="merged">Merged</string>
 
     <string name="type">Type</string>
     <string name="all">All</string>

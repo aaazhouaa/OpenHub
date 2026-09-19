@@ -120,6 +120,8 @@
         <activity android:name=".ui.activity.TrendingActivity" android:label="@string/trending"/>
         <activity android:name=".ui.activity.AboutActivity" android:label="@string/about"/>
         <activity android:name=".ui.activity.ReleasesActivity" android:label="@string/releases"/>
+        <activity android:name=".ui.activity.PullRequestsActivity"/>
+        <activity android:name=".ui.activity.PullRequestDetailActivity"/>
         <activity android:name=".ui.activity.ViewerActivity"/>
         <activity android:name=".ui.activity.ImageGalleryActivity"/>
         <activity android:name=".ui.activity.ReleaseInfoActivity"/>

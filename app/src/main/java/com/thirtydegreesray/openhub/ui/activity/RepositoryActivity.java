@@ -158,6 +158,11 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
             case R.id.action_releases:
                 showReleases();
                 return true;
+            case R.id.action_pull_requests:
+                PullRequestsActivity.show(getActivity(),
+                        mPresenter.getRepository().getOwner().getLogin(),
+                        mPresenter.getRepository().getName());
+                return true;
             case R.id.action_wiki:
                 WikiActivity.show(getActivity(), mPresenter.getRepository().getOwner().getLogin(),
                         mPresenter.getRepository().getName());

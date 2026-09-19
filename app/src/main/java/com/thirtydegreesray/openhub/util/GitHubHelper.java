@@ -37,6 +37,8 @@ public class GitHubHelper {
             + "/([a-z]|[A-Z]|\\d|-)*/([a-z]|[A-Z]|\\d|-|\\.|_)*(/)?");
     private static final Pattern ISSUE_PATTERN = Pattern.compile(GITHUB_BASE_URL_PATTERN_STR
             + "/([a-z]|[A-Z]|\\d|-)*/([a-z]|[A-Z]|\\d|-|\\.|_)*/issues/(\\d)*(/)?");
+    private static final Pattern PULL_REQUEST_PATTERN = Pattern.compile(GITHUB_BASE_URL_PATTERN_STR
+            + "/([a-z]|[A-Z]|\\d|-)*/([a-z]|[A-Z]|\\d|-|\\.|_)*/pull/(\\d)*(/)?");
     private static final Pattern RELEASES_PATTERN = Pattern.compile(GITHUB_BASE_URL_PATTERN_STR
             + "/([a-z]|[A-Z]|\\d|-)*/([a-z]|[A-Z]|\\d|-|\\.|_)*/releases(/latest)?(/)?");
     private static final Pattern RELEASE_TAG_PATTERN = Pattern.compile(GITHUB_BASE_URL_PATTERN_STR
@@ -99,6 +101,10 @@ public class GitHubHelper {
 
     public static boolean isIssueUrl(@NonNull String url){
         return ISSUE_PATTERN.matcher(url).matches();
+    }
+
+    public static boolean isPullRequestUrl(@NonNull String url){
+        return PULL_REQUEST_PATTERN.matcher(url).matches();
     }
 
     public static boolean isGitHubUrl(@NonNull String url){
