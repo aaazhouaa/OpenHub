@@ -34,6 +34,12 @@ public class WorkflowRunDetailPresenter extends BasePresenter<IWorkflowRunDetail
     }
 
     @Override
+    public void onViewInitialized() {
+        super.onViewInitialized();
+        loadJobs();
+    }
+
+    @Override
     public void loadJobs() {
         if (jobs != null) {
             mView.showJobs(jobs);
