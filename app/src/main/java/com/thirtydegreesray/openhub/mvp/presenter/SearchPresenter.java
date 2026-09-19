@@ -43,6 +43,7 @@ public class SearchPresenter extends BasePresenter<ISearchContract.View>
         searchModels = new ArrayList<>();
         searchModels.add(new SearchModel(SearchModel.SearchType.Repository));
         searchModels.add(new SearchModel(SearchModel.SearchType.User));
+        searchModels.add(new SearchModel(SearchModel.SearchType.Code));
     }
 
     public ArrayList<SearchModel> getSearchModels() {

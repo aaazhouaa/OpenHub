@@ -9,6 +9,7 @@ import com.thirtydegreesray.openhub.ui.fragment.LabelManageFragment;
 import com.thirtydegreesray.openhub.ui.fragment.LanguagesEditorFragment;
 import com.thirtydegreesray.openhub.ui.fragment.ActivityFragment;
 import com.thirtydegreesray.openhub.ui.fragment.BookmarksFragment;
+import com.thirtydegreesray.openhub.ui.fragment.CodeSearchFragment;
 import com.thirtydegreesray.openhub.ui.fragment.CommitFilesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.CommitsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.IssueTimelineFragment;
@@ -51,6 +52,7 @@ public interface FragmentComponent {
     void inject(WorkflowRunsFragment fragment);
     void inject(WorkflowRunDetailFragment fragment);
     void inject(ActivityFragment fragment);
+    void inject(CodeSearchFragment fragment);
     void inject(ReleasesFragment fragment);
     void inject(IssuesFragment fragment);
     void inject(IssueTimelineFragment fragment);

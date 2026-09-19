@@ -247,6 +247,8 @@
     <string name="no_pull_requests">No pull requests</string>
     <string name="conversation">Conversation</string>
     <string name="merged">Merged</string>
+    <string name="code">Code</string>
+    <string name="no_code_search_result">No code search results</string>
     <string name="actions">Actions</string>
     <string name="jobs">Jobs</string>
     <string name="no_workflow_runs">No workflow runs</string>

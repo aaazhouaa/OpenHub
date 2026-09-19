@@ -18,7 +18,7 @@ import java.util.List;
 public class SearchModel implements Parcelable {
 
     public enum SearchType{
-        Repository, User
+        Repository, User, Code
     }
 
     public static final List<Integer> REPO_SORT_ID_LIST = Arrays.asList(
@@ -33,6 +33,10 @@ public class SearchModel implements Parcelable {
             R.id.action_most_followers, R.id.action_fewest_followers,
             R.id.action_most_recently_joined, R.id.action_least_recently_joined,
             R.id.action_most_repositories, R.id.action_fewest_repositories
+    );
+
+    public static final List<Integer> CODE_SORT_ID_LIST = Arrays.asList(
+            R.id.action_bast_match
     );
 
     public static final List<Integer> SORT_ID_LIST = new ArrayList<>();
