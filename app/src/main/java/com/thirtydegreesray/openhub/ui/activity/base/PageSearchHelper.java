@@ -4,8 +4,13 @@ package com.thirtydegreesray.openhub.ui.activity.base;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Rect;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
 
@@ -94,30 +99,143 @@ public final class PageSearchHelper {
         srcText.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) showHistory(srcText, adapter);
         });
+
+        final ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            private int lastImeHeight = -1;
+            private int lastDisplayBottom = -1;
+
+            @Override
+            public void onGlobalLayout() {
+                if (!srcText.isAttachedToWindow()) {
+                    srcText.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    return;
+                }
+                if (srcText.isPopupShowing()) {
+                    Rect frame = new Rect();
+                    srcText.getWindowVisibleDisplayFrame(frame);
+                    WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(srcText);
+                    int ime = insets != null ? insets.getInsets(WindowInsetsCompat.Type.ime()).bottom : 0;
+                    if (ime != lastImeHeight || frame.bottom != lastDisplayBottom) {
+                        lastImeHeight = ime;
+                        lastDisplayBottom = frame.bottom;
+                        adjustDropDownSize(srcText, adapter);
+                        srcText.showDropDown();
+                    }
+                }
+            }
+        };
+        srcText.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+        srcText.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                srcText.getViewTreeObserver().removeOnGlobalLayoutListener(layoutListener);
+            }
+        });
+
         if (srcText.hasFocus()) showHistory(srcText, adapter);
         return adapter;
     }
 
     /**
-     * Reloads the stored records and pops the drop-down. When the field has not been
-     * laid out yet (the very first expand) the popup has no anchor, so the show is
-     * deferred to the next layout pass.
+     * Dynamically adjusts the dropdown size (both width and height) to fit between the search
+     * anchor and the soft keyboard, with a consistent full-width margin across first and
+     * subsequent taps.
+     */
+    public static void adjustDropDownSize(@NonNull AutoCompleteTextView srcText,
+                                          @NonNull SearchRecordAdapter adapter) {
+        int count = adapter.getCount();
+        if (count == 0) return;
+
+        Context context = srcText.getContext();
+        float density = context.getResources().getDisplayMetrics().density;
+        int itemHeight = (int) (48 * density);
+        int paddingVertical = (int) (16 * density);
+        int totalContentHeight = count * itemHeight + paddingVertical;
+
+        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+        // Unify width: align symmetrically with 8dp margin on each side of the screen
+        int marginHorizontal = (int) (8 * density);
+        int targetWidth = screenWidth - 2 * marginHorizontal;
+        srcText.setDropDownWidth(targetWidth);
+
+        // Unify horizontal offset so dropdown left edge starts at marginHorizontal on screen
+        int[] loc = new int[2];
+        srcText.getLocationOnScreen(loc);
+        int targetOffset = marginHorizontal - loc[0];
+        srcText.setDropDownHorizontalOffset(targetOffset);
+
+        // Unify height calculation
+        Rect displayFrame = new Rect();
+        srcText.getWindowVisibleDisplayFrame(displayFrame);
+
+        int imeHeight = 0;
+        WindowInsetsCompat rootInsets = ViewCompat.getRootWindowInsets(srcText);
+        if (rootInsets != null) {
+            imeHeight = rootInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+        }
+
+        int windowHeight = srcText.getRootView().getHeight();
+        if (windowHeight <= 0) {
+            windowHeight = screenHeight;
+        }
+
+        int keyboardTop = displayFrame.bottom;
+        if (imeHeight > 0 && displayFrame.bottom >= windowHeight - (imeHeight / 2)) {
+            keyboardTop = displayFrame.bottom - imeHeight;
+        }
+
+        View anchor = srcText;
+        int anchorId = srcText.getDropDownAnchor();
+        if (anchorId != View.NO_ID && context instanceof Activity) {
+            View customAnchor = ((Activity) context).findViewById(anchorId);
+            if (customAnchor != null) anchor = customAnchor;
+        }
+
+        int[] anchorLoc = new int[2];
+        anchor.getLocationOnScreen(anchorLoc);
+        int anchorBottom = anchorLoc[1] + anchor.getHeight();
+
+        // Baseline maximum height: 38% of window height
+        int unifiedMaxHeight = (int) (windowHeight * 0.38f);
+
+        // If keyboard is already visible, cap by space above keyboard
+        if (imeHeight > 0 && keyboardTop > anchorBottom) {
+            int availableToKeyboard = keyboardTop - anchorBottom - (int) (8 * density);
+            if (availableToKeyboard > 0) {
+                unifiedMaxHeight = Math.min(unifiedMaxHeight, availableToKeyboard);
+            }
+        }
+
+        unifiedMaxHeight = Math.max(itemHeight + paddingVertical, unifiedMaxHeight);
+
+        if (totalContentHeight <= unifiedMaxHeight) {
+            srcText.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else {
+            srcText.setDropDownHeight(unifiedMaxHeight);
+        }
+    }
+
+    /**
+     * Reloads the stored records and pops the drop-down. Uses post() so the layout
+     * pass (especially the first expand of the search view) is completed, ensuring
+     * identical dimensions on first and subsequent taps.
      */
     public static void showHistory(@Nullable AutoCompleteTextView srcText,
                                    @Nullable SearchRecordAdapter adapter) {
         if (srcText == null || adapter == null) return;
         adapter.reload();
-        if (srcText.getWidth() > 0) {
+        if (adapter.isEmpty()) return;
+
+        srcText.post(() -> {
+            if (!srcText.isAttachedToWindow()) return;
+            adjustDropDownSize(srcText, adapter);
             srcText.showDropDown();
-            return;
-        }
-        final ViewTreeObserver observer = srcText.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (observer.isAlive()) observer.removeOnGlobalLayoutListener(this);
-                if (srcText.isAttachedToWindow()) srcText.showDropDown();
-            }
         });
     }
 
