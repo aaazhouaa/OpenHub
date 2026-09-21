@@ -16,6 +16,7 @@ import com.thirtydegreesray.openhub.mvp.contract.base.IBaseContract;
 import com.thirtydegreesray.openhub.mvp.presenter.base.BasePresenter;
 import com.thirtydegreesray.openhub.ui.adapter.base.FragmentViewPagerAdapter;
 import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
+import com.thirtydegreesray.openhub.util.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,9 @@ public abstract class PagerActivity<P extends BasePresenter> extends BaseDrawerA
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        if (toolbar != null) {
+            toolbar.setBackgroundColor(ViewUtils.getPrimaryColor(this));
+        }
         viewPager.addOnPageChangeListener(this);
         tabLayout.addOnTabSelectedListener(this);
     }

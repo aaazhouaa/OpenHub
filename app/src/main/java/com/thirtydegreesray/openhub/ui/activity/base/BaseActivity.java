@@ -93,6 +93,9 @@ BaseActivity<P extends IBaseContract.Presenter>
         ThemeHelper.apply(this);
         AppUtils.updateAppLanguage(getActivity());
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         isAlive = true;
         setupActivityComponent(getAppComponent());
         DataAutoAccess.getData(this, savedInstanceState);
@@ -447,8 +450,7 @@ BaseActivity<P extends IBaseContract.Presenter>
     }
 
     /**
-     * targetSdk 35+ 强制 edge-to-edge。无 fitsSystemWindows 的旧布局需要避让系统栏，
-     * 有 Toolbar 时还要绘制状态栏背景，避免根布局的浅色背景形成白色横条。
+     * targetSdk 35+ 强制 edge-to-edge。状态栏保持透明，状态栏下面的区域与主题强调色一致。
      */
     private void applySystemBarInsets(){
         if (Build.VERSION.SDK_INT < 35) return;

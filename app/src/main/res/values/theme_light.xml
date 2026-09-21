@@ -19,6 +19,8 @@
     <color name="light_text_color_secondary">#757575</color>
 
     <style name="ThemeLight" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorPrimary">@color/light_color_primary</item>
         <item name="colorPrimaryDark">@color/light_color_primary_dark</item>
         <item name="colorSecondary">@color/material_blue_accent_700</item>

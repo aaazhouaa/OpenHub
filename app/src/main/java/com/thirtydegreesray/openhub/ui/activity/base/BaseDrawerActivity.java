@@ -1,5 +1,6 @@
 package com.thirtydegreesray.openhub.ui.activity.base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ public abstract class BaseDrawerActivity<P extends IBaseContract.Presenter> exte
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (drawerLayout == null) return;
+        drawerLayout.setStatusBarBackgroundColor(ViewUtils.getPrimaryColor(this));
         initStartDrawerView();
         initEndDrawerView();
     }
