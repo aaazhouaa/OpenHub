@@ -7,6 +7,9 @@
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:elevation="0dp"
+    app:liftOnScroll="false"
     android:theme="?appbar_theme">
 
     <androidx.appcompat.widget.Toolbar
@@ -23,9 +26,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:background="@drawable/tab_bar_background"
         app:tabGravity="fill"
         app:tabMode="fixed"
+        app:tabIndicatorColor="?title_color"
         app:tabTextAppearance="@style/TextAppearance.Design.Tab"
+        app:tabTextColor="?title_color"
         app:tabSelectedTextColor="?title_color"/>
 
 </com.google.android.material.appbar.AppBarLayout>

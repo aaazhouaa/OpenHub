@@ -19,6 +19,8 @@
     <color name="dark_selected_color">#3f3f3f</color>
 
     <style name="ThemeDark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorPrimary">@color/dark_color_primary</item>
         <item name="colorPrimaryDark">@color/dark_color_primary_dark</item>
         <item name="colorSecondary">@color/dark_color_accent</item>
