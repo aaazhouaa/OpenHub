@@ -15,6 +15,11 @@
          as-is in hue but its opacity is lowered by 20%. Declared here rather than
          by changing material_light_white, which AMOLED dark also reads. -->
     <color name="dark_foreground_color">#CCEEEEEE</color>
+    <!-- The AppCompat Dark ActionBar overlay used for the app bar sets textColorPrimary
+         to pure white (#FFFFFF). Lower that app bar foreground to 80% opacity as well;
+         kept separate from dark_foreground_color (#EEEEEE at 80%) because the app bar
+         title and navigation icon actually start from pure white, not #EEEEEE. -->
+    <color name="dark_appbar_foreground_color">#CCFFFFFF</color>
     <color name="dark_text_color_primary">@color/dark_foreground_color</color>
     <color name="dark_text_color_secondary">@color/material_grey_500</color>
     <color name="dark_icon_color">@color/dark_foreground_color</color>
@@ -72,6 +77,11 @@
     </style>
 
     <style name="AppbarThemeDark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- AppCompat's Dark ActionBar overlay sets textColorPrimary to pure white;
+             lower the app bar foreground to 80% opacity. -->
+        <item name="android:textColorPrimary">@color/dark_appbar_foreground_color</item>
+        <item name="titleTextColor">@color/dark_appbar_foreground_color</item>
+        <item name="colorControlNormal">@color/dark_appbar_foreground_color</item>
     </style>
 
 

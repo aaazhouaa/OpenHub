@@ -7,7 +7,7 @@ body {
     padding: 8px;
     line-height: 1.5;
     word-wrap: break-word;
-    color: #ddd;
+    color: #CCDDDDDD;
 }
 
 /* hide title link icon */
@@ -40,7 +40,7 @@ body pre>code {
     color: #cda869;
 }
 .pl-smi, .pl-s, .pl-s1 {
-    color: #ddd;
+    color: #CCDDDDDD;
 }
 .pl-en, .pl-e {
     color: #ac885b;

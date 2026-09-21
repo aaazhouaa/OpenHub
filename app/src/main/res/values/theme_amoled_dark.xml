@@ -41,7 +41,7 @@
         <item name="selected_color">@color/amoled_dark_selected_color</item>
         <item name="color_primary_blur">@color/amoled_dark_color_primary_blur</item>
         <item name="popup_theme">@style/PopupThemeDark</item>
-        <item name="appbar_theme">@style/AppbarThemeDark</item>
+        <item name="appbar_theme">@style/AppbarThemeAmoledDark</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/ContextPopupThemeDark</item>
         <item name="popup_menu_theme">@style/PopupMenuDark</item>
 
