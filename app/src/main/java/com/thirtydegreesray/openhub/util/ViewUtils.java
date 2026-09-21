@@ -133,6 +133,18 @@ public class ViewUtils {
         return getColorAttr(context, androidx.appcompat.R.attr.colorPrimary);
     }
 
+    /**
+     * Colour of the app bar (toolbar, tab bar and the status bar strip above them).
+     * Falls back to colorPrimary when the theme does not declare top_bar_background.
+     */
+    @ColorInt
+    public static int getTopBarBackgroundColor(@NonNull Context context) {
+        if (!hasAttr(context, R.attr.top_bar_background)) {
+            return getPrimaryColor(context);
+        }
+        return getColorAttr(context, R.attr.top_bar_background);
+    }
+
     @ColorInt
     public static int getPrimaryDarkColor(@NonNull Context context) {
         return getColorAttr(context, androidx.appcompat.R.attr.colorPrimaryDark);
@@ -184,6 +196,17 @@ public class ViewUtils {
     }
 
     @ColorInt
+    /**
+     * The theme used to resolve attrs may not be the one that declared them, in which case
+     * obtainStyledAttributes silently returns the default instead of failing.
+     */
+    private static boolean hasAttr(@NonNull Context context, int attr) {
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(new int[]{attr});
+        boolean hasAttr = typedArray.hasValue(0);
+        typedArray.recycle();
+        return hasAttr;
+    }
+
     private static int getColorAttr(@NonNull Context context, int attr) {
         Resources.Theme theme = context.getTheme();
         TypedArray typedArray = theme.obtainStyledAttributes(new int[]{attr});

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:statusBarBackground="?attr/colorPrimary"
+    app:statusBarBackground="?attr/top_bar_background"
     tools:context=".ui.activity.IssueDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,7 +28,8 @@
             android:paddingTop="0dp"
             android:paddingBottom="@dimen/spacing_normal"
             app:collapsedTitleGravity="start"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="?attr/top_bar_background"
+            app:statusBarScrim="?attr/top_bar_background"
             app:expandedTitleGravity="top"
             app:expandedTitleMarginStart="96dp"
             app:expandedTitleMarginTop="80dp"
@@ -64,7 +65,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="2dp"
-                        android:tint="?title_color"
+                        android:tint="?icon_color"
                         app:srcCompat="@drawable/ic_change_file" />
 
                     <TextView
@@ -74,14 +75,14 @@
                         android:layout_marginStart="@dimen/spacing_mini"
                         android:layout_marginEnd="@dimen/spacing_mini"
                         android:minWidth="36dp"
-                        android:textColor="?title_color"
+                        android:textColor="?icon_color"
                         android:textSize="@dimen/text_normal" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="1dp"
-                        android:tint="?title_color"
+                        android:tint="?icon_color"
                         app:srcCompat="@drawable/ic_addition" />
 
                     <TextView
@@ -91,14 +92,14 @@
                         android:layout_marginStart="@dimen/spacing_mini"
                         android:layout_marginEnd="@dimen/spacing_mini"
                         android:minWidth="36dp"
-                        android:textColor="?title_color"
+                        android:textColor="?icon_color"
                         android:textSize="@dimen/text_normal" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="1dp"
-                        android:tint="?title_color"
+                        android:tint="?icon_color"
                         app:srcCompat="@drawable/ic_deletion" />
 
                     <TextView
@@ -108,7 +109,7 @@
                         android:layout_marginStart="@dimen/spacing_mini"
                         android:layout_marginEnd="@dimen/spacing_mini"
                         android:minWidth="36dp"
-                        android:textColor="?title_color"
+                        android:textColor="?icon_color"
                         android:textSize="@dimen/text_normal" />
 
                 </LinearLayout>
@@ -123,7 +124,7 @@
                     android:layout_toEndOf="@+id/user_avatar"
                     android:ellipsize="end"
                     android:maxLines="6"
-                    android:textColor="?title_color"
+                    android:textColor="?icon_color"
                     android:textSize="@dimen/text_small"
                     android:transitionName="issueTitle" />
 
@@ -161,7 +162,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="bottom|end"
         app:srcCompat="@drawable/ic_comment"
-        android:tint="?title_color"
+        android:tint="?icon_color"
         android:visibility="visible"/>
 
     <FrameLayout

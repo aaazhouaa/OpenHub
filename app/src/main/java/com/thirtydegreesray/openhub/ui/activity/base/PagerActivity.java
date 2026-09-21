@@ -51,7 +51,7 @@ public abstract class PagerActivity<P extends BasePresenter> extends BaseDrawerA
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (toolbar != null) {
-            toolbar.setBackgroundColor(ViewUtils.getPrimaryColor(this));
+            toolbar.setBackgroundColor(ViewUtils.getTopBarBackgroundColor(this));
         }
         viewPager.addOnPageChangeListener(this);
         tabLayout.addOnTabSelectedListener(this);

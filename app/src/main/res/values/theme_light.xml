@@ -37,6 +37,8 @@
         <item name="subtitle_color">@color/light_subtitle_color</item>
         <item name="selected_color">@color/light_selected_color</item>
         <item name="color_primary_blur">@color/light_color_primary_blur</item>
+        <!-- Light theme keeps tinting the app bar with the accent colour. -->
+        <item name="top_bar_background">?attr/colorPrimary</item>
         <item name="popup_theme">@style/PopupThemeLight</item>
         <item name="appbar_theme">@style/AppbarThemeLight</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/ContextPopupThemeLight</item>

@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_normal"
-        android:textColor="?title_color"
+        android:textColor="?icon_color"
         android:layout_marginStart="@dimen/spacing_small"/>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -25,7 +25,7 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         app:srcCompat="@drawable/ic_keyboard_arrow_right"
-        android:tint="?title_color"
+        android:tint="?icon_color"
         android:layout_marginStart="@dimen/spacing_small"/>
 
 </LinearLayout>

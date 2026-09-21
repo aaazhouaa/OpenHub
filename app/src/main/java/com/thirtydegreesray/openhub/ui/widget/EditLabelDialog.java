@@ -118,7 +118,9 @@ public class EditLabelDialog implements DialogInterface.OnDismissListener,
             colorLayoutParams.weight = 1;
             colorView.setLayoutParams(colorLayoutParams);
             colorView.setGravity(Gravity.CENTER);
-            colorView.setTextColor(ViewUtils.getTitleColor(activity));
+            // Coloured swatches: the label colour is arbitrary, so use the neutral icon
+            // colour instead of title_color, which is tuned for the app bar background.
+            colorView.setTextColor(ViewUtils.getIconColor(activity));
             if (i != colorsResId.length - 1) {
                 String rgbColor = ViewUtils.getRGBColor(colorsResId[i], false);
                 colorView.setText("#".concat(rgbColor));

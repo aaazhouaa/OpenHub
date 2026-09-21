@@ -36,7 +36,7 @@ public abstract class BaseDrawerActivity<P extends IBaseContract.Presenter> exte
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (drawerLayout == null) return;
-        drawerLayout.setStatusBarBackgroundColor(ViewUtils.getPrimaryColor(this));
+        drawerLayout.setStatusBarBackgroundColor(ViewUtils.getTopBarBackgroundColor(this));
         initStartDrawerView();
         initEndDrawerView();
     }

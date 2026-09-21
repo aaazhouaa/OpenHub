@@ -13,7 +13,7 @@
         android:id="@+id/label_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?title_color"
+        android:textColor="?icon_color"
         android:padding="@dimen/spacing_normal"
         android:textSize="@dimen/text_large"
         android:lines="1"

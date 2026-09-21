@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_download_title"
-        android:tint="?title_color"
+        android:tint="?icon_color"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/spacing_large"/>
 
