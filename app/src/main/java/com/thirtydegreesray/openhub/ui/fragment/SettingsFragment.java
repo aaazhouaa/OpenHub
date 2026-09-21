@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
+import com.thirtydegreesray.openhub.ui.activity.RepositoryActivity;
 import com.thirtydegreesray.openhub.ui.widget.colorChooser.ColorChooserPreference;
 import com.thirtydegreesray.openhub.util.PrefUtils;
 
@@ -66,6 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 //        findPreference(PrefUtils.LOGOUT).setOnPreferenceClickListener(this);
         findPreference(PrefUtils.START_PAGE).setOnPreferenceClickListener(this);
         findPreference("clearSearchHistory").setOnPreferenceClickListener(this);
+        findPreference("sourceCode").setOnPreferenceClickListener(this);
         findPreference(PrefUtils.START_PAGE).setSummary(nameList.get(getStartPageIndex()));
         ((ColorChooserPreference) findPreference(PrefUtils.ACCENT_COLOR))
                 .setColorChooserCallback(this);
@@ -93,6 +95,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 return true;
             case "clearSearchHistory":
                 showClearSearchHistoryDialog();
+                return true;
+            case "sourceCode":
+                RepositoryActivity.show(getActivity(), getString(R.string.author_login_id),
+                        getString(R.string.app_github_name));
                 return true;
         }
         return false;
