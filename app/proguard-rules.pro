@@ -103,3 +103,14 @@ public static java.lang.String TABLENAME;
 -keep class com.thirtydegreesray.openhub.dao.**{*;}
 # SimpleXml
 -keep class org.simpleframework.xml.core.**{ *; }
+
+# SlideDrawerLayout & DrawerLayout reflection
+-keepclassmembers class androidx.drawerlayout.widget.DrawerLayout {
+    androidx.customview.widget.ViewDragHelper mLeftDragger;
+    private static boolean sEdgeSizeUsingSystemGestureInsets;
+}
+-keepclassmembers class androidx.customview.widget.ViewDragHelper {
+    public void setEdgeSize(int);
+    int mEdgeSize;
+}
+-keep class com.thirtydegreesray.openhub.ui.widget.SlideDrawerLayout { *; }
