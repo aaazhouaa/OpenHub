@@ -9,11 +9,13 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import com.google.android.material.card.MaterialCardView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.common.GlideApp;
+import com.thirtydegreesray.openhub.mvp.model.Issue;
 import com.thirtydegreesray.openhub.mvp.model.IssueEvent;
 import com.thirtydegreesray.openhub.mvp.model.Label;
 import com.thirtydegreesray.openhub.ui.activity.ProfileActivity;
@@ -107,6 +109,10 @@ public class IssueTimelineAdapter extends BaseAdapter<BaseViewHolder, IssueEvent
 
     class HeadCommentViewHolder extends CommentViewHolder{
         @BindView(R2.id.issue_labels) TextView issueLabels;
+        @BindView(R2.id.issue_title) TextView issueTitle;
+        @BindView(R2.id.issue_state_img) ImageView issueStateImg;
+        @BindView(R2.id.issue_state_text) TextView issueStateText;
+
         public HeadCommentViewHolder(@NonNull View itemView) {
             super(itemView);
         }
@@ -114,14 +120,29 @@ public class IssueTimelineAdapter extends BaseAdapter<BaseViewHolder, IssueEvent
         @Override
         void setData(IssueEvent model) {
             super.setData(model);
-            ArrayList<Label> labels = model.getParentIssue().getLabels();
-            if(labels.size() == 0){
-                issueLabels.setVisibility(View.GONE);
-                return;
+            Issue issue = model.getParentIssue();
+            if (issue != null) {
+                issueTitle.setText(issue.getTitle());
+                String commentStr = String.valueOf(issue.getCommentNum()).concat(" ")
+                        .concat(context.getString(R.string.comments).toLowerCase());
+                if (Issue.IssueState.open.equals(issue.getState())) {
+                    issueStateImg.setImageResource(R.drawable.ic_issues);
+                    issueStateText.setText(context.getString(R.string.open).concat("    ").concat(commentStr));
+                } else {
+                    issueStateImg.setImageResource(R.drawable.ic_issues_closed);
+                    issueStateText.setText(context.getString(R.string.closed).concat("    ").concat(commentStr));
+                }
+
+                ArrayList<Label> labels = issue.getLabels();
+                if (labels == null || labels.size() == 0) {
+                    issueLabels.setVisibility(View.GONE);
+                } else {
+                    issueLabels.setVisibility(View.VISIBLE);
+                    issueLabels.setText(ViewUtils.getLabelsSpan(context, labels));
+                }
             } else {
-                issueLabels.setVisibility(View.VISIBLE);
+                issueLabels.setVisibility(View.GONE);
             }
-            issueLabels.setText(ViewUtils.getLabelsSpan(context, labels));
         }
     }
 
