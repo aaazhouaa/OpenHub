@@ -11,9 +11,13 @@
     <color name="dark_color_primary_dark">#26282C</color>
     <color name="dark_color_accent">@color/material_green_accent_700</color>
     <color name="dark_color_window_background">#22252A</color>
-    <color name="dark_text_color_primary">@color/material_light_white</color>
+    <!-- #EEEEEE drawn at 80% opacity: the dark theme's light foreground is kept
+         as-is in hue but its opacity is lowered by 20%. Declared here rather than
+         by changing material_light_white, which AMOLED dark also reads. -->
+    <color name="dark_foreground_color">#CCEEEEEE</color>
+    <color name="dark_text_color_primary">@color/dark_foreground_color</color>
     <color name="dark_text_color_secondary">@color/material_grey_500</color>
-    <color name="dark_icon_color">@color/material_light_white</color>
+    <color name="dark_icon_color">@color/dark_foreground_color</color>
     <color name="dark_card_background">#2D3035</color>
     <!-- Content drawn on the app bar (toolbar/tab bar): muted light, so it stays
          readable on dark_top_bar_background without the glare of pure white. -->
@@ -33,7 +37,7 @@
         <item name="switchPreferenceCompatStyle">@style/Material3SwitchPreference</item>
         <item name="android:textColorPrimary">@color/dark_text_color_primary</item>
         <item name="android:textColorSecondary">@color/dark_text_color_secondary</item>
-        <item name="android:textColorTertiary">@color/material_grey_200</item>
+        <item name="android:textColorTertiary">@color/dark_foreground_color</item>
         <item name="icon_color">@color/dark_icon_color</item>
         <item name="card_background">@color/dark_card_background</item>
         <item name="title_color">@color/dark_title_color</item>
