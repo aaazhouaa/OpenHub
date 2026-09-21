@@ -7,21 +7,16 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.core.util.Pair;
 import androidx.appcompat.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
-import com.thirtydegreesray.openhub.common.GlideApp;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.inject.component.DaggerActivityComponent;
 import com.thirtydegreesray.openhub.inject.module.ActivityModule;
@@ -36,7 +31,6 @@ import com.thirtydegreesray.openhub.ui.widget.ZoomAbleFloatingActionButton;
 import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.BundleHelper;
-import com.thirtydegreesray.openhub.util.PrefUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,12 +46,8 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
     public static void show(@NonNull Activity activity, @NonNull View avatarView,
                             @NonNull View titleView, @NonNull Issue issue) {
         Intent intent = new Intent(activity, IssueDetailActivity.class);
-        Pair<View, String> avatarPair = Pair.create(avatarView, "userAvatar");
-        Pair<View, String> titlePair = Pair.create(titleView, "issueTitle");
-        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity, avatarPair, titlePair);
         intent.putExtras(BundleHelper.builder().put("issue", issue).build());
-        activity.startActivity(intent, optionsCompat.toBundle());
+        activity.startActivity(intent);
     }
 
     public static void show(@NonNull Activity activity, @NonNull Issue issue) {
@@ -87,10 +77,6 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
                         .put("issueNumber", issueNumber).build());
     }
 
-    @BindView(R2.id.user_avatar) ImageView userImageView;
-    @BindView(R2.id.issue_title) TextView issueTitle;
-    @BindView(R2.id.issue_state_img) ImageView issueStateImg;
-    @BindView(R2.id.issue_state_text) TextView issueStateText;
     @BindView(R2.id.comment_bn) ZoomAbleFloatingActionButton commentBn;
     @BindView(R2.id.edit_bn) FloatingActionButton editBn;
     @BindView(R2.id.loader) ProgressBar loader;
@@ -169,22 +155,7 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
     @Override
     public void showIssue(final Issue issue) {
         setToolbarTitle(getString(R.string.issue).concat(" #").concat(String.valueOf(issue.getNumber())));
-        GlideApp.with(getActivity())
-                .load(issue.getUser().getAvatarUrl())
-                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-                .into(userImageView);
-        issueTitle.setText(issue.getTitle());
         commentBn.setVisibility(issue.isLocked() ? View.GONE : View.VISIBLE);
-
-        String commentStr = String.valueOf(issue.getCommentNum()).concat(" ")
-                .concat(getString(R.string.comments).toLowerCase());
-        if (Issue.IssueState.open.equals(issue.getState())) {
-            issueStateImg.setImageResource(R.drawable.ic_issues);
-            issueStateText.setText(getString(R.string.open).concat("    ").concat(commentStr));
-        } else {
-            issueStateImg.setImageResource(R.drawable.ic_issues_closed);
-            issueStateText.setText(getString(R.string.closed).concat("    ").concat(commentStr));
-        }
         invalidateOptionsMenu();
 
         if (issueTimelineFragment == null) {
@@ -200,6 +171,8 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
                 }
             }, 500);
             issueTimelineFragment.setListScrollListener(this);
+        } else {
+            issueTimelineFragment.onEditIssue(issue);
         }
 
         String loggedUser = AppData.INSTANCE.getLoggedUser().getLogin();
@@ -253,8 +226,7 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
         } else if (requestCode == EDIT_ISSUE_REQUEST_CODE) {
             Issue issue = data.getParcelableExtra("issue");
             mPresenter.setIssue(issue);
-            issueTitle.setText(issue.getTitle());
-            issueTimelineFragment.onEditIssue(issue);
+            showIssue(issue);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -275,15 +247,6 @@ public class IssueDetailActivity extends BaseActivity<IssueDetailPresenter>
     public void hideLoading() {
         super.hideLoading();
         loader.setVisibility(View.GONE);
-    }
-
-    @OnClick(R2.id.user_avatar)
-    public void onUserAvatarClick() {
-        if (mPresenter.getIssue() != null) {
-            Issue issue = mPresenter.getIssue();
-            ProfileActivity.show(getActivity(), userImageView,
-                    issue.getUser().getLogin(), issue.getUser().getAvatarUrl());
-        }
     }
 
     @Override
