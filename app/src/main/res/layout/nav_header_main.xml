@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_arrow_drop_down"
-            android:tint="?title_color"
+            android:tint="?icon_color"
             android:padding="@dimen/spacing_normal"
             android:background="?android:selectableItemBackgroundBorderless"
             android:layout_marginTop="-12dp"

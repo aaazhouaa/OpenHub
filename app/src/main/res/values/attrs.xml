@@ -14,6 +14,10 @@
     </declare-styleable>
 
     <attr name="color_primary_blur" format="color|reference"/>
+    <!-- Background of the app bar: toolbar, tab bar and the status bar strip above them.
+         Kept separate from colorPrimary so the top bar colour is not tied to the
+         theme accent colour. -->
+    <attr name="top_bar_background" format="color|reference"/>
     <attr name="icon_color" format="color|reference"/>
     <attr name="card_background" format="color|reference"/>
     <attr name="title_color" format="color|reference"/>

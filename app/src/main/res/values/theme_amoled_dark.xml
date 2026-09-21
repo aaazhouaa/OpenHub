@@ -28,6 +28,7 @@
         <item name="colorAccent">?attr/colorSecondary</item>
         <item name="android:windowBackground">@color/amoled_dark_color_window_background</item>
         <item name="preferenceTheme">@style/ThemeOverlay.Material3</item>
+        <item name="top_bar_background">?attr/colorPrimary</item>
         <item name="switchPreferenceCompatStyle">@style/Material3SwitchPreference</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textColorPrimary">@color/amoled_dark_text_color_primary</item>

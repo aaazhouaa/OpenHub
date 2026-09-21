@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:statusBarBackground="?attr/colorPrimary"
+    app:statusBarBackground="?attr/top_bar_background"
     tools:openDrawer="start">
 
     <include

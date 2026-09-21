@@ -465,7 +465,7 @@ BaseActivity<P extends IBaseContract.Presenter>
         View statusBarBackground = null;
         if (toolbar != null) {
             statusBarBackground = new View(this);
-            statusBarBackground.setBackgroundColor(ViewUtils.getPrimaryColor(this));
+            statusBarBackground.setBackgroundColor(ViewUtils.getTopBarBackgroundColor(this));
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, Gravity.TOP);
             decorContent.addView(statusBarBackground, params);
