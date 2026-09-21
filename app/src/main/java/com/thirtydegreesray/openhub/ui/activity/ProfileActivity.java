@@ -13,15 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
-import com.thirtydegreesray.openhub.common.GlideApp;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.inject.component.DaggerActivityComponent;
 import com.thirtydegreesray.openhub.inject.module.ActivityModule;
@@ -36,11 +31,8 @@ import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
 import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.BundleHelper;
-import com.thirtydegreesray.openhub.util.PrefUtils;
-import com.thirtydegreesray.openhub.util.StringUtils;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by ThirtyDegreesRay on 2017/8/23 11:39:13
@@ -84,8 +76,6 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
                         .build());
     }
 
-    private boolean isAvatarSetted = false;
-
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerActivityComponent.builder()
@@ -95,11 +85,7 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
                 .inject(this);
     }
 
-    @BindView(R2.id.user_avatar_bg) ImageView userImageViewBg;
-    @BindView(R2.id.user_avatar) ImageView userImageView;
     @BindView(R2.id.loader) ProgressBar loader;
-    @BindView(R2.id.joined_time) TextView joinedTime;
-    @BindView(R2.id.location) TextView location;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,7 +118,6 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
         setTransparentStatusBar();
         setToolbarBackEnable();
         setToolbarTitle(mPresenter.getLoginId());
-        setUserAvatar();
     }
 
     @Override
@@ -168,10 +153,6 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
     @Override
     public void showProfileInfo(User user) {
         invalidateOptionsMenu();
-        setUserAvatar();
-        joinedTime.setText(getString(R.string.joined_at).concat(" ")
-                .concat(StringUtils.getDateStr(user.getCreatedAt())));
-        location.setText(user.getLocation());
 
         if (pagerAdapter.getCount() == 0) {
             pagerAdapter.setPagerList(FragmentPagerModel.createProfilePagerList(getActivity(), user, getFragments()));
@@ -217,19 +198,6 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
         supportFinishAfterTransition();
     }
 
-    private void setUserAvatar() {
-        if (isAvatarSetted || StringUtils.isBlank(mPresenter.getUserAvatar())) return;
-        isAvatarSetted = true;
-        GlideApp.with(getActivity())
-                .load(mPresenter.getUserAvatar())
-                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-                .into(userImageViewBg);
-        GlideApp.with(getActivity())
-                .load(mPresenter.getUserAvatar())
-                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-                .into(userImageView);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -256,14 +224,6 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
             return 2;
         } else
             return -1;
-    }
-
-    @OnClick(R2.id.user_avatar)
-    public void onUserAvatarClick() {
-        if (!StringUtils.isBlank(mPresenter.getUserAvatar())) {
-            ViewerActivity.showImage(getActivity(), mPresenter.getLoginId(),
-                    mPresenter.getUserAvatar());
-        }
     }
 
 }

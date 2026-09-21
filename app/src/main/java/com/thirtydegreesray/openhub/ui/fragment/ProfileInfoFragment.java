@@ -9,12 +9,14 @@ import com.google.android.material.card.MaterialCardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
+import com.thirtydegreesray.openhub.common.GlideApp;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.inject.component.DaggerFragmentComponent;
 import com.thirtydegreesray.openhub.inject.module.FragmentModule;
@@ -24,11 +26,13 @@ import com.thirtydegreesray.openhub.mvp.presenter.ProfileInfoPresenter;
 import com.thirtydegreesray.openhub.ui.activity.ProfileActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepoListActivity;
 import com.thirtydegreesray.openhub.ui.activity.UserListActivity;
+import com.thirtydegreesray.openhub.ui.activity.ViewerActivity;
 import com.thirtydegreesray.openhub.ui.adapter.UsersAdapter;
 import com.thirtydegreesray.openhub.ui.adapter.base.BaseViewHolder;
 import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
 import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.BundleHelper;
+import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.StringUtils;
 import com.thirtydegreesray.openhub.util.ViewUtils;
 
@@ -47,7 +51,10 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
         implements IProfileInfoContract.View,
         BaseViewHolder.OnItemClickListener{
 
+    @BindView(R2.id.user_avatar) ImageView userAvatar;
     @BindView(R2.id.name) TextView name;
+    @BindView(R2.id.location) TextView location;
+    @BindView(R2.id.joined_time) TextView joinedTime;
     @BindView(R2.id.bio) TextView bio;
     @BindView(R2.id.company) TextView company;
     @BindView(R2.id.email) TextView email;
@@ -94,10 +101,16 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
         orgsLay.setVisibility(View.GONE);
     }
 
-    @OnClick({R2.id.followers_lay, R2.id.following_lay, R2.id.repos_lay, R2.id.gists_lay,
+    @OnClick({R2.id.user_avatar, R2.id.followers_lay, R2.id.following_lay, R2.id.repos_lay, R2.id.gists_lay,
                 R2.id.email, R2.id.link, R2.id.members_lay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.user_avatar:
+                String avatarUrl = mPresenter.getUser().getAvatarUrl();
+                if (!StringUtils.isBlank(avatarUrl)) {
+                    ViewerActivity.showImage(getActivity(), mPresenter.getUser().getLogin(), avatarUrl);
+                }
+                break;
             case R.id.followers_lay:
                 if(mPresenter.getUser().getFollowers() == 0) return;
                 UserListActivity.show(getActivity(), UserListFragment.UserListType.FOLLOWERS,
@@ -138,6 +151,15 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
         String nameStr = StringUtils.isBlank(user.getName()) ? user.getLogin() : user.getName();
         nameStr = user.isUser() ? nameStr : nameStr.concat("(ORG)");
         name.setText(nameStr);
+
+        GlideApp.with(this)
+                .load(user.getAvatarUrl())
+                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
+                .into(userAvatar);
+
+        ViewUtils.setTextView(location, user.getLocation());
+        joinedTime.setText(getString(R.string.joined_at).concat(" ")
+                .concat(StringUtils.getDateStr(user.getCreatedAt())));
 
         bio.setText(user.getBio());
         bio.setVisibility(StringUtils.isBlank(user.getBio()) ? View.GONE :View.VISIBLE);
