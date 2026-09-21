@@ -37,21 +37,36 @@
                     android:textSize="@dimen/text_large"/>
 
                 <TextView
+                    android:id="@+id/repo_desc_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_mini"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/repo_language_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_mini"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spacing_large"/>
+
+                <TextView
                     android:id="@+id/fork_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_small"
                     android:textColor="?colorAccent"
                     android:layout_marginTop="@dimen/spacing_mini"/>
-
-                <TextView
-                    android:id="@+id/repo_desc_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_mini"
-                    android:textColor="?android:textColorSecondary"
-                    android:textSize="@dimen/text_small"
-                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/repo_created_info_text"

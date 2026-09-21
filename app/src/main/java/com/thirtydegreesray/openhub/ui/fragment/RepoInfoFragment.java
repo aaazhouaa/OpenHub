@@ -8,6 +8,7 @@ import androidx.core.widget.NestedScrollView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -61,8 +62,9 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
 
     @BindView(R2.id.scroll_view) NestedScrollView nestedScrollView;
     @BindView(R2.id.repo_title_text) TextView repoTitleText;
+    @BindView(R2.id.repo_desc_text) TextView repoDescText;
+    @BindView(R2.id.repo_language_text) TextView repoLanguageText;
     @BindView(R2.id.fork_info_text) TextView forkInfoText;
-//    @BindView(R2.id.repo_desc_text) TextView repoDescText;
     @BindView(R2.id.repo_created_info_text) TextView repoCreatedInfoText;
     @BindView(R2.id.issues_num_text) TextView issuesNumText;
     @BindView(R2.id.issues_lay) View issueLay;
@@ -109,19 +111,27 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
 
     @Override
     public void showRepoInfo(Repository repository) {
-//        repoDescText.setVisibility(View.GONE);
+        String description = repository.getDescription();
+        if (StringUtils.isBlank(description)) {
+            repoDescText.setVisibility(View.GONE);
+        } else {
+            repoDescText.setVisibility(View.VISIBLE);
+            repoDescText.setText(description);
+        }
+
+        ArrayList<String> briefInfo = new ArrayList<>();
+        if (!StringUtils.isBlank(repository.getLanguage())) {
+            briefInfo.add(repository.getLanguage());
+        }
+        briefInfo.add(StringUtils.getSizeString(repository.getSize() * 1024));
+        repoLanguageText.setVisibility(View.VISIBLE);
+        repoLanguageText.setText(TextUtils.join(" · ", briefInfo));
 
         issueLay.setVisibility(repository.isHasIssues() ? View.VISIBLE :View.GONE);
         issuesNumText.setText(String.valueOf(repository.getOpenIssuesCount()));
         stargazersNumText.setText(String.valueOf(repository.getStargazersCount()));
         forksNumText.setText(String.valueOf(repository.getForksCount()));
         watchersNumText.setText(String.valueOf(repository.getSubscribersCount()));
-//        repoDescText.setText(repository.getDescription());
-
-//        String language = StringUtils.isBlank(repository.getLanguage()) ?
-//                getString(R.string.unknown) : repository.getLanguage();
-//        repoCreatedInfoText.setText(String.format(Locale.getDefault(), "Language %s, size %s",
-//                language, StringUtils.getSizeString(repository.getSize() * 1024)));
 
         String createStr = (repository.isFork() ? getString(R.string.forked_at)
                 : getString(R.string.created_at)) + " " + StringUtils.getDateStr(repository.getCreatedAt());

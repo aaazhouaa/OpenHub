@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +46,6 @@ import com.thirtydegreesray.openhub.util.StarWishesHelper;
 import com.thirtydegreesray.openhub.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 
@@ -80,8 +78,6 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
     }
 
     @BindView(R2.id.loader) ProgressBar loader;
-    @BindView(R2.id.desc) TextView desc;
-    @BindView(R2.id.info) TextView info;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -193,12 +189,6 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
     @Override
     public void showRepo(Repository repo) {
 //        setToolbarTitle(repo.getFullName(), repo.getDefaultBranch());
-        desc.setText(repo.getDescription());
-        String language = StringUtils.isBlank(repo.getLanguage()) ?
-                getString(R.string.unknown) : repo.getLanguage();
-        info.setText(String.format(Locale.getDefault(), "Language %s, size %s",
-                language, StringUtils.getSizeString(repo.getSize() * 1024)));
-
         if (pagerAdapter.getCount() == 0) {
             pagerAdapter.setPagerList(FragmentPagerModel
                     .createRepoPagerList(getActivity(), repo, getFragments()));

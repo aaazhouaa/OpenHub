@@ -43,30 +43,6 @@
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <TextView
-            android:id="@+id/desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/spacing_x_large"
-            android:ellipsize="end"
-            android:maxLines="4"
-            android:textColor="?title_color"
-            android:textSize="@dimen/text_small"
-            android:layout_marginBottom="20dp"
-            app:layout_scrollFlags="scroll"/>
-
-        <TextView
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:gravity="center_vertical"
-            android:textColor="?title_color"
-            android:textSize="@dimen/text_small"
-            android:transitionName="issueTitle"
-            app:layout_scrollFlags="scroll" />
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
