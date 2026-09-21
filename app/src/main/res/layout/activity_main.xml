@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.drawerlayout.widget.DrawerLayout
+<com.thirtydegreesray.openhub.ui.widget.SlideDrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -36,4 +36,4 @@
         app:itemTextColor="@color/right_drawer_content_color"
         app:itemIconTint="@color/right_drawer_content_color"/>
 
-</androidx.drawerlayout.widget.DrawerLayout>
+</com.thirtydegreesray.openhub.ui.widget.SlideDrawerLayout>
