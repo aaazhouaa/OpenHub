@@ -59,4 +59,9 @@
         android:title="@string/clear_search_history"
         android:key="clearSearchHistory"/>
 
+    <Preference
+        android:icon="@drawable/ic_code"
+        android:title="@string/source_code"
+        android:key="sourceCode"/>
+
 </PreferenceScreen>

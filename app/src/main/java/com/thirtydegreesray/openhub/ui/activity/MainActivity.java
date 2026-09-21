@@ -251,9 +251,6 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
             case R.id.nav_settings:
                 SettingsActivity.show(getActivity(), SETTINGS_REQUEST_CODE);
                 break;
-            case R.id.nav_about:
-                AboutActivity.show(getActivity());
-                break;
 
             case R.id.nav_logout:
                 logout();
