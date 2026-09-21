@@ -18,11 +18,6 @@
         android:icon="@drawable/ic_download_title"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_pull_requests"
-        android:title="@string/pull_requests"
-        android:icon="@drawable/ic_pull"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/action_actions"
         android:title="@string/actions"
         android:icon="@drawable/ic_dot"
