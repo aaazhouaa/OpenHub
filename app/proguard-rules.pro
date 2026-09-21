@@ -104,13 +104,5 @@ public static java.lang.String TABLENAME;
 # SimpleXml
 -keep class org.simpleframework.xml.core.**{ *; }
 
-# SlideDrawerLayout & DrawerLayout reflection
--keepclassmembers class androidx.drawerlayout.widget.DrawerLayout {
-    androidx.customview.widget.ViewDragHelper mLeftDragger;
-    private static boolean sEdgeSizeUsingSystemGestureInsets;
-}
--keepclassmembers class androidx.customview.widget.ViewDragHelper {
-    public void setEdgeSize(int);
-    int mEdgeSize;
-}
+# SlideDrawerLayout 由 activity_main.xml 按类名 inflate，保留类名不被混淆
 -keep class com.thirtydegreesray.openhub.ui.widget.SlideDrawerLayout { *; }
