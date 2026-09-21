@@ -388,4 +388,5 @@
     <string name="icon">图标</string>
     <string name="mark_as_read">标记为已读</string>
     <string name="mark_all_as_read">全部标记为已读</string>
+    <string name="pull_requests">請求</string>
 </resources>

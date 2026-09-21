@@ -37,6 +37,7 @@ import com.thirtydegreesray.openhub.ui.adapter.base.BaseViewHolder;
 import com.thirtydegreesray.openhub.ui.adapter.base.FragmentPagerModel;
 import com.thirtydegreesray.openhub.ui.fragment.ActivityFragment;
 import com.thirtydegreesray.openhub.ui.fragment.CommitsFragment;
+import com.thirtydegreesray.openhub.ui.fragment.PullRequestsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepoFilesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepoInfoFragment;
 import com.thirtydegreesray.openhub.util.AppOpener;
@@ -157,11 +158,6 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
                 return true;
             case R.id.action_releases:
                 showReleases();
-                return true;
-            case R.id.action_pull_requests:
-                PullRequestsActivity.show(getActivity(),
-                        mPresenter.getRepository().getOwner().getLogin(),
-                        mPresenter.getRepository().getName());
                 return true;
             case R.id.action_actions:
                 WorkflowRunsActivity.show(getActivity(),
@@ -350,7 +346,7 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
 
     @Override
     public int getPagerSize() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -363,6 +359,8 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
             return 2;
         }else if(fragment instanceof ActivityFragment){
             return 3;
+        }else if(fragment instanceof PullRequestsFragment){
+            return 4;
         }else
             return -1;
     }

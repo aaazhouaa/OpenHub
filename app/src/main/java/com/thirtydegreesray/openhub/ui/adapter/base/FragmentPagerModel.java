@@ -21,6 +21,7 @@ import com.thirtydegreesray.openhub.ui.fragment.MarkdownEditorFragment;
 import com.thirtydegreesray.openhub.ui.fragment.MarkdownPreviewFragment;
 import com.thirtydegreesray.openhub.ui.fragment.NotificationsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.ProfileInfoFragment;
+import com.thirtydegreesray.openhub.ui.fragment.PullRequestsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepoFilesFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepoInfoFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
@@ -68,6 +69,10 @@ public class FragmentPagerModel {
                 new FragmentPagerModel(context.getString(R.string.activity),
                         getFragment(fragments, 3,
                                 () -> ActivityFragment.create(ActivityFragment.ActivityType.Repository,
+                                repository.getOwner().getLogin(), repository.getName()))),
+                new FragmentPagerModel(context.getString(R.string.pull_requests),
+                        getFragment(fragments, 4,
+                                () -> PullRequestsFragment.createForRepo(com.thirtydegreesray.openhub.mvp.model.Issue.IssueState.open,
                                 repository.getOwner().getLogin(), repository.getName())))
         ));
     }
@@ -181,12 +186,12 @@ public class FragmentPagerModel {
 
     private static BaseFragment getFragment(ArrayList<Fragment> fragments
             , int position, FragmentCreator fragmentCreator){
-        Fragment fragment  = fragments.get(position);
+        Fragment fragment = null;
+        if(fragments != null && position < fragments.size()){
+            fragment = fragments.get(position);
+        }
         if(fragment == null){
             fragment = fragmentCreator.createFragment();
-//            Logger.d("create fragment " + fragment + (Math.random() * 1000 * 1000));
-        }else{
-//            Logger.d("reuse fragment" + fragment + (Math.random() * 1000 * 1000));
         }
         return (BaseFragment) fragment;
     }

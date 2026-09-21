@@ -9,12 +9,15 @@ import com.thirtydegreesray.openhub.inject.component.AppComponent;
 import com.thirtydegreesray.openhub.inject.component.DaggerFragmentComponent;
 import com.thirtydegreesray.openhub.inject.module.FragmentModule;
 import com.thirtydegreesray.openhub.mvp.contract.IPullRequestsContract;
+import com.thirtydegreesray.openhub.mvp.model.Branch;
 import com.thirtydegreesray.openhub.mvp.model.Issue;
 import com.thirtydegreesray.openhub.mvp.model.PullRequest;
+import com.thirtydegreesray.openhub.mvp.model.Repository;
 import com.thirtydegreesray.openhub.mvp.model.filter.IssuesFilter;
 import com.thirtydegreesray.openhub.mvp.presenter.PullRequestsPresenter;
 import com.thirtydegreesray.openhub.ui.activity.IssueDetailActivity;
 import com.thirtydegreesray.openhub.ui.activity.PullRequestDetailActivity;
+import com.thirtydegreesray.openhub.ui.activity.RepositoryActivity;
 import com.thirtydegreesray.openhub.ui.adapter.IssuesAdapter;
 import com.thirtydegreesray.openhub.ui.fragment.base.ListFragment;
 import com.thirtydegreesray.openhub.util.BundleHelper;
@@ -25,7 +28,7 @@ import java.util.ArrayList;
  * Lists the pull requests of a repository (open / closed tabs).
  */
 public class PullRequestsFragment extends ListFragment<PullRequestsPresenter, IssuesAdapter>
-        implements IPullRequestsContract.View {
+        implements IPullRequestsContract.View, RepositoryActivity.RepositoryListener {
 
     public static PullRequestsFragment createForRepo(@NonNull Issue.IssueState state,
                                                      @NonNull String userId,
@@ -94,5 +97,15 @@ public class PullRequestsFragment extends ListFragment<PullRequestsPresenter, Is
     public void onFragmentShowed() {
         super.onFragmentShowed();
         if (mPresenter != null) mPresenter.prepareLoadData();
+    }
+
+    @Override
+    public void onRepositoryInfoUpdated(Repository repository) {
+
+    }
+
+    @Override
+    public void onBranchChanged(Branch branch) {
+
     }
 }
