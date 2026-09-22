@@ -8,6 +8,9 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Outline;
+import android.os.Build;
+import android.view.ViewOutlineProvider;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -38,6 +41,19 @@ import java.util.ArrayList;
  */
 
 public class ViewUtils {
+
+    public static void setCircleOutline(@Nullable View view) {
+        if (view == null) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                }
+            });
+            view.setClipToOutline(true);
+        }
+    }
 
     public static void virtualClick(final View view){
         virtualClick(view, 300);

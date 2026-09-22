@@ -34,7 +34,8 @@
                 android:id="@+id/avatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@mipmap/logo_foreground"
+                android:src="@mipmap/ic_launcher_round"
+                android:transitionName="userAvatar"
                 android:layout_marginEnd="@dimen/spacing_normal"/>
 
             <LinearLayout

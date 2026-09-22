@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thirtydegreesray.dataautoaccess.annotation.AutoAccess;
+import com.thirtydegreesray.openhub.util.ViewUtils;
 import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
@@ -173,8 +174,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
 
         View.OnClickListener openProfileListener = v -> {
             if (AppData.INSTANCE.getLoggedUser() != null) {
-                ProfileActivity.show(getActivity(), AppData.INSTANCE.getLoggedUser());
-                closeDrawer(false);
+                ProfileActivity.show(getActivity(), avatar, AppData.INSTANCE.getLoggedUser());
             }
         };
         if (userInfoLay != null) userInfoLay.setOnClickListener(openProfileListener);
@@ -187,10 +187,12 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
             toggleAccountLay();
         });
 
+        ViewUtils.setCircleOutline(avatar);
         User loginUser = AppData.INSTANCE.getLoggedUser();
         GlideApp.with(getActivity())
                 .load(loginUser.getAvatarUrl())
                 .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
+                .circleCrop()
                 .into(avatar);
         name.setText(StringUtils.isBlank(loginUser.getName()) ? loginUser.getLogin() : loginUser.getName());
         String joinTime = getString(R.string.joined_at).concat(" ")
@@ -508,6 +510,12 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
                     mPresenter.logout();
                 })
                 .show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        closeDrawer(false);
     }
 
 }

@@ -98,6 +98,7 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
     protected void initFragment(Bundle savedInstanceState) {
         ViewUtils.setLongClickCopy(email);
         ViewUtils.setLongClickCopy(link);
+        ViewUtils.setCircleOutline(userAvatar);
         orgsLay.setVisibility(View.GONE);
     }
 
@@ -152,9 +153,11 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
         nameStr = user.isUser() ? nameStr : nameStr.concat("(ORG)");
         name.setText(nameStr);
 
+        ViewUtils.setCircleOutline(userAvatar);
         GlideApp.with(this)
                 .load(user.getAvatarUrl())
                 .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
+                .circleCrop()
                 .into(userAvatar);
 
         ViewUtils.setTextView(location, user.getLocation());

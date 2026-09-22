@@ -41,7 +41,7 @@
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_marginStart="@dimen/spacing_small"
-                        android:src="@mipmap/logo_foreground"
+                        android:src="@mipmap/ic_launcher_round"
                         android:transitionName="userAvatar" />
 
                     <TextView
