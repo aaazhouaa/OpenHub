@@ -37,7 +37,7 @@ public class ProfilePresenter extends BasePresenter<IProfileContract.View>
 
     @AutoAccess String loginId;
     @AutoAccess String userAvatar;
-    private User user;
+    @AutoAccess User user;
     private boolean following = false;
 
     private boolean isTransitionComplete = false;
@@ -55,17 +55,25 @@ public class ProfilePresenter extends BasePresenter<IProfileContract.View>
     @Override
     public void onViewInitialized() {
         super.onViewInitialized();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(mView == null) return;
-                isTransitionComplete = true;
-                if(isWaitForTransition) mView.showProfileInfo(user);
-                isWaitForTransition = false;
-                getProfileInfo();
-                checkFollowingStatus();
+        if (user == null) {
+            if (AppData.INSTANCE.getLoggedUser() != null
+                    && loginId != null
+                    && loginId.equalsIgnoreCase(AppData.INSTANCE.getLoggedUser().getLogin())) {
+                user = AppData.INSTANCE.getLoggedUser();
+            } else if (loginId != null) {
+                LocalUser localUser = daoSession.getLocalUserDao().load(loginId);
+                if (localUser != null) {
+                    user = User.generateFromLocalUser(localUser);
+                }
             }
-        }, 500);
+        }
+        if (user != null) {
+            mView.showProfileInfo(user);
+        }
+        isTransitionComplete = true;
+        isWaitForTransition = false;
+        getProfileInfo();
+        checkFollowingStatus();
     }
 
     private void getProfileInfo(){

@@ -158,8 +158,13 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
                 .into(userAvatar);
 
         ViewUtils.setTextView(location, user.getLocation());
-        joinedTime.setText(getString(R.string.joined_at).concat(" ")
-                .concat(StringUtils.getDateStr(user.getCreatedAt())));
+        if (user.getCreatedAt() != null) {
+            joinedTime.setText(getString(R.string.joined_at).concat(" ")
+                    .concat(StringUtils.getDateStr(user.getCreatedAt())));
+            joinedTime.setVisibility(View.VISIBLE);
+        } else {
+            joinedTime.setVisibility(View.GONE);
+        }
 
         bio.setText(user.getBio());
         bio.setVisibility(StringUtils.isBlank(user.getBio()) ? View.GONE :View.VISIBLE);
