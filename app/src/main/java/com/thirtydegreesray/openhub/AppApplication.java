@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.color.DynamicColors;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -88,7 +90,7 @@ public class AppApplication extends Application {
             filter = new IntentFilter();
             filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         }
-        registerReceiver(receiver, filter);
+        ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_EXPORTED);
 
         NetHelper.INSTANCE.init(this);
     }

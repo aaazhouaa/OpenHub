@@ -130,7 +130,7 @@ BaseActivity<P extends IBaseContract.Presenter>
 //系统由于内存不足而杀死activity，此时保存数据
         DataAutoAccess.saveData(this, outState);
         if(mPresenter != null) mPresenter.onSaveInstanceState(outState);
-        if(curActivity.equals(this)){
+        if(this.equals(curActivity)){
             DataAutoAccess.saveData(AppData.INSTANCE, outState);
         }
     }
@@ -482,7 +482,7 @@ BaseActivity<P extends IBaseContract.Presenter>
                 params.height = bars.top;
                 finalStatusBarBackground.setLayoutParams(params);
             }
-            return WindowInsetsCompat.CONSUMED;
+            return insets;
         });
     }
 
