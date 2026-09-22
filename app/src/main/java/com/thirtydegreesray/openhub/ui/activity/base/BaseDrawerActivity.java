@@ -114,13 +114,16 @@ public abstract class BaseDrawerActivity<P extends IBaseContract.Presenter> exte
     }
 
     protected final void closeDrawer() {
+        closeDrawer(true);
+    }
+
+    protected final void closeDrawer(boolean animate) {
         if (drawerLayout != null) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START))
-                drawerLayout.closeDrawer(GravityCompat.START);
+                drawerLayout.closeDrawer(GravityCompat.START, animate);
             if (drawerLayout.isDrawerOpen(GravityCompat.END))
-                drawerLayout.closeDrawer(GravityCompat.END);
+                drawerLayout.closeDrawer(GravityCompat.END, animate);
         }
-
     }
 
     private NavigationView getNavigationView(boolean isStartDrawer) {

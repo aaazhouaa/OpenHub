@@ -166,9 +166,23 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         defaultPage = getDefaultPageNavId();
         navViewStart.setCheckedItem(selectedPage);
 
+        View userInfoLay = navViewStart.getHeaderView(0).findViewById(R.id.user_info_lay);
         ImageView avatar = navViewStart.getHeaderView(0).findViewById(R.id.avatar);
         TextView name = navViewStart.getHeaderView(0).findViewById(R.id.name);
         TextView mail = navViewStart.getHeaderView(0).findViewById(R.id.mail);
+
+        View.OnClickListener openProfileListener = v -> {
+            if (AppData.INSTANCE.getLoggedUser() != null) {
+                ProfileActivity.show(getActivity(),
+                        AppData.INSTANCE.getLoggedUser().getLogin(),
+                        AppData.INSTANCE.getLoggedUser().getAvatarUrl());
+                closeDrawer(false);
+            }
+        };
+        if (userInfoLay != null) userInfoLay.setOnClickListener(openProfileListener);
+        avatar.setOnClickListener(openProfileListener);
+        name.setOnClickListener(openProfileListener);
+        mail.setOnClickListener(openProfileListener);
 
         toggleAccountBn = navViewStart.getHeaderView(0).findViewById(R.id.toggle_account_bn);
         toggleAccountBn.setOnClickListener(v -> {
