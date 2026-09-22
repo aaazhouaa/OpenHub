@@ -120,8 +120,6 @@ public class CodeWebView extends WebView {
         }
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setGeolocationDatabasePath(getContext().getCacheDir().getPath());
-        settings.setGeolocationEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setDefaultTextEncodingName("utf-8");
         boolean isLoadImageEnable = PrefUtils.isLoadImageEnable();
