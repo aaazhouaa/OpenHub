@@ -3,4 +3,5 @@
 
 <resources>
     <item name="position_tag" type="id"/>
+    <item name="nav_profile" type="id"/>
 </resources>
