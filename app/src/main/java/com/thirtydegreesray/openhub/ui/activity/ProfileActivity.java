@@ -42,8 +42,19 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
         implements IProfileContract.View {
 
     public static void show(@NonNull Activity activity, @NonNull User user) {
+        show(activity, null, user);
+    }
+
+    public static void show(@NonNull Activity activity, @Nullable View userAvatarView,
+                            @NonNull User user) {
         Intent intent = createIntent(activity, user);
-        activity.startActivity(intent);
+        if (userAvatarView != null) {
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(activity, userAvatarView, "userAvatar");
+            activity.startActivity(intent, optionsCompat.toBundle());
+        } else {
+            activity.startActivity(intent);
+        }
     }
 
     public static Intent createIntent(@NonNull Activity activity, @NonNull User user) {
