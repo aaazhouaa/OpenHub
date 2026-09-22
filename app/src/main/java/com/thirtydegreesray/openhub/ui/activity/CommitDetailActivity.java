@@ -107,6 +107,9 @@ public class CommitDetailActivity extends BaseActivity<CommitDetailPresenter>
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         setToolbarBackEnable();
+        if (toolbarLayout != null) {
+            toolbarLayout.setTitleEnabled(false);
+        }
         setToolbarTitle(getString(R.string.commit));
         commentBn.setVisibility(View.GONE);
     }
