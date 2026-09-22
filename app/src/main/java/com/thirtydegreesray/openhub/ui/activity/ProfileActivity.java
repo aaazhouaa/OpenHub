@@ -41,6 +41,20 @@ import butterknife.BindView;
 public class ProfileActivity extends PagerActivity<ProfilePresenter>
         implements IProfileContract.View {
 
+    public static void show(@NonNull Activity activity, @NonNull User user) {
+        Intent intent = createIntent(activity, user);
+        activity.startActivity(intent);
+    }
+
+    public static Intent createIntent(@NonNull Activity activity, @NonNull User user) {
+        return new Intent(activity, ProfileActivity.class)
+                .putExtras(BundleHelper.builder()
+                        .put("loginId", user.getLogin())
+                        .put("userAvatar", user.getAvatarUrl())
+                        .put("user", user)
+                        .build());
+    }
+
     public static void show(@NonNull Activity activity, @NonNull String loginId) {
         show(activity, loginId, null);
     }

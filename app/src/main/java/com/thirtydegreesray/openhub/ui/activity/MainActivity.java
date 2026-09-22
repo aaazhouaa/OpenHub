@@ -173,9 +173,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
 
         View.OnClickListener openProfileListener = v -> {
             if (AppData.INSTANCE.getLoggedUser() != null) {
-                ProfileActivity.show(getActivity(),
-                        AppData.INSTANCE.getLoggedUser().getLogin(),
-                        AppData.INSTANCE.getLoggedUser().getAvatarUrl());
+                ProfileActivity.show(getActivity(), AppData.INSTANCE.getLoggedUser());
                 closeDrawer(false);
             }
         };
