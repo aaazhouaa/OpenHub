@@ -25,13 +25,17 @@ public class DBOpenHelper extends DaoMaster.DevOpenHelper {
 
     @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
-        if(oldVersion == 2 && newVersion == 3){
+        //逐版本递进执行，保证跨版本升级（如 4 -> 6）不会跳过中间步骤而落入
+        //super.onUpgrade（删表重建，会丢失书签与浏览记录）
+        if(oldVersion == 2 && newVersion >= 3){
             //create new table, keep ori
             TraceUserDao.createTable(db, false);
             TraceRepoDao.createTable(db, false);
             BookMarkUserDao.createTable(db, false);
             BookMarkRepoDao.createTable(db, false);
-        } else if(oldVersion == 3 && newVersion == 4){
+            oldVersion = 3;
+        }
+        if(oldVersion == 3 && newVersion >= 4){
             //create new table
             LocalUserDao.createTable(db, false);
             LocalRepoDao.createTable(db, false);
@@ -46,9 +50,18 @@ public class DBOpenHelper extends DaoMaster.DevOpenHelper {
             TraceRepoDao.dropTable(db, true);
             BookMarkUserDao.dropTable(db, true);
             BookMarkRepoDao.dropTable(db, true);
-        } else if(oldVersion == 4 && newVersion == 5){
+            oldVersion = 4;
+        }
+        if(oldVersion == 4 && newVersion >= 5){
             MyTrendingLanguageDao.createTable(db, true);
-        } else {
+            oldVersion = 5;
+        }
+        if(oldVersion == 5 && newVersion >= 6){
+            //create new table
+            ReleaseCommitDao.createTable(db, true);
+            oldVersion = 6;
+        }
+        if(oldVersion != newVersion){
             super.onUpgrade(db, oldVersion, newVersion);
         }
     }

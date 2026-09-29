@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.thirtydegreesray.openhub.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,14 @@ public class Release implements Parcelable {
 
     public String getTagName() {
         return tagName;
+    }
+
+    /**
+     * 展示用名称：优先 release 的 name（如 "v2.8.82 - 白霜版"），
+     * 为空时回退为 tag 名。
+     */
+    public String getDisplayName() {
+        return StringUtils.isBlank(name) ? tagName : name;
     }
 
     public void setTagName(String tagName) {

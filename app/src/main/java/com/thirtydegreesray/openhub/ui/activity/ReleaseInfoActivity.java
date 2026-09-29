@@ -70,14 +70,25 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
     @BindView(R2.id.web_view) CodeWebView webView;
     @BindView(R2.id.user_avatar) ImageView userAvatar;
     @BindView(R2.id.user_name) TextView userName;
+    @BindView(R2.id.info_row) View infoRow;
+    @BindView(R2.id.tag_name) TextView tagNameTv;
+    @BindView(R2.id.commit_icon) ImageView commitIcon;
+    @BindView(R2.id.commit_sha) TextView commitShaTv;
     @BindView(R2.id.download_bn) FloatingActionButton downloadBn;
     @BindView(R2.id.loader) ProgressBar loader;
 
     @Override
     public void showReleaseInfo(Release release) {
         downloadBn.setVisibility(View.VISIBLE);
+        setToolbarTitle(mPresenter.getReleaseName(),
+                mPresenter.getOwner().concat("/").concat(mPresenter.getRepoName()));
         webView.setMdSource(StringUtils.isBlank(release.getBodyHtml()) ?
                 release.getBody() : release.getBodyHtml(), null);
+
+        tagNameTv.setText(release.getTagName());
+        infoRow.setVisibility(View.VISIBLE);
+        commitIcon.setVisibility(View.GONE);
+        commitShaTv.setVisibility(View.GONE);
 
         GlideApp.with(getActivity())
                 .load(release.getAuthor() == null
@@ -105,6 +116,22 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
         spannable.setSpan(colorSpan, 0, release.getAuthor().getLogin().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         userName.setText(spannable);
+    }
+
+    @Override
+    public void showCommitSha(String commitSha) {
+        commitShaTv.setText(commitSha == null || commitSha.length() <= 7
+                ? commitSha : commitSha.substring(0, 7));
+        commitIcon.setVisibility(View.VISIBLE);
+        commitShaTv.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R2.id.commit_sha)
+    public void onCommitShaClick() {
+        String sha = mPresenter.getCommitSha();
+        if (StringUtils.isBlank(sha)) return;
+        startActivity(CommitDetailActivity.createIntent(getActivity(),
+                mPresenter.getOwner(), mPresenter.getRepoName(), sha));
     }
 
     @Override

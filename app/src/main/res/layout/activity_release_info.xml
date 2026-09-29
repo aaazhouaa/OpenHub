@@ -47,6 +47,46 @@
                             android:layout_marginStart="@dimen/spacing_small"/>
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/info_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        android:layout_marginTop="@dimen/spacing_mini"
+                        android:layout_marginBottom="@dimen/spacing_mini">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:srcCompat="@drawable/ic_tag"/>
+                        <TextView
+                            android:id="@+id/tag_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_small"
+                            android:textColor="?android:textColorSecondary"
+                            android:layout_marginStart="@dimen/spacing_small"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/commit_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginStart="@dimen/spacing_x_large"
+                            app:srcCompat="@drawable/ic_commit"/>
+                        <TextView
+                            android:id="@+id/commit_sha"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_small"
+                            android:textColor="?android:textColorSecondary"
+                            android:background="?android:selectableItemBackground"
+                            android:paddingTop="@dimen/spacing_mini"
+                            android:paddingBottom="@dimen/spacing_mini"
+                            android:layout_marginStart="@dimen/spacing_small"/>
+                    </LinearLayout>
+
                     <com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView
                         android:id="@+id/web_view"
                         android:layout_width="match_parent"

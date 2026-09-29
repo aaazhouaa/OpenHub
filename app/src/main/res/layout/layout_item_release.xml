@@ -28,15 +28,18 @@
             android:gravity="center_vertical">
             <TextView
                 android:id="@+id/release_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="@dimen/text_large"
                 android:textColor="?colorAccent"/>
             <TextView
                 android:id="@+id/time"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_small"
                 android:gravity="end"
                 android:layout_gravity="top"
                 android:textSize="@dimen/text_mini"

@@ -9,7 +9,7 @@ import org.greenrobot.greendao.generator.Schema;
 public class AppDaoGenerator {
 
     public static void main(String...args){
-        Schema rootSchema = new Schema(5, "com.thirtydegreesray.openhub.dao");
+        Schema rootSchema = new Schema(6, "com.thirtydegreesray.openhub.dao");
         addAuthUser(rootSchema);
         addTraceUser(rootSchema);
         addTraceRepo(rootSchema);
@@ -20,6 +20,7 @@ public class AppDaoGenerator {
         addTrace(rootSchema);
         addBookmark(rootSchema);
         addMyTrendingLanguage(rootSchema);
+        addReleaseCommit(rootSchema);
         try {
             new DaoGenerator().generateAll(rootSchema, "E:/Work/Android/github/OpenHub/OpenHub/app/src/main/java");
         } catch (Exception e) {
@@ -148,6 +149,12 @@ public class AppDaoGenerator {
         entity.addLongProperty("repoId");
 
         entity.addDateProperty("markTime");
+    }
+
+    private static void addReleaseCommit(Schema schema){
+        Entity entity = schema.addEntity("ReleaseCommit");
+        entity.addStringProperty("key").primaryKey().notNull();
+        entity.addStringProperty("sha").notNull();
     }
 
     private static void addMyTrendingLanguage(Schema schema){

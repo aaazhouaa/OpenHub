@@ -43,7 +43,7 @@ public class ReleasesAdapter extends BaseAdapter<ReleasesAdapter.ViewHolder, Rel
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         Release model = data.get(position);
-        holder.releaseName.setText(model.getTagName());
+        holder.releaseName.setText(model.getDisplayName());
         holder.time.setText(model.getPublishedAt() == null ? ""
                 : StringUtils.getNewsTimeStr(context, model.getPublishedAt()));
         if(!StringUtils.isBlank(model.getBodyHtml())){

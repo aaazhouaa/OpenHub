@@ -11,6 +11,7 @@ public interface IReleaseInfoContract {
 
     interface View extends IBaseContract.View{
         void showReleaseInfo(Release release);
+        void showCommitSha(String commitSha);
     }
 
     interface Presenter extends IBaseContract.Presenter<IReleaseInfoContract.View>{
