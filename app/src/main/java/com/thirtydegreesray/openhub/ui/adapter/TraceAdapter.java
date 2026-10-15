@@ -72,7 +72,7 @@ public class TraceAdapter extends BaseAdapter<BaseViewHolder, TraceExt>
             Repository repository = model.getRepository();
             RepoViewHolder repoViewHolder = (RepoViewHolder) holder;
             repoViewHolder.tvRepoName.setText(repository.getName());
-            repoViewHolder.tvRepoDescription.setText(repository.getDescription());
+            ViewUtils.setTextView(repoViewHolder.tvRepoDescription, repository.getDescription());
             repoViewHolder.tvStarNum.setText(String.valueOf(repository.getStargazersCount()));
             repoViewHolder.tvForkNum.setText(String.valueOf(repository.getForksCount()));
             repoViewHolder.tvOwnerName.setText(repository.getOwner().getLogin());
@@ -83,9 +83,11 @@ public class TraceAdapter extends BaseAdapter<BaseViewHolder, TraceExt>
             repoViewHolder.forkMark.setVisibility(repository.isFork() ? View.VISIBLE : View.GONE);
 
             if(StringUtils.isBlank(repository.getLanguage())){
+                if(repoViewHolder.layLanguage != null) repoViewHolder.layLanguage.setVisibility(View.GONE);
                 repoViewHolder.tvLanguage.setText("");
-                repoViewHolder.languageColor.setVisibility(View.INVISIBLE);
+                repoViewHolder.languageColor.setVisibility(View.GONE);
             } else {
+                if(repoViewHolder.layLanguage != null) repoViewHolder.layLanguage.setVisibility(View.VISIBLE);
                 repoViewHolder.languageColor.setVisibility(View.VISIBLE);
                 repoViewHolder.tvLanguage.setText(repository.getLanguage());
                 int languageColor = LanguageColorsHelper.INSTANCE.getColor(context, repository.getLanguage());
@@ -162,6 +164,7 @@ public class TraceAdapter extends BaseAdapter<BaseViewHolder, TraceExt>
         @BindView(R2.id.language_color) ImageView languageColor;
         @BindView(R2.id.tv_repo_name) TextView tvRepoName;
         @BindView(R2.id.tv_language) TextView tvLanguage;
+        @BindView(R2.id.lay_language) View layLanguage;
         @BindView(R2.id.tv_repo_description) TextView tvRepoDescription;
         @BindView(R2.id.tv_star_num) TextView tvStarNum;
         @BindView(R2.id.tv_fork_num) TextView tvForkNum;
@@ -172,7 +175,7 @@ public class TraceAdapter extends BaseAdapter<BaseViewHolder, TraceExt>
             super(itemView);
         }
 
-        @OnClick(R2.id.iv_user_avatar)
+        @OnClick({R2.id.iv_user_avatar, R2.id.tv_owner_name})
         public void onUserClick(){
             if(getAdapterPosition() != RecyclerView.NO_POSITION) {
                 ProfileActivity.show((Activity) context, ivUserAvatar,

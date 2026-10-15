@@ -20,223 +20,213 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/card_content_padding">
+        android:orientation="vertical"
+        android:padding="14dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user_avatar"
-            android:layout_width="@dimen/avatar_size_normal"
-            android:layout_height="@dimen/avatar_size_normal"
-            android:layout_marginEnd="12dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            tools:src="@drawable/ic_menu_person" />
-
+        <!-- 顶部第一行：作者信息（左侧） + 语言/Fork标签（右侧） -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <!-- 顶部行：仓库名与语言药丸 -->
+            <!-- 作者信息（头像 + 用户名） -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/owner_lay"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user_avatar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    tools:src="@drawable/ic_menu_person" />
 
                 <TextView
-                    android:id="@+id/tv_repo_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:textColor="?colorAccent"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:text="OpenHub" />
-
-                <!-- 语言标签胶囊 -->
-                <LinearLayout
+                    android:id="@+id/tv_owner_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_pill_tag"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="3dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/language_color"
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:layout_marginEnd="5dp"
-                        app:srcCompat="@drawable/ic_dot" />
-
-                    <TextView
-                        android:id="@+id/tv_language"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="11sp"
-                        tools:text="Java" />
-                </LinearLayout>
-
+                    android:layout_marginStart="6dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="12.5sp"
+                    tools:text="thirtydegreesray" />
             </LinearLayout>
 
-            <!-- 仓库描述 -->
-            <TextView
-                android:id="@+id/tv_repo_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="10dp"
-                android:ellipsize="end"
-                android:lineSpacingExtra="2dp"
-                android:maxLines="3"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="13sp"
-                tools:text="An open source GitHub Android client app, faster and concise." />
-
-            <!-- 底部指标栏（Stars / Forks / Owner / ForkTag） -->
+            <!-- 语言标签胶囊（无语言时设为 GONE，不占位） -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/lay_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_pill_tag"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/language_color"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:layout_marginEnd="4dp"
+                    app:srcCompat="@drawable/ic_dot" />
+
+                <TextView
+                    android:id="@+id/tv_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="11sp"
+                    tools:text="Kotlin" />
+            </LinearLayout>
+
+            <!-- Fork 标 -->
+            <LinearLayout
+                android:id="@+id/fork_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_pill_tag"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:tint="?colorAccent"
+                    app:srcCompat="@drawable/ic_fork" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="@string/fork_tag"
+                    android:textColor="?colorAccent"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 第二行：仓库名称 -->
+        <TextView
+            android:id="@+id/tv_repo_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="?colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="OpenHub" />
+
+        <!-- 第三行：仓库描述 -->
+        <TextView
+            android:id="@+id/tv_repo_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="3"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="13sp"
+            tools:text="An open source GitHub Android client app, faster and concise." />
+
+        <!-- 第四行：底部指标栏（Stars / Forks / Trending Today） -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Star -->
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Star -->
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:tint="?android:textColorSecondary"
+                    app:srcCompat="@drawable/ic_menu_star" />
+
+                <TextView
+                    android:id="@+id/tv_star_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="4dp"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="12sp"
+                    tools:text="1,123" />
+            </LinearLayout>
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:tint="?android:textColorSecondary"
-                        app:srcCompat="@drawable/ic_menu_star" />
+            <!-- Fork -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_star_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="12sp"
-                        tools:text="1,123" />
-                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:tint="?android:textColorSecondary"
+                    app:srcCompat="@drawable/ic_fork" />
 
-                <!-- Fork -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_fork_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="4dp"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="12sp"
+                    tools:text="280" />
+            </LinearLayout>
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:tint="?android:textColorSecondary"
-                        app:srcCompat="@drawable/ic_fork" />
+            <!-- Trending Today Stars -->
+            <LinearLayout
+                android:id="@+id/since_star_lay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/tv_fork_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="12sp"
-                        tools:text="280" />
-                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:tint="?colorAccent"
+                    app:srcCompat="@drawable/ic_menu_star" />
 
-                <!-- Owner -->
-                <LinearLayout
-                    android:id="@+id/owner_lay"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:tint="?android:textColorSecondary"
-                        app:srcCompat="@drawable/ic_menu_person" />
-
-                    <TextView
-                        android:id="@+id/tv_owner_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="12sp"
-                        tools:text="thirtydegreesray" />
-                </LinearLayout>
-
-                <!-- Fork 标 -->
-                <LinearLayout
-                    android:id="@+id/fork_mark"
+                <TextView
+                    android:id="@+id/tv_since_star_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_pill_tag"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="11dp"
-                        android:layout_height="11dp"
-                        android:tint="?colorAccent"
-                        app:srcCompat="@drawable/ic_fork" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@string/fork_tag"
-                        android:textColor="?colorAccent"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <!-- Trending Today Stars -->
-                <LinearLayout
-                    android:id="@+id/since_star_lay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:tint="?colorAccent"
-                        app:srcCompat="@drawable/ic_menu_star" />
-
-                    <TextView
-                        android:id="@+id/tv_since_star_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:textColor="?colorAccent"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
+                    android:layout_marginStart="3dp"
+                    android:textColor="?colorAccent"
+                    android:textSize="11sp" />
             </LinearLayout>
 
         </LinearLayout>

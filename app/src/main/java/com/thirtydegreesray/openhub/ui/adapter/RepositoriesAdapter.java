@@ -61,6 +61,7 @@ public class RepositoriesAdapter extends BaseAdapter<RepositoriesAdapter.ViewHol
         @BindView(R2.id.language_color) ImageView languageColor;
         @BindView(R2.id.tv_repo_name) TextView tvRepoName;
         @BindView(R2.id.tv_language) TextView tvLanguage;
+        @BindView(R2.id.lay_language) View layLanguage;
         @BindView(R2.id.tv_repo_description) TextView tvRepoDescription;
         @BindView(R2.id.tv_star_num) TextView tvStarNum;
         @BindView(R2.id.tv_fork_num) TextView tvForkNum;
@@ -74,7 +75,7 @@ public class RepositoriesAdapter extends BaseAdapter<RepositoriesAdapter.ViewHol
             super(itemView);
         }
 
-        @OnClick(R2.id.iv_user_avatar)
+        @OnClick({R2.id.iv_user_avatar, R2.id.tv_owner_name})
         public void onUserClick(){
             if(getAdapterPosition() != RecyclerView.NO_POSITION){
                 ProfileActivity.show((Activity) context, ivUserAvatar, data.get(getAdapterPosition()).getOwner().getLogin(),
@@ -95,9 +96,11 @@ public class RepositoriesAdapter extends BaseAdapter<RepositoriesAdapter.ViewHol
         holder.tvOwnerName.setText(repository.getOwner().getLogin());
 
         if(StringUtils.isBlank(repository.getLanguage())){
+            if(holder.layLanguage != null) holder.layLanguage.setVisibility(View.GONE);
             holder.tvLanguage.setText("");
-            holder.languageColor.setVisibility(View.INVISIBLE);
+            holder.languageColor.setVisibility(View.GONE);
         } else {
+            if(holder.layLanguage != null) holder.layLanguage.setVisibility(View.VISIBLE);
             holder.languageColor.setVisibility(View.VISIBLE);
             holder.tvLanguage.setText(repository.getLanguage());
             int languageColor = LanguageColorsHelper.INSTANCE.getColor(context, repository.getLanguage());
