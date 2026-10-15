@@ -39,7 +39,7 @@
                 android:textColor="?colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                tools:text="v4.0.3" />
+                tools:text="v4.0.4" />
 
             <TextView
                 android:id="@+id/time"

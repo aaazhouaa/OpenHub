@@ -19,7 +19,7 @@
         android:textColor="?colorAccent"
         android:textSize="15sp"
         android:textStyle="bold"
-        tools:text="Version: v4.0.3" />
+        tools:text="Version: v4.0.4" />
 
     <TextView
         android:id="@+id/size_text"

@@ -112,12 +112,7 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
     @Override
     public void showRepoInfo(Repository repository) {
         String description = repository.getDescription();
-        if (StringUtils.isBlank(description)) {
-            repoDescText.setVisibility(View.GONE);
-        } else {
-            repoDescText.setVisibility(View.VISIBLE);
-            repoDescText.setText(description);
-        }
+        ViewUtils.setTextView(repoDescText, description);
 
         ArrayList<String> briefInfo = new ArrayList<>();
         if (!StringUtils.isBlank(repository.getLanguage())) {

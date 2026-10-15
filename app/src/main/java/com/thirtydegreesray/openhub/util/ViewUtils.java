@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.mvp.model.Label;
+import com.thirtydegreesray.openhub.ui.widget.DimEmojiSpan;
 import com.thirtydegreesray.openhub.ui.widget.IssueLabelSpan;
 
 import java.util.ArrayList;
@@ -88,9 +90,67 @@ public class ViewUtils {
         });
     }
 
-    public static void setTextView(@NonNull TextView textView, String text) {
-        if (!StringUtils.isBlank(text)) {
-            textView.setText(text);
+    public static boolean isEmoji(int cp) {
+        return (cp >= 0x1F000 && cp <= 0x1FAFF)
+                || (cp >= 0x2600 && cp <= 0x27BF)
+                || (cp >= 0x2300 && cp <= 0x23FF)
+                || (cp >= 0x2B00 && cp <= 0x2BFF)
+                || (cp >= 0x203C && cp <= 0x2049)
+                || (cp >= 0x2194 && cp <= 0x21AA)
+                || (cp >= 0xFE00 && cp <= 0xFE0F)
+                || cp == 0x200D
+                || Character.getType(cp) == Character.OTHER_SYMBOL;
+    }
+
+    @Nullable
+    public static CharSequence applyEmojiDim(@Nullable CharSequence text) {
+        if (text == null || text.length() == 0 || ThemeHelper.isLightMode()) {
+            return text;
+        }
+
+        int len = text.length();
+        boolean hasEmoji = false;
+        for (int i = 0; i < len; ) {
+            int cp = Character.codePointAt(text, i);
+            if (isEmoji(cp)) {
+                hasEmoji = true;
+                break;
+            }
+            i += Character.charCount(cp);
+        }
+
+        if (!hasEmoji) {
+            return text;
+        }
+
+        SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+        int i = 0;
+        while (i < len) {
+            int cp = Character.codePointAt(text, i);
+            int charCount = Character.charCount(cp);
+            if (isEmoji(cp)) {
+                int start = i;
+                int end = i + charCount;
+                while (end < len) {
+                    int nextCp = Character.codePointAt(text, end);
+                    if (isEmoji(nextCp)) {
+                        end += Character.charCount(nextCp);
+                    } else {
+                        break;
+                    }
+                }
+                ssb.setSpan(new DimEmojiSpan(), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                i = end;
+            } else {
+                i += charCount;
+            }
+        }
+        return ssb;
+    }
+
+    public static void setTextView(@NonNull TextView textView, CharSequence text) {
+        if (text != null && text.length() > 0 && !StringUtils.isBlank(text.toString())) {
+            textView.setText(applyEmojiDim(text));
             textView.setVisibility(View.VISIBLE);
         } else {
             textView.setVisibility(View.GONE);
