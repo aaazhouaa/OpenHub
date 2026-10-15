@@ -170,6 +170,9 @@ BaseActivity<P extends IBaseContract.Presenter>
     protected void initView(Bundle savedInstanceState){
         if(toolbar != null){
             setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+            }
             DoubleClickHandler.setDoubleClickListener(toolbar, new DoubleClickHandler.DoubleClickListener() {
                 @Override
                 public void onDoubleClick(View view) {
@@ -224,6 +227,9 @@ BaseActivity<P extends IBaseContract.Presenter>
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
+        if (toolbar != null) {
+            toolbar.setTitle(title);
+        }
         if(toolbarLayout != null){
             toolbarLayout.setTitle(title);
         }
@@ -234,11 +240,17 @@ BaseActivity<P extends IBaseContract.Presenter>
         if (getSupportActionBar() != null) {
             getSupportActionBar().setSubtitle(subTitle);
         }
+        if (toolbar != null) {
+            toolbar.setSubtitle(subTitle);
+        }
     }
 
     protected void setToolbarSubTitle(String subTitle) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setSubtitle(subTitle);
+        }
+        if (toolbar != null) {
+            toolbar.setSubtitle(subTitle);
         }
     }
 

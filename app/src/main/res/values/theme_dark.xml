@@ -80,6 +80,7 @@
         <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
         <item name="android:textColorPrimary">@color/dark_appbar_foreground_color</item>
         <item name="titleTextColor">@color/dark_appbar_foreground_color</item>
+        <item name="subtitleTextColor">@color/dark_subtitle_color</item>
         <item name="colorControlNormal">@color/dark_appbar_foreground_color</item>
     </style>
 

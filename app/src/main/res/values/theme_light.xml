@@ -75,6 +75,10 @@
         <item name="actionBarSize">@dimen/action_bar_height</item>
         <item name="android:actionBarSize">@dimen/action_bar_height</item>
         <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
+        <item name="android:textColorPrimary">@color/light_title_color</item>
+        <item name="titleTextColor">@color/light_title_color</item>
+        <item name="subtitleTextColor">@color/light_subtitle_color</item>
+        <item name="colorControlNormal">@color/light_title_color</item>
     </style>
 
     <style name="PopupMenuLight" parent="Widget.Material3.PopupMenu.Overflow">
