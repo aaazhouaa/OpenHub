@@ -1,46 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:clipToPadding="false"
+    android:paddingTop="6dp"
+    android:paddingBottom="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- 用户主要资料卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_view_vertical_margin"
-            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
             android:layout_marginStart="@dimen/card_view_horizontal_margin"
+            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
             android:layout_marginTop="@dimen/card_view_vertical_margin"
-            android:background="?card_background"
+            android:layout_marginBottom="@dimen/card_view_vertical_margin"
             app:cardBackgroundColor="?card_background"
             app:cardCornerRadius="@dimen/card_view_corner_radius"
-            app:contentPadding="@dimen/spacing_normal">
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/card_stroke_color">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="@dimen/card_content_padding"
+                android:paddingEnd="@dimen/card_content_padding"
+                android:paddingTop="@dimen/card_content_padding"
+                android:paddingBottom="6dp">
 
+                <!-- 头部：大头像 + 昵称 + 登出/添加账号按钮 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/user_avatar"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_marginStart="@dimen/spacing_small"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:src="@mipmap/ic_launcher_round"
                         android:transitionName="userAvatar" />
 
@@ -48,260 +55,722 @@
                         android:id="@+id/name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
-                        android:lines="1"
                         android:ellipsize="end"
-                        android:textSize="@dimen/text_large"
+                        android:lines="1"
                         android:textColor="?android:textColorPrimary"
-                        android:layout_marginStart="@dimen/spacing_normal"
-                        android:paddingBottom="@dimen/spacing_small"
-                        android:paddingEnd="@dimen/spacing_small"
-                        android:paddingTop="@dimen/spacing_small"/>
+                        android:textSize="19sp"
+                        android:textStyle="bold"
+                        tools:text="ThirtyDegreesRay" />
+
+                    <!-- 账号操作区：添加账号 + 登出 -->
+                    <LinearLayout
+                        android:id="@+id/account_action_lay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btn_add_account"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_pill_tag"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="9dp"
+                            android:tint="?colorAccent"
+                            app:srcCompat="@drawable/ic_add_account" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btn_logout"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_pill_tag"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="9dp"
+                            android:tint="?android:textColorSecondary"
+                            app:srcCompat="@drawable/ic_logout" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- 地点 -->
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
                     android:textColor="?android:textColorSecondary"
-                    android:textSize="@dimen/text_small"
-                    android:paddingBottom="@dimen/spacing_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingStart="@dimen/spacing_small"
-                    android:paddingTop="@dimen/spacing_small"/>
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="Shenzhen, China"
+                    tools:visibility="visible" />
 
+                <!-- 加入时间 -->
                 <TextView
                     android:id="@+id/joined_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="8dp"
                     android:textColor="?android:textColorSecondary"
-                    android:textSize="@dimen/text_small"
-                    android:paddingBottom="@dimen/spacing_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingStart="@dimen/spacing_small"
-                    android:paddingTop="@dimen/spacing_small"/>
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="Joined on 2015-08-20"
+                    tools:visibility="visible" />
 
+                <!-- Bio 简介 -->
                 <TextView
                     android:id="@+id/bio"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:lineSpacingExtra="2dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp"
                     android:visibility="gone"
-                    android:textColor="?android:textColorSecondary"
-                    android:textSize="@dimen/text_small"
-                    android:paddingBottom="@dimen/spacing_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingStart="@dimen/spacing_small"
-                    android:paddingTop="@dimen/spacing_small"/>
+                    tools:text="Android developer, open source enthusiast."
+                    tools:visibility="visible" />
 
+                <!-- 公司 -->
                 <TextView
                     android:id="@+id/company"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_group_secondary"
-                    android:paddingBottom="@dimen/spacing_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingStart="@dimen/spacing_small"
-                    android:paddingTop="@dimen/spacing_small"
-                    android:drawablePadding="@dimen/spacing_large"
-                    android:textSize="@dimen/text_small"
-                    android:textColor="?android:textColorPrimary"/>
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="OpenSource Org"
+                    tools:visibility="visible" />
 
+                <!-- 邮箱 -->
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="6dp"
                     android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_mail_secondary"
-                    android:paddingBottom="@dimen/spacing_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingStart="@dimen/spacing_small"
-                    android:paddingTop="@dimen/spacing_small"
-                    android:drawablePadding="@dimen/spacing_large"
-                    android:textSize="@dimen/text_small"
-                    android:textColor="?android:colorAccent"/>
+                    android:focusable="true"
+                    android:textColor="?android:colorAccent"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="developer@example.com"
+                    tools:visibility="visible" />
 
+                <!-- 个人主页/博客链接 -->
                 <TextView
                     android:id="@+id/link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:drawableStart="@drawable/ic_link_secondary"
-                    android:paddingStart="@dimen/spacing_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingTop="@dimen/spacing_small"
-                    android:paddingBottom="@dimen/spacing_small"
+                    android:layout_marginTop="6dp"
                     android:background="?android:selectableItemBackground"
-                    android:drawablePadding="@dimen/spacing_large"
-                    android:textSize="@dimen/text_small"
+                    android:clickable="true"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/ic_link_secondary"
+                    android:focusable="true"
+                    android:lines="1"
                     android:textColor="?android:colorAccent"
-                    android:lines="1"/>
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="https://github.com/thirtydegreesray"
+                    tools:visibility="visible" />
 
+                <!-- 统计格 (Followers / Following / Repos / Gists / Members) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="64dp">
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp">
 
+                    <!-- Members (组织用户时显示) -->
                     <LinearLayout
                         android:id="@+id/members_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
-                        android:visibility="gone"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/members"
+                            app:srcCompat="@drawable/ic_group"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
                             android:text="@string/view"
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/members"
-                            android:textSize="@dimen/text_mini"/>
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- Followers -->
                     <LinearLayout
                         android:id="@+id/followers_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/followers"
+                            app:srcCompat="@drawable/ic_group"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/followers_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/followers"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="1.2k" />
                     </LinearLayout>
 
+                    <!-- Following -->
                     <LinearLayout
                         android:id="@+id/following_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/following"
+                            app:srcCompat="@drawable/ic_menu_person"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/following_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/following"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="85" />
                     </LinearLayout>
 
+                    <!-- Repositories -->
                     <LinearLayout
                         android:id="@+id/repos_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/repositories"
+                            app:srcCompat="@drawable/ic_menu_repo"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/repos_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/repositories"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="48" />
                     </LinearLayout>
 
+                    <!-- Gists -->
                     <LinearLayout
                         android:id="@+id/gists_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/gists"
+                            app:srcCompat="@drawable/ic_topic"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/gists_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/gists"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="12" />
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- 我的服务与功能入口卡片组 (仅对当前用户显示) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/features_hub_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card_view_horizontal_margin"
+            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="@dimen/card_view_vertical_margin"
+            app:cardBackgroundColor="?card_background"
+            app:cardCornerRadius="@dimen/card_view_corner_radius"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/card_stroke_color">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <!-- 标题：常用功能 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/features_common"
+                    android:textColor="?colorAccent"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <!-- 通知 -->
+                <LinearLayout
+                    android:id="@+id/entry_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_menu_notifications" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/notifications"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 动态 -->
+                <LinearLayout
+                    android:id="@+id/entry_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_menu_news" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/news"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 问题 -->
+                <LinearLayout
+                    android:id="@+id/entry_issues"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_issues" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/issues"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 书签 -->
+                <LinearLayout
+                    android:id="@+id/entry_bookmarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_bookmark" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/bookmarks"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 足迹 -->
+                <LinearLayout
+                    android:id="@+id/entry_trace"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_menu_trace" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/trace"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 分割线 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/card_stroke_color" />
+
+                <!-- 标题：发现与设置 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/features_discover"
+                    android:textColor="?colorAccent"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <!-- 版本库集合 -->
+                <LinearLayout
+                    android:id="@+id/entry_collections"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_collections" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/repo_collections"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 精选主题 -->
+                <LinearLayout
+                    android:id="@+id/entry_topics"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_topic" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/topics"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 全球动态 -->
+                <LinearLayout
+                    android:id="@+id/entry_public_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_global" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/public_news"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+                <!-- 设置 -->
+                <LinearLayout
+                    android:id="@+id/entry_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_badge"
+                        android:padding="6dp"
+                        android:tint="?colorAccent"
+                        app:srcCompat="@drawable/ic_menu_settings" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="@string/settings"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 组织列表卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/orgs_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/card_view_vertical_margin"
-            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
             android:layout_marginStart="@dimen/card_view_horizontal_margin"
-            android:layout_marginTop="@dimen/card_view_vertical_margin"
-            android:background="?card_background"
+            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="@dimen/card_view_vertical_margin"
+            android:visibility="gone"
             app:cardBackgroundColor="?card_background"
             app:cardCornerRadius="@dimen/card_view_corner_radius"
-            app:contentPaddingTop="@dimen/spacing_normal"
-            app:contentPaddingBottom="@dimen/spacing_normal">
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/card_stroke_color"
+            tools:visibility="visible">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/card_content_padding">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:colorAccent"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/organizations"
-                    android:textSize="@dimen/text_large"
-                    android:layout_marginBottom="@dimen/spacing_mini"
-                    android:layout_marginStart="@dimen/spacing_normal"/>
+                    android:textColor="?android:colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/orgs_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

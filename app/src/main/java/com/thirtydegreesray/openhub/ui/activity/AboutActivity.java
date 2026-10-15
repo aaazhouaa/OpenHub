@@ -2,14 +2,18 @@ package com.thirtydegreesray.openhub.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.util.ThemeHelper;
+import com.thirtydegreesray.openhub.util.ViewUtils;
 
 /**
  * Created by ThirtyDegreesRay on 2017/8/29.
@@ -29,6 +33,16 @@ public class AboutActivity extends MaterialAboutActivity {
         isAlive = true;
         ThemeHelper.applyForAboutActivity(this);
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(ViewUtils.getTopBarBackgroundColor(this));
+        }
+        if (Build.VERSION.SDK_INT >= 23) {
+            WindowInsetsControllerCompat controller =
+                    WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+            if (controller != null) {
+                controller.setAppearanceLightStatusBars(ThemeHelper.isLightMode());
+            }
+        }
     }
 
     @NonNull

@@ -135,6 +135,7 @@
         <activity android:name=".ui.activity.NotificationsActivity"/>
         <activity android:name=".ui.activity.TraceActivity"/>
         <activity android:name=".ui.activity.BookmarksActivity"/>
+        <activity android:name=".ui.activity.HubContainerActivity"/>
         <activity android:name=".ui.activity.LanguagesEditorActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ui.activity.WikiActivity"/>
         <activity android:name=".ui.activity.LabelManageActivity"/>

@@ -5,33 +5,24 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <color name="dark_color_primary">#2D3035</color>
-    <color name="dark_top_bar_background">#2D3035</color>
-    <color name="dark_color_primary_blur">#DD2D3035</color>
-    <color name="dark_color_primary_dark">#26282C</color>
+    <color name="dark_color_primary">#161B22</color>
+    <color name="dark_top_bar_background">#161B22</color>
+    <color name="dark_color_primary_blur">#DD161B22</color>
+    <color name="dark_color_primary_dark">#0D1117</color>
     <color name="dark_color_accent">@color/material_green_accent_700</color>
-    <color name="dark_color_window_background">#22252A</color>
-    <!-- #EEEEEE drawn at 80% opacity: the dark theme's light foreground is kept
-         as-is in hue but its opacity is lowered by 20%. Declared here rather than
-         by changing material_light_white, which AMOLED dark also reads. -->
-    <color name="dark_foreground_color">#CCEEEEEE</color>
-    <!-- The AppCompat Dark ActionBar overlay used for the app bar sets textColorPrimary
-         to pure white (#FFFFFF). Lower that app bar foreground to 80% opacity as well;
-         kept separate from dark_foreground_color (#EEEEEE at 80%) because the app bar
-         title and navigation icon actually start from pure white, not #EEEEEE. -->
-    <color name="dark_appbar_foreground_color">#CCFFFFFF</color>
-    <color name="dark_text_color_primary">@color/dark_foreground_color</color>
-    <color name="dark_text_color_secondary">@color/material_grey_500</color>
-    <color name="dark_icon_color">@color/dark_foreground_color</color>
-    <color name="dark_card_background">#2D3035</color>
-    <!-- Content drawn on the app bar (toolbar/tab bar): muted light, so it stays
-         readable on dark_top_bar_background without the glare of pure white. -->
-    <color name="dark_title_color">#A8AEB8</color>
-    <color name="dark_subtitle_color">@color/material_grey_500</color>
-    <color name="dark_selected_color">#3f3f3f</color>
+    <color name="dark_color_window_background">#0D1117</color>
+    <color name="dark_foreground_color">#F0F6FC</color>
+    <color name="dark_appbar_foreground_color">#F0F6FC</color>
+    <color name="dark_text_color_primary">#F0F6FC</color>
+    <color name="dark_text_color_secondary">#8B949E</color>
+    <color name="dark_icon_color">#C9D1D9</color>
+    <color name="dark_card_background">#161B22</color>
+    <color name="dark_title_color">#F0F6FC</color>
+    <color name="dark_subtitle_color">#8B949E</color>
+    <color name="dark_selected_color">#21262D</color>
 
     <style name="ThemeDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">#2D3035</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorPrimary">@color/dark_color_primary</item>
         <item name="colorPrimaryDark">@color/dark_color_primary_dark</item>
@@ -48,12 +39,17 @@
         <item name="title_color">@color/dark_title_color</item>
         <item name="subtitle_color">@color/dark_subtitle_color</item>
         <item name="selected_color">@color/dark_selected_color</item>
+        <item name="card_stroke_color">#30363D</item>
+        <item name="tag_pill_background">#21262D</item>
         <item name="color_primary_blur">@color/dark_color_primary_blur</item>
-        <item name="top_bar_background">@color/dark_top_bar_background</item>
+        <item name="top_bar_background">@color/dark_card_background</item>
         <item name="popup_theme">@style/PopupThemeDark</item>
         <item name="appbar_theme">@style/AppbarThemeDark</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/ContextPopupThemeDark</item>
         <item name="popup_menu_theme">@style/PopupMenuDark</item>
+        <item name="actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
 
         <!-- Material 3 Shape Appearances -->
         <item name="materialCardViewStyle">@style/Widget.OpenHub.Material3.CardView.Dark</item>
@@ -79,22 +75,35 @@
     <style name="AppbarThemeDark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- AppCompat's Dark ActionBar overlay sets textColorPrimary to pure white;
              lower the app bar foreground to 80% opacity. -->
+        <item name="actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
         <item name="android:textColorPrimary">@color/dark_appbar_foreground_color</item>
         <item name="titleTextColor">@color/dark_appbar_foreground_color</item>
         <item name="colorControlNormal">@color/dark_appbar_foreground_color</item>
     </style>
 
 
-    <style name="PopupMenuDark" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@color/dark_color_window_background</item>
+    <style name="PopupMenuDark" parent="Widget.Material3.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
+        <item name="android:textColor">@color/dark_text_color_primary</item>
     </style>
 
-    <style name="PopupThemeDark" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:colorBackground">@color/dark_color_window_background</item>
+    <style name="PopupThemeDark" parent="ThemeOverlay.Material3">
+        <item name="colorSurface">@color/dark_card_background</item>
+        <item name="colorSurfaceContainer">@color/dark_card_background</item>
+        <item name="colorSurfaceContainerHigh">@color/dark_card_background</item>
+        <item name="colorSurfaceContainerHighest">@color/dark_card_background</item>
+        <item name="colorSurfaceContainerLow">@color/dark_card_background</item>
+        <item name="colorSurfaceContainerLowest">@color/dark_card_background</item>
+        <item name="android:colorBackground">@color/dark_card_background</item>
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
+        <item name="android:textColorPrimary">@color/dark_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_color_secondary</item>
     </style>
 
     <style name="ContextPopupThemeDark" parent="PopupThemeDark">
-        <item name="android:popupBackground">@color/dark_color_window_background</item>
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
         <!--
          ~  Context menu of a RecyclerView is displayed in the wrong location when setting
          ~  a contextPopupMenuStyle on Android N, set bellow can fix it.

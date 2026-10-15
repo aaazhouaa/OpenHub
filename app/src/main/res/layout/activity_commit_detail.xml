@@ -6,6 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    app:statusBarBackground="?attr/top_bar_background"
     tools:context=".ui.activity.CommitDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -30,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|top"
-                android:layout_marginTop="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/action_bar_height"
                 android:paddingStart="@dimen/spacing_normal"
                 android:paddingEnd="@dimen/spacing_normal"
                 android:paddingBottom="12dp">
@@ -125,7 +127,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/action_bar_height"
                 android:background="@drawable/toolbar_background"
                 app:layout_collapseMode="pin"
                 app:popupTheme="?popup_theme" />
@@ -135,12 +137,17 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/tab_bar_height"
+            android:minHeight="@dimen/tab_bar_height"
             android:visibility="gone"
             android:background="@drawable/tab_bar_background"
             app:tabGravity="fill"
             app:tabMode="fixed"
             app:tabIndicatorColor="?title_color"
+            app:tabIndicatorHeight="2.5dp"
+            app:tabIndicatorGravity="bottom"
+            app:tabPaddingTop="0dp"
+            app:tabPaddingBottom="0dp"
             app:tabTextAppearance="@style/TextAppearance.Design.Tab"
             app:tabTextColor="?title_color"
             app:tabSelectedTextColor="?title_color"/>

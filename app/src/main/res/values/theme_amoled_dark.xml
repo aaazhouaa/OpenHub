@@ -13,13 +13,13 @@
     <color name="amoled_dark_text_color_primary">@color/material_light_white</color>
     <color name="amoled_dark_text_color_secondary">@color/material_grey_500</color>
     <color name="amoled_dark_icon_color">@color/material_light_white</color>
-    <color name="amoled_dark_card_background">#1e2023</color>
+    <color name="amoled_dark_card_background">#121316</color>
     <color name="amoled_dark_title_color">@color/material_light_white</color>
     <color name="amoled_dark_subtitle_color">@color/material_grey_500</color>
     <color name="amoled_dark_selected_color">#3f3f3f</color>
 
     <style name="ThemeAmoledDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">#000000</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="tabBackground">@drawable/tab_overlay_rounded</item>
         <item name="colorPrimary">@color/amoled_dark_color_primary</item>
@@ -28,7 +28,7 @@
         <item name="colorAccent">?attr/colorSecondary</item>
         <item name="android:windowBackground">@color/amoled_dark_color_window_background</item>
         <item name="preferenceTheme">@style/ThemeOverlay.Material3</item>
-        <item name="top_bar_background">?attr/colorPrimary</item>
+        <item name="top_bar_background">@color/amoled_dark_card_background</item>
         <item name="switchPreferenceCompatStyle">@style/Material3SwitchPreference</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textColorPrimary">@color/amoled_dark_text_color_primary</item>
@@ -39,11 +39,16 @@
         <item name="title_color">@color/amoled_dark_title_color</item>
         <item name="subtitle_color">@color/amoled_dark_subtitle_color</item>
         <item name="selected_color">@color/amoled_dark_selected_color</item>
+        <item name="card_stroke_color">#21262D</item>
+        <item name="tag_pill_background">#161719</item>
         <item name="color_primary_blur">@color/amoled_dark_color_primary_blur</item>
         <item name="popup_theme">@style/PopupThemeDark</item>
         <item name="appbar_theme">@style/AppbarThemeAmoledDark</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/ContextPopupThemeDark</item>
         <item name="popup_menu_theme">@style/PopupMenuDark</item>
+        <item name="actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
 
         <!-- Material 3 Shape Appearances -->
         <item name="materialCardViewStyle">@style/Widget.OpenHub.Material3.CardView.Dark</item>
@@ -67,19 +72,32 @@
     </style>
 
     <style name="AppbarThemeAmoledDark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
     </style>
 
 
-    <style name="PopupMenuAmoledDark" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@color/amoled_dark_color_window_background</item>
+    <style name="PopupMenuAmoledDark" parent="Widget.Material3.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
+        <item name="android:textColor">@color/dark_text_color_primary</item>
     </style>
 
-    <style name="PopupThemeAmoledDark" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:colorBackground">@color/amoled_dark_color_window_background</item>
+    <style name="PopupThemeAmoledDark" parent="ThemeOverlay.Material3">
+        <item name="colorSurface">@color/amoled_dark_card_background</item>
+        <item name="colorSurfaceContainer">@color/amoled_dark_card_background</item>
+        <item name="colorSurfaceContainerHigh">@color/amoled_dark_card_background</item>
+        <item name="colorSurfaceContainerHighest">@color/amoled_dark_card_background</item>
+        <item name="colorSurfaceContainerLow">@color/amoled_dark_card_background</item>
+        <item name="colorSurfaceContainerLowest">@color/amoled_dark_card_background</item>
+        <item name="android:colorBackground">@color/amoled_dark_card_background</item>
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
+        <item name="android:textColorPrimary">@color/dark_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_color_secondary</item>
     </style>
 
     <style name="ContextPopupThemeAmoledDark" parent="PopupThemeDark">
-        <item name="android:popupBackground">@color/amoled_dark_color_window_background</item>
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
         <!--
          ~  Context menu of a RecyclerView is displayed in the wrong location when setting
          ~  a contextPopupMenuStyle on Android N, set bellow can fix it.

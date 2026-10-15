@@ -25,9 +25,9 @@ import butterknife.BindView;
 public abstract class BaseDrawerActivity<P extends IBaseContract.Presenter> extends BaseActivity<P>
         implements IBaseContract.View {
 
-    @BindView(R2.id.nav_view_start) @Nullable protected NavigationView navViewStart;
-    @BindView(R2.id.nav_view_end) @Nullable protected NavigationView navViewEnd;
-    @BindView(R2.id.drawer_layout) @Nullable protected DrawerLayout drawerLayout;
+    @Nullable protected NavigationView navViewStart;
+    @Nullable protected NavigationView navViewEnd;
+    @Nullable protected DrawerLayout drawerLayout;
 
     private boolean startDrawerEnable = false;
     private boolean endDrawerEnable = false;
@@ -35,8 +35,11 @@ public abstract class BaseDrawerActivity<P extends IBaseContract.Presenter> exte
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        navViewStart = findViewById(R.id.nav_view_start);
+        navViewEnd = findViewById(R.id.nav_view_end);
+        drawerLayout = findViewById(R.id.drawer_layout);
         if (drawerLayout == null) return;
-        drawerLayout.setStatusBarBackgroundColor(ViewUtils.getTopBarBackgroundColor(this));
+        drawerLayout.setStatusBarBackgroundColor(ViewUtils.getTopBarBackgroundColor(getActivity()));
         initStartDrawerView();
         initEndDrawerView();
     }

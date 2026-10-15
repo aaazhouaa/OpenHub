@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout
     android:id="@+id/root_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:gravity="center_vertical"
-    android:paddingStart="@dimen/spacing_x_large"
-    android:paddingEnd="@dimen/spacing_x_large"
-    android:paddingTop="@dimen/spacing_normal"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:foreground="?android:selectableItemBackground">
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp">
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        app:srcCompat="@drawable/ic_branch"/>
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:tint="?colorAccent"
+        app:srcCompat="@drawable/ic_branch" />
+
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="?android:textColorPrimary"
-        android:layout_marginStart="@dimen/spacing_x_large"/>
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="master" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:alpha="0.3"
+        android:tint="?android:textColorSecondary"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+
 </LinearLayout>

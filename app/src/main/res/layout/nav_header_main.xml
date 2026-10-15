@@ -2,69 +2,72 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="136dp"
+    android:layout_height="144dp"
     android:background="@drawable/side_nav_bar_rounded"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingLeft="@dimen/activity_margin"
-    android:paddingRight="@dimen/activity_margin"
-    android:paddingTop="@dimen/spacing_normal"
+    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/user_info_lay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:background="?android:selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="12dp"
                 android:src="@mipmap/ic_launcher_round"
-                android:transitionName="userAvatar"
-                android:layout_marginEnd="@dimen/spacing_normal"/>
+                android:transitionName="userAvatar" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:lines="1"
                     android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    android:lines="1"
+                    android:text="@string/app_name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="ThirtyDegreesRay" />
 
                 <TextView
                     android:id="@+id/mail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:lines="1"
+                    android:layout_marginTop="3dp"
                     android:ellipsize="end"
+                    android:lines="1"
+                    android:text="An android client for GitHub."
                     android:textSize="12sp"
-                    android:text="An android client for GitHub." />
+                    tools:text="developer@github.com" />
 
             </LinearLayout>
 
@@ -72,13 +75,15 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toggle_account_bn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_arrow_drop_down"
-            android:tint="?icon_color"
-            android:padding="@dimen/spacing_normal"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="-6dp"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:layout_marginEnd="-12dp"/>
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="6dp"
+            android:tint="?icon_color"
+            app:srcCompat="@drawable/ic_arrow_drop_down" />
 
     </LinearLayout>
 

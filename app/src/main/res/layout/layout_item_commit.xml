@@ -1,105 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
     android:layout_marginBottom="@dimen/card_view_vertical_margin"
-    android:background="?card_background"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="?card_background"
-    app:cardCornerRadius="@dimen/card_view_corner_radius">
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/card_stroke_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/spacing_normal">
+        android:padding="@dimen/card_content_padding">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/avatar_size_normal"
+            android:layout_height="@dimen/avatar_size_normal"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:tint="?android:textColorSecondary"/>
+            tools:src="@drawable/ic_menu_person" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="@dimen/spacing_normal">
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OpenHub"
-                    android:textSize="@dimen/text_normal"
-                    android:textColor="?colorAccent"
+                    android:ellipsize="end"
                     android:maxLines="1"
-                    android:ellipsize="end"/>
+                    android:textColor="?colorAccent"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="octocat" />
+
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:textSize="@dimen/text_mini"
+                    android:gravity="end"
                     android:textColor="?android:textColorSecondary"
-                    android:layout_marginStart="@dimen/spacing_mini"
-                    android:layout_gravity="top"/>
+                    android:textSize="12sp"
+                    tools:text="yesterday" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/commit_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="OpenHub description"
-                android:textSize="@dimen/text_small"
-                android:maxLines="4"
-                android:paddingTop="@dimen/spacing_mini"
-                android:paddingBottom="@dimen/spacing_mini"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="3"
                 android:textColor="?android:textColorPrimary"
-                android:transitionName="issueTitle"/>
+                android:textSize="14sp"
+                android:transitionName="issueTitle"
+                tools:text="Refactor all XML layouts to modern Material 3 standard" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/commit_brief_sha"
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="@dimen/text_mini"
-                    android:textColor="?android:textColorSecondary"/>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/commit_brief_sha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_pill_tag"
+                        android:fontFamily="monospace"
+                        android:paddingStart="7dp"
+                        android:paddingEnd="7dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="11sp"
+                        tools:text="7a8b9c0" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_small">
+                    android:orientation="horizontal">
+
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        app:srcCompat="@drawable/ic_comment"
-                        android:tint="?android:textColorSecondary"/>
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:tint="?android:textColorSecondary"
+                        app:srcCompat="@drawable/ic_comment" />
+
                     <TextView
                         android:id="@+id/comment_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_mini"
+                        android:layout_marginStart="4dp"
                         android:textColor="?android:textColorSecondary"
-                        android:layout_marginStart="@dimen/spacing_mini"/>
+                        android:textSize="12sp"
+                        tools:text="0" />
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

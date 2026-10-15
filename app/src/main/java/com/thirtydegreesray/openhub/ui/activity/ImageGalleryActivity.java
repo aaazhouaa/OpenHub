@@ -64,7 +64,6 @@ public class ImageGalleryActivity extends BaseActivity<IBaseContract.Presenter> 
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        setTransparentStatusBar();
         setToolbarBackEnable();
         setToolbarScrollAble(false);
 

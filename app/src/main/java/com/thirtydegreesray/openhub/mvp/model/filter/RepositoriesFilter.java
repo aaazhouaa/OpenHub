@@ -129,6 +129,12 @@ public class RepositoriesFilter implements Parcelable {
         }
     }
 
+    public static RepositoriesFilter createWithSort(int sortItemId) {
+        RepositoriesFilter filter = new RepositoriesFilter();
+        applySortId(filter, sortItemId);
+        return filter;
+    }
+
     public static RepositoriesFilter getDefault(@NonNull RepositoriesFragment.RepositoriesType type) {
         int defaultSortId = RepositoriesFragment.RepositoriesType.STARRED.equals(type)
                 ? R.id.nav_recently_created : R.id.nav_full_name_asc;

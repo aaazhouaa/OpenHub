@@ -6,21 +6,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <color name="light_color_primary">@color/material_indigo_500</color>
-    <color name="light_color_primary_blur">#DD3F51B5</color>
-    <color name="light_color_primary_dark">@color/material_indigo_700</color>
+    <color name="light_color_primary_blur">#DDFFFFFF</color>
+    <color name="light_color_primary_dark">#E2E8F0</color>
+    <color name="light_top_bar_background">#FFFFFF</color>
     <color name="light_color_accent">@color/material_blue_accent_700</color>
-    <color name="light_window_background">#F4F4F4</color>
-    <color name="light_icon_color">@color/material_light_black</color>
-    <color name="light_card_background">@color/material_white</color>
-    <color name="light_title_color">@color/material_light_black</color>
-    <color name="light_subtitle_color">@color/material_grey_350</color>
-    <color name="light_selected_color">@color/material_grey_350</color>
-    <color name="light_text_color_primary">#212121</color>
-    <color name="light_text_color_secondary">#757575</color>
+    <color name="light_window_background">#F8FAFC</color>
+    <color name="light_icon_color">#334155</color>
+    <color name="light_card_background">#FFFFFF</color>
+    <color name="light_title_color">#0F172A</color>
+    <color name="light_subtitle_color">#64748B</color>
+    <color name="light_selected_color">#E2E8F0</color>
+    <color name="light_text_color_primary">#0F172A</color>
+    <color name="light_text_color_secondary">#64748B</color>
 
     <style name="ThemeLight" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/light_card_background</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="colorPrimary">@color/light_color_primary</item>
         <item name="colorPrimaryDark">@color/light_color_primary_dark</item>
         <item name="colorSecondary">@color/material_blue_accent_700</item>
@@ -36,13 +38,17 @@
         <item name="title_color">@color/light_title_color</item>
         <item name="subtitle_color">@color/light_subtitle_color</item>
         <item name="selected_color">@color/light_selected_color</item>
+        <item name="card_stroke_color">#E2E8F0</item>
+        <item name="tag_pill_background">#F1F5F9</item>
         <item name="color_primary_blur">@color/light_color_primary_blur</item>
-        <!-- Light theme keeps tinting the app bar with the accent colour. -->
-        <item name="top_bar_background">?attr/colorPrimary</item>
+        <item name="top_bar_background">@color/light_card_background</item>
         <item name="popup_theme">@style/PopupThemeLight</item>
         <item name="appbar_theme">@style/AppbarThemeLight</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/ContextPopupThemeLight</item>
         <item name="popup_menu_theme">@style/PopupMenuLight</item>
+        <item name="actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
 
         <!-- Material 3 Shape Appearances -->
         <item name="materialCardViewStyle">@style/Widget.OpenHub.Material3.CardView.Light</item>
@@ -65,20 +71,33 @@
         <item name="android:windowBackground">@color/light_window_background</item>
     </style>
 
-    <style name="AppbarThemeLight" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-
+    <style name="AppbarThemeLight" parent="ThemeOverlay.AppCompat.Light">
+        <item name="actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="toolbarStyle">@style/Widget.OpenHub.Toolbar</item>
     </style>
 
-    <style name="PopupMenuLight" parent="Widget.AppCompat.Light.PopupMenu">
-        <item name="android:popupBackground">@color/light_window_background</item>
+    <style name="PopupMenuLight" parent="Widget.Material3.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
+        <item name="android:textColor">@color/light_text_color_primary</item>
     </style>
 
-    <style name="PopupThemeLight" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">@color/light_window_background</item>
+    <style name="PopupThemeLight" parent="ThemeOverlay.Material3">
+        <!-- 彻底消除 M3 默认紫色 surface 染色 -->
+        <item name="colorSurface">@color/light_card_background</item>
+        <item name="colorSurfaceContainer">@color/light_card_background</item>
+        <item name="colorSurfaceContainerHigh">@color/light_card_background</item>
+        <item name="colorSurfaceContainerHighest">@color/light_card_background</item>
+        <item name="colorSurfaceContainerLow">@color/light_card_background</item>
+        <item name="colorSurfaceContainerLowest">@color/light_card_background</item>
+        <item name="android:colorBackground">@color/light_card_background</item>
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
+        <item name="android:textColorPrimary">@color/light_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_color_secondary</item>
     </style>
 
     <style name="ContextPopupThemeLight" parent="PopupThemeLight">
-        <item name="android:popupBackground">@color/light_window_background</item>
+        <item name="android:popupBackground">@drawable/bg_popup_menu_modern</item>
         <!--
          ~  Context menu of a RecyclerView is displayed in the wrong location when setting
          ~  a contextPopupMenuStyle on Android N, set bellow can fix it.

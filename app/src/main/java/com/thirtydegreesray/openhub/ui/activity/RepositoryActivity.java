@@ -110,6 +110,8 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
             menu.findItem(R.id.action_fork).setVisible(mPresenter.isForkEnable());
             bookmark.setTitle(mPresenter.isBookmarked() ?
                     getString(R.string.remove_bookmark) : getString(R.string.bookmark));
+            bookmark.setIcon(mPresenter.isBookmarked() ?
+                    R.drawable.ic_bookmark : R.drawable.ic_un_bookmark);
             menu.findItem(R.id.action_wiki).setVisible(mPresenter.getRepository().isHasWiki());
         }
         return true;
@@ -118,7 +120,6 @@ public class RepositoryActivity extends PagerActivity<RepositoryPresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        setTransparentStatusBar();
         toolbar.setTitleTextAppearance(getActivity(), R.style.Toolbar_TitleText);
         toolbar.setSubtitleTextAppearance(getActivity(), R.style.Toolbar_Subtitle);
         setToolbarBackEnable();

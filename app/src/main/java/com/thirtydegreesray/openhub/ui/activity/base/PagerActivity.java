@@ -55,6 +55,10 @@ public abstract class PagerActivity<P extends BasePresenter> extends BaseDrawerA
         }
         viewPager.addOnPageChangeListener(this);
         tabLayout.addOnTabSelectedListener(this);
+        tabLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            ViewUtils.alignTabContentBottom(tabLayout);
+        });
+        ViewUtils.alignTabContentBottom(tabLayout);
     }
 
     @Override

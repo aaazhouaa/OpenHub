@@ -2,21 +2,41 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:gravity="center_vertical"
-    android:padding="@dimen/spacing_small"
-    android:background="?android:attr/selectableItemBackground">
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"/>
+        android:layout_width="@dimen/avatar_size_normal"
+        android:layout_height="@dimen/avatar_size_normal"
+        tools:src="@drawable/ic_menu_person" />
+
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_large"
-        android:textSize="@dimen/text_normal"
-        android:textColor="?android:textColorPrimary"/>
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:text="octocat" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:alpha="0.4"
+        android:tint="?android:textColorSecondary"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+
 </LinearLayout>

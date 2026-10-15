@@ -66,6 +66,7 @@ public class RepositoriesPresenter extends BasePagerPresenter<IRepositoriesContr
     @AutoAccess RepositoriesFragment.RepositoriesType type;
     @AutoAccess String user;
     @AutoAccess String repo;
+    @AutoAccess int sortItemId;
 
     @AutoAccess SearchModel searchModel;
     @AutoAccess TrendingSince since;
@@ -272,7 +273,11 @@ public class RepositoriesPresenter extends BasePagerPresenter<IRepositoriesContr
 
     public RepositoriesFilter getFilter() {
         if (filter == null) {
-            filter = RepositoriesFilter.getDefault(type);
+            if (sortItemId != 0) {
+                filter = RepositoriesFilter.createWithSort(sortItemId);
+            } else {
+                filter = RepositoriesFilter.getDefault(type);
+            }
         }
         return filter;
     }
@@ -503,7 +508,7 @@ public class RepositoriesPresenter extends BasePagerPresenter<IRepositoriesContr
         String owner = fullName.substring(0, fullName.lastIndexOf("/"));
         String repoName = fullName.substring(fullName.lastIndexOf("/") + 1);
 
-        Element descElement = element.getElementsByClass("col-9 color-fg-muted my-1 pr-4").first();
+        Element descElement = element.select("p.col-9.color-fg-muted").first();
         Element numElement = element.getElementsByClass("f6 color-fg-muted mt-2").first();
         StringBuilder desc = new StringBuilder();
         String language = "unknown";
@@ -524,13 +529,11 @@ public class RepositoriesPresenter extends BasePagerPresenter<IRepositoriesContr
                     language = numElement.select("span > span").get(1).textNodes().get(0).toString().trim();
                 }
 
-                for (Element e : numElement.getElementsByClass("Link Link--muted d-inline-block mr-3")) {
+                for (Element e : numElement.select("a[href$=\"stargazers\"], a[href$=\"forks\"]")) {
                     if (e.attr("href").endsWith("stargazers")) {
-                        starNumStr = e.textNodes().get(0).toString()
-                                .replaceAll(" ", "").replaceAll(",", "");
+                        starNumStr = e.text().replaceAll(" ", "").replaceAll(",", "");
                     } else if (e.attr("href").endsWith("forks")) {
-                        forkNumStr = e.textNodes().get(0).toString()
-                                .replaceAll(" ", "").replaceAll(",", "");
+                        forkNumStr = e.text().replaceAll(" ", "").replaceAll(",", "");
                     }
                 }
 

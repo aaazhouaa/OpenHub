@@ -1,56 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/spacing_small"
-    android:paddingBottom="@dimen/spacing_small"
-    android:paddingStart="@dimen/spacing_x_large"
-    android:paddingEnd="@dimen/spacing_x_large">
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/version_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="@dimen/text_normal"
-        android:text="@string/upgrade_version"
-        android:layout_marginBottom="@dimen/spacing_mini"/>
+        android:layout_marginBottom="4dp"
+        android:textColor="?colorAccent"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:text="Version: v4.0.3" />
 
     <TextView
         android:id="@+id/size_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="@dimen/text_normal"
-        android:text="@string/upgrade_apk_size"
-        android:layout_marginBottom="@dimen/spacing_mini"/>
+        android:layout_marginBottom="4dp"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="13sp"
+        tools:text="Size: 5.8 MB" />
 
     <TextView
         android:id="@+id/time_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="@dimen/text_normal"
-        android:text="@string/publish_time"/>
+        android:layout_marginBottom="12dp"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="13sp"
+        tools:text="Release time: 2026-10-15" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_marginBottom="12dp"
+        android:background="?android:attr/listDivider" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="@dimen/text_large"
         android:text="@string/upgrade_info"
-        android:layout_marginTop="@dimen/spacing_small"/>
+        android:textColor="?android:textColorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/upgrade_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="@dimen/text_normal"
-        android:layout_marginTop="@dimen/spacing_mini"/>
+        android:layout_marginTop="6dp"
+        android:lineSpacingExtra="3dp"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="13sp"
+        tools:text="Changelog: Modernized all XML layouts with Material 3." />
 
 </LinearLayout>

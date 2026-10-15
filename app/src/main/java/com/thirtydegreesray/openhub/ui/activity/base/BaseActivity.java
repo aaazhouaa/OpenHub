@@ -30,9 +30,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
+import com.thirtydegreesray.openhub.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -94,8 +97,9 @@ BaseActivity<P extends IBaseContract.Presenter>
         AppUtils.updateAppLanguage(getActivity());
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setStatusBarColor(ViewUtils.getTopBarBackgroundColor(getActivity()));
         }
+        setupStatusBarMode();
         isAlive = true;
         setupActivityComponent(getAppComponent());
         DataAutoAccess.getData(this, savedInstanceState);
@@ -450,7 +454,7 @@ BaseActivity<P extends IBaseContract.Presenter>
     }
 
     /**
-     * targetSdk 35+ 强制 edge-to-edge。状态栏保持透明，状态栏下面的区域与主题强调色一致。
+     * targetSdk 35+ 强制 edge-to-edge。状态栏保持透明，窗口内嵌由 WindowInsets 处理。
      */
     private void applySystemBarInsets(){
         if (Build.VERSION.SDK_INT < 35) return;
@@ -462,28 +466,24 @@ BaseActivity<P extends IBaseContract.Presenter>
         int paddingTop = content.getPaddingTop();
         int paddingRight = content.getPaddingRight();
         int paddingBottom = content.getPaddingBottom();
-        View statusBarBackground = null;
-        if (toolbar != null) {
-            statusBarBackground = new View(this);
-            statusBarBackground.setBackgroundColor(ViewUtils.getTopBarBackgroundColor(this));
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 0, Gravity.TOP);
-            decorContent.addView(statusBarBackground, params);
-        }
-        View finalStatusBarBackground = statusBarBackground;
 
         ViewCompat.setOnApplyWindowInsetsListener(content, (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
                     | WindowInsetsCompat.Type.displayCutout());
             v.setPadding(paddingLeft + bars.left, paddingTop + bars.top,
                     paddingRight + bars.right, paddingBottom + bars.bottom);
-            if (finalStatusBarBackground != null) {
-                ViewGroup.LayoutParams params = finalStatusBarBackground.getLayoutParams();
-                params.height = bars.top;
-                finalStatusBarBackground.setLayoutParams(params);
-            }
             return insets;
         });
+    }
+
+    public void setupStatusBarMode() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            WindowInsetsControllerCompat controller =
+                    WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+            if (controller != null) {
+                controller.setAppearanceLightStatusBars(ThemeHelper.isLightMode());
+            }
+        }
     }
 
     protected void setToolbarScrollAble(boolean scrollAble) {
@@ -500,8 +500,12 @@ BaseActivity<P extends IBaseContract.Presenter>
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            if (Build.VERSION.SDK_INT >= 23 && ThemeHelper.isLightMode()) {
+                option |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
+            setupStatusBarMode();
         }
     }
 

@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
@@ -41,6 +42,7 @@ import com.thirtydegreesray.openhub.ui.fragment.ActivityFragment;
 import com.thirtydegreesray.openhub.ui.fragment.BookmarksFragment;
 import com.thirtydegreesray.openhub.ui.fragment.CollectionsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.RepositoriesFragment;
+import com.thirtydegreesray.openhub.ui.fragment.StarredReposPagerFragment;
 import com.thirtydegreesray.openhub.ui.fragment.TopicsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.TraceFragment;
 import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
@@ -61,6 +63,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.tab_layout) TabLayout tabLayout;
     @BindView(R2.id.frame_layout_content) FrameLayout frameLayoutContent;
+    @BindView(R2.id.bottom_navigation) @Nullable BottomNavigationView bottomNavigation;
 
     private AppCompatImageView toggleAccountBn;
 
@@ -118,8 +121,8 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     @Override
     protected void initActivity() {
         super.initActivity();
-        setStartDrawerEnable(true);
-        setEndDrawerEnable(true);
+        setStartDrawerEnable(false);
+        setEndDrawerEnable(false);
         newYearWishesDialog = new NewYearWishesDialog(getActivity());
         newYearWishesDialog.checkStarWishes();
     }
@@ -143,9 +146,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
 
-        setToolbarScrollAble(true);
-        updateStartDrawerContent(R.menu.activity_main_drawer);
-        removeEndDrawer();
+        setToolbarScrollAble(false);
         if (mPresenter.isFirstUseAndNoNewsUser()) {
             selectedPage = R.id.nav_starred;
             updateFragmentByNavId(selectedPage);
@@ -157,49 +158,33 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
                 selectedPage = startPageNavId;
                 updateFragmentByNavId(selectedPage);
             } else {
-                selectedPage = R.id.nav_news;
+                selectedPage = R.id.nav_starred;
                 updateFragmentByNavId(selectedPage);
-                updateFragmentByNavId(startPageNavId);
             }
         }
-        // Assigned on every path: back navigation compares against it, and a stale 0
-        // would silently disable the "return to the default page" behaviour.
         defaultPage = getDefaultPageNavId();
-        navViewStart.setCheckedItem(selectedPage);
-
-        View userInfoLay = navViewStart.getHeaderView(0).findViewById(R.id.user_info_lay);
-        ImageView avatar = navViewStart.getHeaderView(0).findViewById(R.id.avatar);
-        TextView name = navViewStart.getHeaderView(0).findViewById(R.id.name);
-        TextView mail = navViewStart.getHeaderView(0).findViewById(R.id.mail);
-
-        View.OnClickListener openProfileListener = v -> {
-            if (AppData.INSTANCE.getLoggedUser() != null) {
-                ProfileActivity.show(getActivity(), avatar, AppData.INSTANCE.getLoggedUser());
-            }
-        };
-        if (userInfoLay != null) userInfoLay.setOnClickListener(openProfileListener);
-        avatar.setOnClickListener(openProfileListener);
-        name.setOnClickListener(openProfileListener);
-        mail.setOnClickListener(openProfileListener);
-
-        toggleAccountBn = navViewStart.getHeaderView(0).findViewById(R.id.toggle_account_bn);
-        toggleAccountBn.setOnClickListener(v -> {
-            toggleAccountLay();
-        });
-
-        ViewUtils.setCircleOutline(avatar);
-        User loginUser = AppData.INSTANCE.getLoggedUser();
-        GlideApp.with(getActivity())
-                .load(loginUser.getAvatarUrl())
-                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-                .circleCrop()
-                .into(avatar);
-        name.setText(StringUtils.isBlank(loginUser.getName()) ? loginUser.getLogin() : loginUser.getName());
-        String joinTime = getString(R.string.joined_at).concat(" ")
-                .concat(StringUtils.getDateStr(loginUser.getCreatedAt()));
-        mail.setText(StringUtils.isBlank(loginUser.getBio()) ? joinTime : loginUser.getBio());
 
         tabLayout.setVisibility(View.GONE);
+
+        if (bottomNavigation != null) {
+            bottomNavigation.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_starred || id == R.id.nav_owned) {
+                    updateFragmentByNavId(id);
+                    return true;
+                } else if (id == R.id.nav_trending) {
+                    TrendingActivity.show(getActivity());
+                    return false;
+                } else if (id == R.id.nav_profile) {
+                    User currentUser = AppData.INSTANCE.getLoggedUser();
+                    if (currentUser != null) {
+                        ProfileActivity.show(getActivity(), currentUser.getLogin(), currentUser.getAvatarUrl());
+                    }
+                    return false;
+                }
+                return false;
+            });
+        }
     }
 
     @Override
@@ -208,10 +193,6 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         MenuItem searchItem = menu.findItem(R.id.action_page_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         PageSearchHelper.attach(this, searchView);
-
-        getMenuInflater().inflate(R.menu.menu_sort, menu);
-        MenuItem menuItem = menu.findItem(R.id.nav_sort);
-        menuItem.setVisible(selectedPage == R.id.nav_owned || selectedPage == R.id.nav_starred);
         return true;
     }
 
@@ -242,6 +223,12 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     }
 
     private void updateFragmentByNavId(int id){
+        if (bottomNavigation != null) {
+            MenuItem bottomItem = bottomNavigation.getMenu().findItem(id);
+            if (bottomItem != null) {
+                bottomItem.setChecked(true);
+            }
+        }
         if(FRAGMENT_NAV_ID_LIST.contains(id)){
             updateTitle(id);
             loadFragment(id);
@@ -265,29 +252,12 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
             case R.id.nav_settings:
                 SettingsActivity.show(getActivity(), SETTINGS_REQUEST_CODE);
                 break;
-
-            case R.id.nav_logout:
-                logout();
-                break;
-            case R.id.nav_add_account:
-                showLoginPage();
-                break;
             default:
                 break;
         }
     }
 
     private void updateFilter(int itemId) {
-        if (itemId == R.id.nav_owned) {
-            updateEndDrawerContent(R.menu.menu_repositories_filter);
-            RepositoriesFilter.initDrawer(navViewEnd, RepositoriesFragment.RepositoriesType.OWNED);
-        } else if (itemId == R.id.nav_starred) {
-            updateEndDrawerContent(R.menu.menu_repositories_filter);
-            RepositoriesFilter.initDrawer(navViewEnd, RepositoriesFragment.RepositoriesType.STARRED);
-        } else {
-            removeEndDrawer();
-        }
-        invalidateOptionsMenu();
     }
 
     private void updateTitle(int itemId) {
@@ -329,8 +299,7 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
                 return RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.OWNED,
                         AppData.INSTANCE.getLoggedUser().getLogin());
             case R.id.nav_starred:
-                return RepositoriesFragment.create(RepositoriesFragment.RepositoriesType.STARRED,
-                        AppData.INSTANCE.getLoggedUser().getLogin());
+                return StarredReposPagerFragment.create();
             case R.id.nav_bookmarks:
                 return BookmarksFragment.create();
             case R.id.nav_trace:
@@ -457,40 +426,10 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         return startPageNavId;
     }
 
-    private boolean isManageAccount = false;
     private void toggleAccountLay(){
-        isManageAccount = !isManageAccount;
-        toggleAccountBn.setImageResource(isManageAccount ? R.drawable.ic_arrow_drop_up : R.drawable.ic_arrow_drop_down);
-        invalidateMainMenu();
     }
 
     private void invalidateMainMenu(){
-        if(navViewStart == null){
-            return ;
-        }
-        Menu menu = navViewStart.getMenu();
-
-        if(!isAccountsAdded){
-            isAccountsAdded = true;
-            List<AuthUser> users = mPresenter.getLoggedUserList();
-            for(AuthUser user : users){
-                MenuItem menuItem = menu.add(R.id.manage_accounts, Menu.NONE, 1, user.getLoginId())
-                        .setIcon(R.drawable.ic_menu_person)
-                        .setOnMenuItemClickListener(item -> {
-                            mPresenter.toggleAccount(item.getTitle().toString());
-                            return true;
-                        });
-            }
-        }
-
-        menu.setGroupVisible(R.id.my_account, isManageAccount);
-        menu.setGroupVisible(R.id.manage_accounts, isManageAccount);
-
-        menu.setGroupVisible(R.id.my, !isManageAccount);
-        menu.setGroupVisible(R.id.repositories, !isManageAccount);
-        menu.setGroupVisible(R.id.search, !isManageAccount);
-        menu.setGroupVisible(R.id.setting, !isManageAccount);
-
     }
 
     @Override

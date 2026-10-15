@@ -77,4 +77,15 @@ public class ProfileInfoPresenter extends BasePagerPresenter<IProfileInfoContrac
     public void setUser(User user) {
         this.user = user;
     }
+
+    public boolean isMe() {
+        return user != null && com.thirtydegreesray.openhub.AppData.INSTANCE.getLoggedUser() != null
+                && user.getLogin().equalsIgnoreCase(com.thirtydegreesray.openhub.AppData.INSTANCE.getLoggedUser().getLogin());
+    }
+
+    public void logout() {
+        daoSession.getAuthUserDao().delete(com.thirtydegreesray.openhub.AppData.INSTANCE.getAuthUser());
+        com.thirtydegreesray.openhub.AppData.INSTANCE.setAuthUser(null);
+        com.thirtydegreesray.openhub.AppData.INSTANCE.setLoggedUser(null);
+    }
 }

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.core.widget.NestedScrollView
     android:id="@+id/scroll_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingTop="6dp"
+    android:paddingBottom="24dp"
     android:scrollbars="vertical">
 
     <LinearLayout
@@ -13,217 +16,275 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- 仓库主信息卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_view_vertical_margin"
-            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
             android:layout_marginStart="@dimen/card_view_horizontal_margin"
+            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
             android:layout_marginTop="@dimen/card_view_vertical_margin"
-            android:background="?card_background"
+            android:layout_marginBottom="@dimen/card_view_vertical_margin"
             app:cardBackgroundColor="?card_background"
             app:cardCornerRadius="@dimen/card_view_corner_radius"
-            app:contentPadding="@dimen/spacing_normal">
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/card_stroke_color">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="@dimen/card_content_padding"
+                android:paddingEnd="@dimen/card_content_padding"
+                android:paddingTop="@dimen/card_content_padding"
+                android:paddingBottom="6dp">
 
+                <!-- 仓库大标题 -->
                 <TextView
                     android:id="@+id/repo_title_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"/>
+                    android:lineSpacingExtra="2dp"
+                    android:textColor="?colorAccent"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="thirtydegreesray/OpenHub" />
 
+                <!-- 仓库详细描述 -->
                 <TextView
                     android:id="@+id/repo_desc_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_mini"
+                    android:layout_marginTop="8dp"
                     android:ellipsize="end"
-                    android:maxLines="4"
-                    android:textColor="?android:textColorSecondary"
-                    android:textSize="@dimen/text_small"
-                    android:visibility="gone"/>
+                    android:lineSpacingExtra="3dp"
+                    android:maxLines="6"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:text="An open source GitHub Android client app, faster and concise."
+                    tools:visibility="visible" />
 
+                <!-- 语言 -->
                 <TextView
                     android:id="@+id/repo_language_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_mini"
+                    android:layout_marginTop="6dp"
                     android:textColor="?android:textColorSecondary"
-                    android:textSize="@dimen/text_small"
-                    android:visibility="gone"/>
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="Language: Java"
+                    tools:visibility="visible" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/spacing_large"/>
-
+                <!-- Fork 来源提示 -->
                 <TextView
                     android:id="@+id/fork_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
+                    android:layout_marginTop="6dp"
                     android:textColor="?colorAccent"
-                    android:layout_marginTop="@dimen/spacing_mini"/>
+                    android:textSize="13sp"
+                    tools:text="Forked from kosh/OpenHub" />
 
+                <!-- 创建/更新时间信息 -->
                 <TextView
                     android:id="@+id/repo_created_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_mini"
-                    android:textSize="@dimen/text_small"/>
+                    android:layout_marginTop="6dp"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="12sp"
+                    tools:text="Created on 2017-06-12, updated 2 hours ago" />
 
+                <!-- 4 栏统计指标块 (Issues, Stars, Forks, Watchers) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="64dp">
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp">
 
+                    <!-- Issues -->
                     <LinearLayout
                         android:id="@+id/issues_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/issues"
+                            app:srcCompat="@drawable/ic_issues"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/issues_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/issues"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="42" />
                     </LinearLayout>
 
+                    <!-- Stars -->
                     <LinearLayout
                         android:id="@+id/stargazers_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/stargazers"
+                            app:srcCompat="@drawable/ic_star_title"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/stargazers_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/stargazers"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="1.1k" />
                     </LinearLayout>
 
+                    <!-- Forks -->
                     <LinearLayout
                         android:id="@+id/froks_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/forks"
+                            app:srcCompat="@drawable/ic_fork"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/forks_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/forks"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="280" />
                     </LinearLayout>
 
+                    <!-- Watchers -->
                     <LinearLayout
                         android:id="@+id/watchers_lay"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_mini"
+                        android:layout_height="44dp"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/watchers"
+                            app:srcCompat="@drawable/ic_watch"
+                            app:tint="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/watchers_num_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_large"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/watchers"
-                            android:textSize="@dimen/text_mini"/>
+                            android:layout_marginStart="5dp"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="56" />
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- README 卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_view_vertical_margin"
-            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
             android:layout_marginStart="@dimen/card_view_horizontal_margin"
-            android:layout_marginTop="@dimen/card_view_vertical_margin"
-            android:background="?card_background"
+            android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="@dimen/card_view_vertical_margin"
             app:cardBackgroundColor="?card_background"
             app:cardCornerRadius="@dimen/card_view_corner_radius"
-            app:contentPaddingTop="@dimen/spacing_normal"
-            app:contentPaddingBottom="@dimen/spacing_normal">
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/card_stroke_color">
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/card_content_padding"
+                android:paddingBottom="@dimen/card_content_padding">
+
                 <TextView
                     android:id="@+id/readme_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:colorAccent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="16dp"
                     android:text="@string/readme"
-                    android:textSize="@dimen/text_large"
-                    android:layout_marginBottom="@dimen/spacing_mini"
-                    android:layout_marginStart="@dimen/spacing_normal"/>
-                <com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView
-                    android:id="@+id/web_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:webview_background="?card_background"
-                    android:layout_below="@+id/readme_title"/>
+                    android:textColor="?android:colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
                 <ProgressBar
                     android:id="@+id/readme_loader"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
+                    android:layout_below="@+id/readme_title"
                     android:indeterminate="false"
-                    android:paddingEnd="@dimen/spacing_large"
-                    android:paddingStart="@dimen/spacing_large"
-                    android:layout_below="@+id/readme_title"/>
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp" />
+
+                <com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView
+                    android:id="@+id/web_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/readme_loader"
+                    app:webview_background="?card_background" />
+
             </RelativeLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

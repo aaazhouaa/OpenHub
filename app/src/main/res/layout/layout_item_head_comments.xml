@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
     android:layout_marginBottom="@dimen/card_view_vertical_margin"
-    android:background="?card_background"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="?card_background"
-    app:cardCornerRadius="@dimen/card_view_corner_radius">
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/card_stroke_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_normal">
+        android:padding="@dimen/card_content_padding">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_avatar"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?android:selectableItemBackgroundBorderless"/>
+                android:layout_width="@dimen/avatar_size_normal"
+                android:layout_height="@dimen/avatar_size_normal"
+                android:background="?android:selectableItemBackgroundBorderless"
+                tools:src="@drawable/ic_menu_person" />
+
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OpenHub"
-                android:textSize="@dimen/text_normal"
+                android:layout_marginStart="12dp"
                 android:textColor="?colorAccent"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:gravity="center_vertical"/>
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="octocat" />
+
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:textSize="@dimen/text_mini"
                 android:textColor="?android:textColorSecondary"
-                android:layout_marginStart="@dimen/spacing_mini"
-                android:layout_gravity="top"/>
+                android:textSize="12sp"
+                tools:text="1 day ago" />
         </LinearLayout>
 
+        <!-- 状态行 (Open / Closed) -->
         <LinearLayout
             android:id="@+id/state_lay"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -69,41 +76,49 @@
                 android:id="@+id/issue_state_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_mini"
+                android:layout_marginStart="6dp"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="@dimen/text_small" />
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="Open" />
 
         </LinearLayout>
 
+        <!-- 标题 -->
         <TextView
             android:id="@+id/issue_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_mini"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="3dp"
             android:textColor="?android:textColorPrimary"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Issue title text with bold typography" />
 
-        <TextView
-            android:id="@+id/comment_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="@dimen/text_small"
-            android:paddingTop="@dimen/spacing_small"
-            android:textColor="?android:textColorPrimary"
-            android:maxLines="20"
-            android:ellipsize="end"/>
-
+        <!-- 标签 -->
         <TextView
             android:id="@+id/issue_labels"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="@dimen/text_small"
-            android:paddingTop="@dimen/spacing_small"
+            android:layout_marginTop="6dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="13sp"
+            tools:text="bug, enhancement" />
+
+        <!-- 描述正文 -->
+        <TextView
+            android:id="@+id/comment_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="3dp"
+            android:maxLines="20"
             android:textColor="?android:textColorPrimary"
-            android:gravity="center"/>
+            android:textSize="14sp"
+            tools:text="Original issue description text..." />
 
     </LinearLayout>
 

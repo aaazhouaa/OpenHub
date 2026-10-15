@@ -37,6 +37,17 @@ import com.thirtydegreesray.openhub.util.StringUtils;
 import com.thirtydegreesray.openhub.util.ViewUtils;
 
 import java.util.ArrayList;
+import androidx.annotation.Nullable;
+import android.content.Intent;
+import androidx.appcompat.app.AlertDialog;
+import com.thirtydegreesray.openhub.ui.activity.BookmarksActivity;
+import com.thirtydegreesray.openhub.ui.activity.HubContainerActivity;
+import com.thirtydegreesray.openhub.ui.activity.IssuesActivity;
+import com.thirtydegreesray.openhub.ui.activity.LoginActivity;
+import com.thirtydegreesray.openhub.ui.activity.NotificationsActivity;
+import com.thirtydegreesray.openhub.ui.activity.SettingsActivity;
+import com.thirtydegreesray.openhub.ui.activity.SplashActivity;
+import com.thirtydegreesray.openhub.ui.activity.TraceActivity;
 
 import javax.inject.Inject;
 
@@ -71,6 +82,8 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
 
     @BindView(R2.id.orgs_lay) MaterialCardView orgsLay;
     @BindView(R2.id.orgs_recycler_view) RecyclerView orgsRecyclerView;
+    @BindView(R2.id.account_action_lay) @Nullable View accountActionLay;
+    @BindView(R2.id.features_hub_lay) @Nullable View featuresHubLay;
 
     @Inject UsersAdapter orgsAdapter;
 
@@ -103,9 +116,57 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
     }
 
     @OnClick({R2.id.user_avatar, R2.id.followers_lay, R2.id.following_lay, R2.id.repos_lay, R2.id.gists_lay,
-                R2.id.email, R2.id.link, R2.id.members_lay})
+                R2.id.email, R2.id.link, R2.id.members_lay,
+                R2.id.btn_add_account, R2.id.btn_logout,
+                R2.id.entry_notifications, R2.id.entry_news, R2.id.entry_issues,
+                R2.id.entry_bookmarks, R2.id.entry_trace, R2.id.entry_collections,
+                R2.id.entry_topics, R2.id.entry_public_news, R2.id.entry_settings})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.btn_add_account:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+            case R.id.btn_logout:
+                new AlertDialog.Builder(getActivity())
+                        .setCancelable(true)
+                        .setTitle(R.string.warning_dialog_tile)
+                        .setMessage(R.string.logout_warning)
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                        .setPositiveButton(R.string.logout, (dialog, which) -> {
+                            mPresenter.logout();
+                            getActivity().finishAffinity();
+                            Intent intent = new Intent(getActivity(), SplashActivity.class);
+                            startActivity(intent);
+                        })
+                        .show();
+                break;
+            case R.id.entry_notifications:
+                NotificationsActivity.show(getActivity());
+                break;
+            case R.id.entry_news:
+                HubContainerActivity.show(getActivity(), HubContainerActivity.Type.News);
+                break;
+            case R.id.entry_issues:
+                IssuesActivity.showForUser(getActivity());
+                break;
+            case R.id.entry_bookmarks:
+                BookmarksActivity.show(getActivity());
+                break;
+            case R.id.entry_trace:
+                TraceActivity.show(getActivity());
+                break;
+            case R.id.entry_collections:
+                HubContainerActivity.show(getActivity(), HubContainerActivity.Type.Collections);
+                break;
+            case R.id.entry_topics:
+                HubContainerActivity.show(getActivity(), HubContainerActivity.Type.Topics);
+                break;
+            case R.id.entry_public_news:
+                HubContainerActivity.show(getActivity(), HubContainerActivity.Type.PublicNews);
+                break;
+            case R.id.entry_settings:
+                SettingsActivity.show(getActivity(), 100);
+                break;
             case R.id.user_avatar:
                 String avatarUrl = mPresenter.getUser().getAvatarUrl();
                 if (!StringUtils.isBlank(avatarUrl)) {
@@ -188,6 +249,14 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
         ViewUtils.setTextView(company, user.getCompany());
         ViewUtils.setTextView(email, user.getEmail());
         ViewUtils.setTextView(link, user.getBlog());
+
+        boolean isMe = mPresenter.isMe();
+        if (accountActionLay != null) {
+            accountActionLay.setVisibility(isMe ? View.VISIBLE : View.GONE);
+        }
+        if (featuresHubLay != null) {
+            featuresHubLay.setVisibility(isMe ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override

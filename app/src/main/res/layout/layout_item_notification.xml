@@ -1,66 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
     android:layout_marginBottom="@dimen/card_view_vertical_margin"
-    android:background="?card_background"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="?card_background"
-    app:cardCornerRadius="@dimen/card_view_corner_radius">
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/card_stroke_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/spacing_normal"
-        android:gravity="center_vertical">
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/type_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            app:srcCompat="@drawable/ic_issues"
-            android:tint="?icon_color"/>
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:tint="?colorAccent"
+            app:srcCompat="@drawable/ic_issues" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal">
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/notifications"
-                android:textSize="@dimen/text_normal"
-                android:textColor="?android:textColorPrimary"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
                 android:maxLines="2"
-                android:ellipsize="end"/>
+                android:textColor="?android:textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Notification title about issue discussion" />
+
             <TextView
                 android:id="@+id/time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3 hours ago"
-                android:textSize="@dimen/text_small"
-                android:textColor="?android:textColorSecondary"/>
+                android:layout_marginTop="3dp"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="12sp"
+                tools:text="3 hours ago" />
 
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/status"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:srcCompat="@drawable/ic_mark_unread"
-            android:tint="?android:colorAccent"/>
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:tint="?colorAccent"
+            app:srcCompat="@drawable/ic_mark_unread" />
 
     </LinearLayout>
 

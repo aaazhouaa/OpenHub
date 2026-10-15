@@ -17,6 +17,10 @@ import com.thirtydegreesray.openhub.ui.activity.base.BaseActivity;
 
 public class ThemeHelper {
 
+    public static boolean isLightMode() {
+        return PrefUtils.LIGHT_INDIGO.equals(PrefUtils.getTheme());
+    }
+
     public static void apply(BaseActivity activity){
         if(ignorePage(activity)) return ;
         String theme = PrefUtils.getTheme();

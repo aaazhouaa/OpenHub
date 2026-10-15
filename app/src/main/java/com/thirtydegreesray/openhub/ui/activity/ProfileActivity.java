@@ -133,6 +133,8 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
             followItem.setTitle(mPresenter.isFollowing() ? R.string.unfollow : R.string.follow);
             bookmark.setTitle(mPresenter.isBookmarked() ?
                     getString(R.string.remove_bookmark) : getString(R.string.bookmark));
+            bookmark.setIcon(mPresenter.isBookmarked() ?
+                    R.drawable.ic_bookmark : R.drawable.ic_un_bookmark);
         }
         return true;
     }
@@ -140,7 +142,6 @@ public class ProfileActivity extends PagerActivity<ProfilePresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        setTransparentStatusBar();
         setToolbarBackEnable();
         setToolbarTitle(mPresenter.getLoginId());
     }

@@ -1,72 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-    android:layout_marginRight="@dimen/card_view_horizontal_margin"
-    android:layout_marginBottom="@dimen/card_view_vertical_margin"
+    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
-    android:background="?card_background"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginBottom="@dimen/card_view_vertical_margin"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="?card_background"
-    app:cardCornerRadius="@dimen/card_view_corner_radius">
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/card_stroke_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_normal">
+        android:padding="@dimen/card_content_padding">
+
+        <!-- 头部：用户头像、用户名、时间 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:background="?android:selectableItemBackgroundBorderless"/>
+                android:background="?android:selectableItemBackgroundBorderless"
+                tools:src="@drawable/ic_menu_person" />
+
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OpenHub"
-                android:textSize="@dimen/text_small"
+                android:layout_marginStart="10dp"
                 android:textColor="?colorAccent"
-                android:layout_marginStart="@dimen/spacing_normal"/>
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="OpenHub" />
+
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:layout_gravity="top"
-                android:textSize="@dimen/text_mini"
-                android:textColor="?android:textColorSecondary"/>
+                android:gravity="end"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="12sp"
+                tools:text="2 hours ago" />
         </LinearLayout>
 
+        <!-- 动作文本 -->
         <TextView
             android:id="@+id/action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_normal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
             android:textColor="?android:textColorPrimary"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:layout_marginBottom="@dimen/spacing_mini"/>
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="starred thirtydegreesray/OpenHub" />
 
+        <!-- 详细内容/描述 -->
         <TextView
             android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
-            android:textColor="?android:textColorSecondary"
-            android:layout_marginBottom="@dimen/spacing_mini"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
             android:maxLines="4"
-            android:ellipsize="end"/>
+            android:textColor="?android:textColorSecondary"
+            android:textSize="13sp"
+            tools:text="An open source GitHub Android client app." />
 
     </LinearLayout>
 

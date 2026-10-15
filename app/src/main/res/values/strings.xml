@@ -495,6 +495,12 @@
     </string>
 
     <string name="add_account">Add account</string>
+    <string name="nav_bottom_starred">Starred</string>
+    <string name="nav_bottom_profile">My</string>
+    <string name="filter_and_sort">Filter &amp; Sort</string>
+    <string name="features_hub">Services</string>
+    <string name="features_common">Features</string>
+    <string name="features_discover">Explore</string>
     <string name="delete_label_warning">Confirm to delete this label?</string>
     <string name="cookapk_download_url" translatable="false">https://www.coolapk.com/apk/com.thirtydegreesray.openhub</string>
 

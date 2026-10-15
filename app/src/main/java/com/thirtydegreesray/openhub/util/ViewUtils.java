@@ -155,10 +155,7 @@ public class ViewUtils {
      */
     @ColorInt
     public static int getTopBarBackgroundColor(@NonNull Context context) {
-        if (!hasAttr(context, R.attr.top_bar_background)) {
-            return getPrimaryColor(context);
-        }
-        return getColorAttr(context, R.attr.top_bar_background);
+        return getCardBackground(context);
     }
 
     @ColorInt
@@ -307,6 +304,20 @@ public class ViewUtils {
             labelsText.setSpan(new IssueLabelSpan(context, label), start, start + label.getName().length(), 0);
         }
         return labelsText;
+    }
+
+    public static void alignTabContentBottom(@Nullable com.google.android.material.tabs.TabLayout tabLayout) {
+        if (tabLayout == null) return;
+        tabLayout.post(() -> {
+            android.view.ViewGroup slidingTabStrip = (android.view.ViewGroup) tabLayout.getChildAt(0);
+            if (slidingTabStrip == null) return;
+            for (int i = 0; i < slidingTabStrip.getChildCount(); i++) {
+                android.view.View tabView = slidingTabStrip.getChildAt(i);
+                if (tabView instanceof android.widget.LinearLayout) {
+                    ((android.widget.LinearLayout) tabView).setGravity(android.view.Gravity.CENTER);
+                }
+            }
+        });
     }
 
 }

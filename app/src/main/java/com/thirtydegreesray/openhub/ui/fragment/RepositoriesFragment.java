@@ -49,9 +49,16 @@ public class RepositoriesFragment extends ListFragment<RepositoriesPresenter, Re
 
     public static RepositoriesFragment create(@NonNull RepositoriesType type,
                                               @NonNull String user){
+        return create(type, user, 0);
+    }
+
+    public static RepositoriesFragment create(@NonNull RepositoriesType type,
+                                              @NonNull String user,
+                                              int sortItemId){
         RepositoriesFragment fragment = new RepositoriesFragment();
         fragment.setArguments(BundleHelper.builder().put("type", type)
-                .put("user", user).build());
+                .put("user", user)
+                .put("sortItemId", sortItemId).build());
         return fragment;
     }
 

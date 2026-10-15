@@ -2,49 +2,57 @@
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/root_lay"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginLeft="@dimen/card_view_horizontal_margin"
-    android:layout_marginRight="@dimen/card_view_horizontal_margin"
+    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
     android:layout_marginTop="@dimen/card_view_vertical_margin"
     android:layout_marginBottom="@dimen/card_view_vertical_margin"
-    android:background="?card_background"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="?card_background"
-    app:cardCornerRadius="@dimen/card_view_corner_radius">
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/card_stroke_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingStart="@dimen/spacing_normal"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_small">
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
 
-    <com.thirtydegreesray.openhub.ui.widget.CircleBackgroundImageView
-        android:id="@+id/event_icon"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:padding="@dimen/spacing_mini"
-        android:src="@drawable/ic_dot"
-        app:background_color="@color/material_green_900"/>
+        <com.thirtydegreesray.openhub.ui.widget.CircleBackgroundImageView
+            android:id="@+id/event_icon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_dot"
+            app:background_color="@color/material_green_900" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_avatar"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:layout_marginStart="@dimen/spacing_normal"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="10dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            tools:src="@drawable/ic_menu_person" />
 
-    <TextView
-        android:id="@+id/desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_small"
-        android:textSize="@dimen/text_small"/>
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="13sp"
+            tools:text="thirtydegreesray starred thirtydegreesray/OpenHub" />
 
     </LinearLayout>
 

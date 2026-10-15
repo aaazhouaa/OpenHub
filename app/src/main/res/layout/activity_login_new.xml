@@ -1,82 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_grey_700"
-    android:gravity="center_horizontal"
-    android:padding="@dimen/activity_margin"
+    android:background="?android:attr/windowBackground"
+    android:fitsSystemWindows="true"
+    android:padding="24dp"
     tools:context=".ui.activity.LoginActivity">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/spacing_normal"
-        android:minHeight="380dp"
-        android:minWidth="250dp"
-        app:cardElevation="@dimen/spacing_large"
-        app:cardCornerRadius="16dp"
-        android:background="?card_background">
+        app:cardBackgroundColor="?card_background"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:strokeColor="?attr/card_stroke_color"
+        app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:padding="@dimen/spacing_normal"
-                android:src="@mipmap/logo"
-                android:background="@color/amoled_dark_card_background"/>
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/logo" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="285dp"
-                android:background="@color/dark_color_primary"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/spacing_normal"
-                android:paddingRight="@dimen/spacing_normal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/app_name"
+                android:textColor="?colorAccent"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/pat_layout"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Sign in to GitHub"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="13sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pat_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:hint="@string/personal_access_token_hint"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pat_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:hint="@string/personal_access_token_hint"
-                    app:hintTextColor="@color/text_color_light">
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/pat_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textColor="@color/text_color_light"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.unstoppable.submitbuttonview.SubmitButton
-                    android:id="@+id/login_pat_bn"
-                    android:layout_width="220dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="20dp"
-                    app:buttonColor="@color/light_card_background"
-                    app:buttonText="@string/login_with_pat"
-                    app:buttonTextSize="18sp" />
-
-            </LinearLayout>
+            <com.unstoppable.submitbuttonview.SubmitButton
+                android:id="@+id/login_pat_bn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                app:buttonColor="?colorAccent"
+                app:buttonText="@string/login_with_pat"
+                app:buttonTextSize="16sp" />
 
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
