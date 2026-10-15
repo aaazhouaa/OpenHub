@@ -79,6 +79,9 @@ BaseActivity<P extends IBaseContract.Presenter>
     private static BaseActivity curActivity;
 
     protected boolean isAlive = true;
+    private String mCurrentTheme;
+    private int mCurrentAccentColor;
+    private String mCurrentLanguage;
     @BindView(R2.id.toolbar) @Nullable protected Toolbar toolbar;
     @BindView(R2.id.toolbar_layout) @Nullable protected CollapsingToolbarLayout toolbarLayout;
 
@@ -95,6 +98,9 @@ BaseActivity<P extends IBaseContract.Presenter>
 
         ThemeHelper.apply(this);
         AppUtils.updateAppLanguage(getActivity());
+        mCurrentTheme = PrefUtils.getTheme();
+        mCurrentAccentColor = PrefUtils.getAccentColor();
+        mCurrentLanguage = PrefUtils.getLanguage();
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(ViewUtils.getTopBarBackgroundColor(getActivity()));
@@ -190,6 +196,26 @@ BaseActivity<P extends IBaseContract.Presenter>
     protected void onResume() {
         super.onResume();
         curActivity = getActivity();
+        if (!isFinishing() && checkThemeOrLanguageChanged()) {
+            recreate();
+            return;
+        }
+    }
+
+    private boolean checkThemeOrLanguageChanged() {
+        if (this instanceof SplashActivity) {
+            return false;
+        }
+        if (mCurrentTheme != null && !mCurrentTheme.equals(PrefUtils.getTheme())) {
+            return true;
+        }
+        if (mCurrentAccentColor != PrefUtils.getAccentColor()) {
+            return true;
+        }
+        if (mCurrentLanguage != null && !mCurrentLanguage.equals(PrefUtils.getLanguage())) {
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -21,7 +21,6 @@
     <style name="ThemeAmoledDark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">#000000</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="tabBackground">@drawable/tab_overlay_rounded</item>
         <item name="colorPrimary">@color/amoled_dark_color_primary</item>
         <item name="colorPrimaryDark">@color/amoled_dark_color_primary_dark</item>
         <item name="colorSecondary">@color/amoled_dark_color_accent</item>

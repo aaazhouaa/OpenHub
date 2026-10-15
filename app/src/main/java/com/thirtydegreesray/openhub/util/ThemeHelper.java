@@ -84,8 +84,9 @@ public class ThemeHelper {
                         return R.style.ThemeLight_Purple;
                     case PrefUtils.DEEP_PURPLE:
                         return R.style.ThemeLight_DeepPurple;
+                    default:
+                        return R.style.ThemeLight_Teal;
                 }
-                break;
             case PrefUtils.DARK:
                 switch (accentColor){
                     case PrefUtils.LIGHT_BLUE:
@@ -120,8 +121,9 @@ public class ThemeHelper {
                         return R.style.ThemeDark_Purple;
                     case PrefUtils.DEEP_PURPLE:
                         return R.style.ThemeDark_DeepPurple;
+                    default:
+                        return R.style.ThemeDark_Teal;
                 }
-                break;
             case PrefUtils.AMOLED_DARK:
                 switch (accentColor){
                     case PrefUtils.LIGHT_BLUE:
@@ -156,10 +158,11 @@ public class ThemeHelper {
                         return R.style.ThemeAmoledDark_Purple;
                     case PrefUtils.DEEP_PURPLE:
                         return R.style.ThemeAmoledDark_DeepPurple;
+                    default:
+                        return R.style.ThemeAmoledDark_Teal;
                 }
-                break;
         }
-        return R.style.ThemeLight_Indigo;
+        return R.style.ThemeLight_Teal;
     }
 
     private static boolean ignorePage(BaseActivity activity){

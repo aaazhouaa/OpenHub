@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.thirtydegreesray.openhub.R;
+import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.ThemeHelper;
 import com.thirtydegreesray.openhub.util.ViewUtils;
 
@@ -27,11 +28,13 @@ public class AboutActivity extends MaterialAboutActivity {
     }
 
     private boolean isAlive = false;
+    private String mCurrentTheme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         isAlive = true;
         ThemeHelper.applyForAboutActivity(this);
+        mCurrentTheme = PrefUtils.getTheme();
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(ViewUtils.getTopBarBackgroundColor(this));
@@ -55,6 +58,14 @@ public class AboutActivity extends MaterialAboutActivity {
     @Override
     protected CharSequence getActivityTitle() {
         return getString(R.string.about);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isFinishing() && mCurrentTheme != null && !mCurrentTheme.equals(PrefUtils.getTheme())) {
+            recreate();
+        }
     }
 
     @Override
