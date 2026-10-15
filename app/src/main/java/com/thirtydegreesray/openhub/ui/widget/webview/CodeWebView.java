@@ -6,12 +6,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -122,6 +124,15 @@ public class CodeWebView extends WebView {
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setDefaultTextEncodingName("utf-8");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
         boolean isLoadImageEnable = PrefUtils.isLoadImageEnable();
         settings.setLoadsImagesAutomatically(isLoadImageEnable);
         settings.setBlockNetworkImage(!isLoadImageEnable);
@@ -207,7 +218,7 @@ public class CodeWebView extends WebView {
         // loadData() URL-decodes its input, so the '#' of the CSS background colour
         // truncates everything after it (including the <img> tag) and nothing shows.
         // loadDataWithBaseURL loads the markup verbatim.
-        loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
+        loadDataWithBaseURL("https://github.com/", html, "text/html", "utf-8", null);
     }
 
     public void setHtmlSource(@NonNull String htmlSource) {
@@ -296,6 +307,11 @@ public class CodeWebView extends WebView {
         }
 
         @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
+        }
+
+        @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             injectImageClickScript(view);
@@ -308,6 +324,11 @@ public class CodeWebView extends WebView {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             startActivity(Uri.parse(url));
             return true;
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
         }
 
         @Override

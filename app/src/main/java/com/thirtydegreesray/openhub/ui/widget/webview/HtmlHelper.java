@@ -22,14 +22,15 @@ import java.util.regex.Pattern;
  */
 
 class HtmlHelper {
-    private static final Pattern LINK_PATTERN = Pattern.compile("href=\"(.*?)\"");
-    private static final Pattern IMAGE_PATTERN = Pattern.compile("src=\"(.*?)\"");
+    private static final Pattern LINK_PATTERN = Pattern.compile("href=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
+    private static final Pattern IMAGE_PATTERN = Pattern.compile("src=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
 
     static String generateImageHtml(@NonNull String imageUrl, @NonNull String backgroundColor) {
         boolean isDark = AppUtils.isNightMode();
         String imgFilter = isDark ? "opacity: 0.70; filter: brightness(0.70);" : "";
         return "<html>" +
                 "<head>" +
+                "<meta name=\"referrer\" content=\"no-referrer\" />" +
                 "<style>" +
                 "img{height: auto; width: 100%; " + imgFilter + "}" +
                 "body{background: " + backgroundColor + ";}" +
@@ -46,6 +47,7 @@ class HtmlHelper {
         return "<html>" +
                     "<head>" +
                         "<meta charset=\"utf-8\" />\n" +
+                        "<meta name=\"referrer\" content=\"no-referrer\" />\n" +
                         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>" +
                         "<style>" +
                             "body{background: " + backgroundColor + ";}" +
@@ -154,22 +156,23 @@ class HtmlHelper {
         return "<html>\n" +
                     "<head>\n" +
                         "<meta charset=\"utf-8\" />\n" +
+                        "<meta name=\"referrer\" content=\"no-referrer\" />\n" +
                         "<title>MD View</title>\n" +
                         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\"/>" +
                         "<link rel=\"stylesheet\" type=\"text/css\" href=\"./" + skin + "\">\n" +
                         "<style>" +
-                            "body{background: " + backgroundColor + ";}" +
-                            "a {color:" + accentColor + " !important;}" +
-                            "table {display: block; overflow-x: auto; max-width: 100%;}" +
-                            "img {max-width: 100%;}" +
-                            ".highlight pre, pre {" +
-                            " word-wrap: " + (wrapCode ? "break-word" : "normal") + "; " +
-                            " white-space: " + (wrapCode ? "pre-wrap" : "pre") + "; " +
-                            "}" +
-                        "</style>" +
+                            "body{background: " + backgroundColor + ";}\n" +
+                            "a {color:" + accentColor + " !important;}\n" +
+                            "table {display: block; overflow-x: auto; max-width: 100%;}\n" +
+                            "img {max-width: 100%;}\n" +
+                            ".highlight pre, pre {\n" +
+                            " word-wrap: " + (wrapCode ? "break-word" : "normal") + "; \n" +
+                            " white-space: " + (wrapCode ? "pre-wrap" : "pre") + "; \n" +
+                            "}\n" +
+                        "</style>\n" +
                     "</head>\n" +
                     "<body>\n" +
-                        mdSource +
+                        mdSource + "\n" +
                     "</body>\n" +
                 "</html>";
     }
@@ -182,13 +185,10 @@ class HtmlHelper {
     private static String fixWikiLinks(@NonNull String source) {
         Matcher linksMatcher = LINK_PATTERN.matcher(source);
         while (linksMatcher.find()) {
-            while (linksMatcher.find()) {
-                String oriUrl = linksMatcher.group(1);
-                String fixedUrl;
-                if (oriUrl.startsWith("/") && oriUrl.contains("/wiki/")) {
-                    fixedUrl = "https://github.com" + oriUrl;
-                    source = source.replace("href=\"" + oriUrl + "\"", "href=\"" + fixedUrl + "\"");
-                }
+            String oriUrl = linksMatcher.group(1);
+            if (oriUrl != null && oriUrl.startsWith("/") && oriUrl.contains("/wiki/")) {
+                String fixedUrl = "https://github.com" + oriUrl;
+                source = source.replace(linksMatcher.group(0), "href=\"" + fixedUrl + "\"");
             }
         }
         return source;
@@ -199,41 +199,91 @@ class HtmlHelper {
         if (gitHubName == null) return source;
         String owner = gitHubName.getUserName();
         String repo = gitHubName.getRepoName();
-        String branch = baseUrl.substring(baseUrl.indexOf("blob") + 5, baseUrl.lastIndexOf("/"));
+        if (StringUtils.isBlank(owner) || StringUtils.isBlank(repo)) return source;
+
+        String branch = "master";
+        if (baseUrl.contains("blob/")) {
+            int blobIndex = baseUrl.indexOf("blob/") + 5;
+            int nextSlash = baseUrl.indexOf("/", blobIndex);
+            if (nextSlash != -1) {
+                branch = baseUrl.substring(blobIndex, nextSlash);
+            } else {
+                branch = baseUrl.substring(blobIndex);
+            }
+        }
 
         Matcher linksMatcher = LINK_PATTERN.matcher(source);
         while (linksMatcher.find()) {
             String oriUrl = linksMatcher.group(1);
+            if (StringUtils.isBlank(oriUrl)) continue;
             if (oriUrl.contains("http://") || oriUrl.contains("https://")
-                    || oriUrl.startsWith("#") //filter markdown inner link
-                    ) {
+                    || oriUrl.startsWith("#") || oriUrl.startsWith("mailto:")) {
                 continue;
             }
 
-            String subUrl = oriUrl.startsWith("/") ? oriUrl : "/".concat(oriUrl);
+            String cleanUrl = cleanRelativePrefix(oriUrl);
+            String subUrl = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
             String fixedUrl;
-            if (!GitHubHelper.isImage(oriUrl)) {
+            if (!GitHubHelper.isImage(cleanUrl)) {
                 fixedUrl = "https://github.com/" + owner + "/" + repo + "/blob/" + branch + subUrl;
             } else {
-                //if link url is a image
                 fixedUrl = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + subUrl;
             }
-            source = source.replace("href=\"" + oriUrl + "\"", "href=\"" + fixedUrl + "\"");
+            source = source.replace(linksMatcher.group(0), "href=\"" + fixedUrl + "\"");
         }
 
         Matcher imagesMatcher = IMAGE_PATTERN.matcher(source);
         while (imagesMatcher.find()) {
             String oriUrl = imagesMatcher.group(1);
-            if (oriUrl.contains("http://") || oriUrl.contains("https://")) {
+            if (StringUtils.isBlank(oriUrl)) continue;
+
+            // GitHub blob 地址返回的是 HTML 页面，作为 img src 必定无法渲染，转换为 raw 资源链接
+            if (oriUrl.contains("github.com") && oriUrl.contains("/blob/")) {
+                String fixedUrl = oriUrl.replace("github.com", "raw.githubusercontent.com")
+                        .replace("/blob/", "/");
+                source = source.replace(imagesMatcher.group(0), "src=\"" + fixedUrl + "\"");
                 continue;
             }
 
-            String subUrl = oriUrl.startsWith("/") ? oriUrl : "/".concat(oriUrl);
-            String fixedUrl = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + subUrl;
-            source = source.replace("src=\"" + oriUrl + "\"", "src=\"" + fixedUrl + "\"");
+            // 已经是完整网络链接
+            if (oriUrl.startsWith("http://") || oriUrl.startsWith("https://")) {
+                continue;
+            }
+            if (oriUrl.startsWith("//")) {
+                source = source.replace(imagesMatcher.group(0), "src=\"https:" + oriUrl + "\"");
+                continue;
+            }
+
+            String cleanUrl = cleanRelativePrefix(oriUrl);
+            String fixedUrl;
+            // 避免对已包含仓库前缀的相对路径重复拼接
+            if (cleanUrl.startsWith("/" + owner + "/" + repo + "/raw/") ||
+                    cleanUrl.startsWith(owner + "/" + repo + "/raw/")) {
+                String sub = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
+                fixedUrl = "https://raw.githubusercontent.com" + sub;
+            } else if (cleanUrl.startsWith("/" + owner + "/" + repo + "/blob/") ||
+                    cleanUrl.startsWith(owner + "/" + repo + "/blob/")) {
+                String sub = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
+                fixedUrl = "https://raw.githubusercontent.com" + sub.replace("/blob/", "/");
+            } else {
+                String subUrl = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
+                fixedUrl = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + subUrl;
+            }
+            source = source.replace(imagesMatcher.group(0), "src=\"" + fixedUrl + "\"");
         }
 
         return source;
+    }
+
+    private static String cleanRelativePrefix(@NonNull String url) {
+        String res = url.trim();
+        while (res.startsWith("./")) {
+            res = res.substring(2);
+        }
+        while (res.startsWith("../")) {
+            res = res.substring(3);
+        }
+        return res;
     }
 
     static String generateDiffHtml(@NonNull String diffSource, boolean isDark,
