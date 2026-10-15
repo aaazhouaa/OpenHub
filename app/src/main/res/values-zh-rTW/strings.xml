@@ -249,6 +249,11 @@
     <string name="sort_order">排序</string>
     <string name="recently_starred">最近星號的</string>
     <string name="previously_starred">以前星號的</string>
+
+    <string name="tab_latest_starred">最新星號</string>
+    <string name="tab_latest_updated">最近更新</string>
+    <string name="tab_earliest_starred">最早星號</string>
+    <string name="tab_earliest_updated">最早更新</string>
     <string name="trace">追蹤</string>
     <string name="my_repos">我的儲存庫</string>
     <string name="starred_repos">星號儲存庫</string>

@@ -45,10 +45,10 @@ public class StarredReposPagerFragment extends Fragment {
     private class StarredPagerAdapter extends FragmentPagerAdapter {
 
         private final int[] titleRes = new int[]{
-                R.string.recently_starred,
-                R.string.recently_updated,
-                R.string.previously_starred,
-                R.string.least_recently_updated
+                R.string.tab_latest_starred,
+                R.string.tab_latest_updated,
+                R.string.tab_earliest_starred,
+                R.string.tab_earliest_updated
         };
 
         private final int[] sortIds = new int[]{

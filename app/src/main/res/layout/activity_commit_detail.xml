@@ -147,14 +147,16 @@
             android:background="@drawable/tab_bar_background"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabIndicatorColor="?title_color"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorColor="?colorAccent"
+            app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="2.5dp"
             app:tabIndicatorGravity="bottom"
             app:tabPaddingTop="0dp"
             app:tabPaddingBottom="0dp"
+            app:tabSelectedTextColor="?colorAccent"
             app:tabTextAppearance="@style/TextAppearance.Design.Tab"
-            app:tabTextColor="?title_color"
-            app:tabSelectedTextColor="?title_color"/>
+            app:tabTextColor="?android:textColorSecondary"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

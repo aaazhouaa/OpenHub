@@ -343,6 +343,11 @@
     <string name="recently_starred">Recently starred</string>
     <string name="previously_starred">Previously starred</string>
 
+    <string name="tab_latest_starred">Latest Starred</string>
+    <string name="tab_latest_updated">Latest Updated</string>
+    <string name="tab_earliest_starred">Earliest Starred</string>
+    <string name="tab_earliest_updated">Earliest Updated</string>
+
     <string name="trace">Trace</string>
     <string name="my_repos">My repos</string>
     <string name="starred_repos">Starred repos</string>
