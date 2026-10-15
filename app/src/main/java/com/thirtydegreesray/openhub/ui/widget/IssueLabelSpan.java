@@ -10,6 +10,7 @@ import android.text.style.ReplacementSpan;
 
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.mvp.model.Label;
+import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.ViewUtils;
 
 /**
@@ -29,8 +30,14 @@ public class IssueLabelSpan extends ReplacementSpan {
 
     public IssueLabelSpan(@NonNull Context context, @NonNull Label label) {
         super();
-        bgColor = label.getColorValue();
-        textColor = ViewUtils.getLabelTextColor(context, bgColor);
+        int rawBg = label.getColorValue();
+        if (AppUtils.isNightMode()) {
+            bgColor = ViewUtils.getDimmedColor(rawBg, 0.40f);
+            textColor = 0xFFB4BCC6;
+        } else {
+            bgColor = rawBg;
+            textColor = ViewUtils.getLabelTextColor(context, bgColor);
+        }
         padding = context.getResources().getDimension(R.dimen.spacing_micro);
         margin = context.getResources().getDimension(R.dimen.spacing_micro);
         bgRadius = context.getResources().getDimension(R.dimen.spacing_micro);

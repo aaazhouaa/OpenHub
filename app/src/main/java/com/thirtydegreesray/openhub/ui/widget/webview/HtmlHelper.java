@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.thirtydegreesray.openhub.mvp.model.GitHubName;
+import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.GitHubHelper;
 import com.thirtydegreesray.openhub.util.StringUtils;
 
@@ -25,10 +26,12 @@ class HtmlHelper {
     private static final Pattern IMAGE_PATTERN = Pattern.compile("src=\"(.*?)\"");
 
     static String generateImageHtml(@NonNull String imageUrl, @NonNull String backgroundColor) {
+        boolean isDark = AppUtils.isNightMode();
+        String imgFilter = isDark ? "opacity: 0.70; filter: brightness(0.70);" : "";
         return "<html>" +
                 "<head>" +
                 "<style>" +
-                "img{height: auto; width: 100%;}" +
+                "img{height: auto; width: 100%; " + imgFilter + "}" +
                 "body{background: " + backgroundColor + ";}" +
                 "</style>" +
                 "</head>" +
@@ -38,6 +41,8 @@ class HtmlHelper {
 
     static String generateHtmlSourceHtml(@NonNull String htmlSource, @NonNull String backgroundColor,
                                          @NonNull String accentColor) {
+        boolean isDark = AppUtils.isNightMode();
+        String imgFilter = isDark ? "img{opacity: 0.70; filter: brightness(0.70);}\n" : "";
         return "<html>" +
                     "<head>" +
                         "<meta charset=\"utf-8\" />\n" +
@@ -45,6 +50,7 @@ class HtmlHelper {
                         "<style>" +
                             "body{background: " + backgroundColor + ";}" +
                             "a {color:" + accentColor + " !important;}" +
+                            imgFilter +
                         "</style>" +
                     "</head>" +
                     "<body>" +

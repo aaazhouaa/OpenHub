@@ -58,6 +58,25 @@
         <item>@color/material_deep_purple_accent_700</item>
     </array>
 
+    <array name="dark_accent_color_array">
+        <item>@color/dark_accent_light_blue</item>
+        <item>@color/dark_accent_blue</item>
+        <item>@color/dark_accent_indigo</item>
+        <item>@color/dark_accent_orange</item>
+        <item>@color/dark_accent_yellow</item>
+        <item>@color/dark_accent_amber</item>
+        <item>@color/dark_accent_grey</item>
+        <item>@color/dark_accent_brown</item>
+        <item>@color/dark_accent_cyan</item>
+        <item>@color/dark_accent_teal</item>
+        <item>@color/dark_accent_lime</item>
+        <item>@color/dark_accent_green</item>
+        <item>@color/dark_accent_pink</item>
+        <item>@color/dark_accent_red</item>
+        <item>@color/dark_accent_purple</item>
+        <item>@color/dark_accent_deep_purple</item>
+    </array>
+
     <array name="theme_array">
         <item>Light</item>
         <item>Dark</item>

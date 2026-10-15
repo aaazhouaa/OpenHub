@@ -1,29 +1,27 @@
+body {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #8B949E !important;
+}
 
-/**
- * Created by ThirtyDegreesRay on 2017/11/10 16:00:00
- */
+.pre {
+    display: table;
+    min-width: 100%;
+    padding-right: 8px;
+    color: #8B949E !important;
+}
 
- body {
-     font-size: 12px;
-     line-height: 1.5;
-     color:#EEEEEE;
- }
+.add {
+    background: #1B4720 !important;
+    color: #8B949E !important;
+}
 
- .pre {
-     display: table;
-     min-width: 100%;
-     padding-right: 8px;
- }
+.remove {
+    background: #5A1E1E !important;
+    color: #8B949E !important;
+}
 
- .add {
-     background:#33601E;
- }
-
- .remove {
-     background:#801C1C;
- }
-
- .change {
-     background:#282A2F;
-     color:#9E9E9E;
- }
+.change {
+    background: #21262D !important;
+    color: #6E7681 !important;
+}

@@ -285,8 +285,17 @@ public class ViewUtils {
         if(ViewUtils.isLightColor(bgColorValue)){
             return context.getResources().getColor(R.color.light_text_color_primary);
         } else {
-            return context.getResources().getColor(R.color.material_light_white);
+            return context.getResources().getColor(AppUtils.isNightMode() ?
+                    R.color.dark_text_color_primary : R.color.material_light_white);
         }
+    }
+
+    public static int getDimmedColor(int color, float factor) {
+        int a = Color.alpha(color);
+        int r = Math.round(Color.red(color) * factor);
+        int g = Math.round(Color.green(color) * factor);
+        int b = Math.round(Color.blue(color) * factor);
+        return Color.argb(a, Math.min(255, r), Math.min(255, g), Math.min(255, b));
     }
 
     @NonNull

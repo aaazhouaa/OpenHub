@@ -8,15 +8,15 @@
     <color name="amoled_dark_color_primary">#26282C</color> //26282C
     <color name="amoled_dark_color_primary_blur">#DD000000</color> //#DD2D3035
     <color name="amoled_dark_color_primary_dark">#161719</color>
-    <color name="amoled_dark_color_accent">@color/material_green_accent_700</color>
+    <color name="amoled_dark_color_accent">#238636</color>
     <color name="amoled_dark_color_window_background">#000000</color>
-    <color name="amoled_dark_text_color_primary">@color/material_light_white</color>
-    <color name="amoled_dark_text_color_secondary">@color/material_grey_500</color>
-    <color name="amoled_dark_icon_color">@color/material_light_white</color>
+    <color name="amoled_dark_text_color_primary">#8B949E</color>
+    <color name="amoled_dark_text_color_secondary">#5E6570</color>
+    <color name="amoled_dark_icon_color">#6E7681</color>
     <color name="amoled_dark_card_background">#121316</color>
-    <color name="amoled_dark_title_color">@color/material_light_white</color>
-    <color name="amoled_dark_subtitle_color">@color/material_grey_500</color>
-    <color name="amoled_dark_selected_color">#3f3f3f</color>
+    <color name="amoled_dark_title_color">#9EA7B3</color>
+    <color name="amoled_dark_subtitle_color">#5E6570</color>
+    <color name="amoled_dark_selected_color">#26282C</color>
 
     <style name="ThemeAmoledDark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">#000000</item>
@@ -29,10 +29,13 @@
         <item name="preferenceTheme">@style/ThemeOverlay.Material3</item>
         <item name="top_bar_background">@color/amoled_dark_card_background</item>
         <item name="switchPreferenceCompatStyle">@style/Material3SwitchPreference</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/amoled_dark_text_color_primary</item>
+        <item name="colorOnSurface">@color/amoled_dark_text_color_primary</item>
+        <item name="colorOnSurfaceVariant">@color/amoled_dark_text_color_secondary</item>
+        <item name="colorOnBackground">@color/amoled_dark_text_color_primary</item>
         <item name="android:textColorPrimary">@color/amoled_dark_text_color_primary</item>
         <item name="android:textColorSecondary">@color/amoled_dark_text_color_secondary</item>
-        <item name="android:textColorTertiary">@color/material_grey_200</item>
+        <item name="android:textColorTertiary">@color/material_grey_400</item>
         <item name="icon_color">@color/amoled_dark_icon_color</item>
         <item name="card_background">@color/amoled_dark_card_background</item>
         <item name="title_color">@color/amoled_dark_title_color</item>
@@ -109,196 +112,196 @@
     </style>
 
     <style name="ThemeAmoledDark.LightBlue" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_light_blue_500</item>
-        <item name="colorPrimaryDark">@color/material_light_blue_700</item>
-        <item name="colorSecondary">@color/material_light_blue_accent_700</item>
+        <item name="colorPrimary">@color/material_light_blue_700</item>
+        <item name="colorPrimaryDark">@color/material_light_blue_900</item>
+        <item name="colorSecondary">@color/dark_accent_light_blue</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.LightBlue</item>
         <item name="android:alertDialogTheme">@style/DialogThemeDark.LightBlue</item>
     </style>
 
     <style name="ThemeAmoledDark.Blue" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_blue_500</item>
-        <item name="colorPrimaryDark">@color/material_blue_700</item>
-        <item name="colorSecondary">@color/material_blue_accent_700</item>
+        <item name="colorPrimary">@color/material_blue_700</item>
+        <item name="colorPrimaryDark">@color/material_blue_900</item>
+        <item name="colorSecondary">@color/dark_accent_blue</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Blue</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Blue</item>
     </style>
 
     <style name="ThemeAmoledDark.Indigo" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_indigo_500</item>
-        <item name="colorPrimaryDark">@color/material_indigo_700</item>
-        <item name="colorSecondary">@color/material_indigo_accent_700</item>
+        <item name="colorPrimary">@color/material_indigo_700</item>
+        <item name="colorPrimaryDark">@color/material_indigo_900</item>
+        <item name="colorSecondary">@color/dark_accent_indigo</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Indigo</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Indigo</item>
     </style>
 
     <style name="ThemeAmoledDark.Orange" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_orange_500</item>
-        <item name="colorPrimaryDark">@color/material_orange_700</item>
-        <item name="colorSecondary">@color/material_orange_accent_700</item>
+        <item name="colorPrimary">@color/material_orange_700</item>
+        <item name="colorPrimaryDark">@color/material_orange_900</item>
+        <item name="colorSecondary">@color/dark_accent_orange</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Orange</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Orange</item>
     </style>
 
     <style name="ThemeAmoledDark.Yellow" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_yellow_500</item>
-        <item name="colorPrimaryDark">@color/material_yellow_700</item>
-        <item name="colorSecondary">@color/material_yellow_accent_700</item>
+        <item name="colorPrimary">@color/material_yellow_700</item>
+        <item name="colorPrimaryDark">@color/material_yellow_900</item>
+        <item name="colorSecondary">@color/dark_accent_yellow</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Yellow</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Yellow</item>
     </style>
 
     <style name="ThemeAmoledDark.Amber" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_amber_500</item>
-        <item name="colorPrimaryDark">@color/material_amber_700</item>
-        <item name="colorSecondary">@color/material_amber_accent_700</item>
+        <item name="colorPrimary">@color/material_amber_700</item>
+        <item name="colorPrimaryDark">@color/material_amber_900</item>
+        <item name="colorSecondary">@color/dark_accent_amber</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Amber</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Amber</item>
     </style>
 
     <style name="ThemeAmoledDark.Grey" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_grey_500</item>
-        <item name="colorPrimaryDark">@color/material_grey_700</item>
-        <item name="colorSecondary">@color/material_grey_700</item>
+        <item name="colorPrimary">@color/material_grey_700</item>
+        <item name="colorPrimaryDark">@color/material_blue_grey_900</item>
+        <item name="colorSecondary">@color/dark_accent_grey</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Grey</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Grey</item>
     </style>
 
     <style name="ThemeAmoledDark.Brown" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_brown_500</item>
-        <item name="colorPrimaryDark">@color/material_brown_700</item>
-        <item name="colorSecondary">@color/material_brown_700</item>
+        <item name="colorPrimary">@color/material_brown_700</item>
+        <item name="colorPrimaryDark">@color/material_brown_900</item>
+        <item name="colorSecondary">@color/dark_accent_brown</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Brown</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Brown</item>
     </style>
 
     <style name="ThemeAmoledDark.Cyan" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_cyan_500</item>
-        <item name="colorPrimaryDark">@color/material_cyan_700</item>
-        <item name="colorSecondary">@color/material_cyan_accent_700</item>
+        <item name="colorPrimary">@color/material_cyan_700</item>
+        <item name="colorPrimaryDark">@color/material_cyan_900</item>
+        <item name="colorSecondary">@color/dark_accent_cyan</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Cyan</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Cyan</item>
     </style>
 
     <style name="ThemeAmoledDark.Teal" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_teal_500</item>
-        <item name="colorPrimaryDark">@color/material_teal_700</item>
-        <item name="colorSecondary">@color/material_teal_accent_700</item>
+        <item name="colorPrimary">@color/material_teal_700</item>
+        <item name="colorPrimaryDark">@color/material_teal_900</item>
+        <item name="colorSecondary">@color/dark_accent_teal</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Teal</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Teal</item>
     </style>
 
     <style name="ThemeAmoledDark.Lime" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_lime_500</item>
-        <item name="colorPrimaryDark">@color/material_lime_700</item>
-        <item name="colorSecondary">@color/material_lime_accent_700</item>
+        <item name="colorPrimary">@color/material_lime_700</item>
+        <item name="colorPrimaryDark">@color/material_lime_900</item>
+        <item name="colorSecondary">@color/dark_accent_lime</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Lime</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Lime</item>
     </style>
 
     <style name="ThemeAmoledDark.Green" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_green_500</item>
-        <item name="colorPrimaryDark">@color/material_green_700</item>
-        <item name="colorSecondary">@color/material_green_accent_700</item>
+        <item name="colorPrimary">@color/material_green_700</item>
+        <item name="colorPrimaryDark">@color/material_green_900</item>
+        <item name="colorSecondary">@color/dark_accent_green</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Green</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Green</item>
     </style>
 
     <style name="ThemeAmoledDark.Pink" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_pink_500</item>
-        <item name="colorPrimaryDark">@color/material_pink_700</item>
-        <item name="colorSecondary">@color/material_pink_accent_700</item>
+        <item name="colorPrimary">@color/material_pink_700</item>
+        <item name="colorPrimaryDark">@color/material_pink_900</item>
+        <item name="colorSecondary">@color/dark_accent_pink</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Pink</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Pink</item>
     </style>
 
     <style name="ThemeAmoledDark.Red" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_red_500</item>
-        <item name="colorPrimaryDark">@color/material_red_700</item>
-        <item name="colorSecondary">@color/material_red_accent_700</item>
+        <item name="colorPrimary">@color/material_red_700</item>
+        <item name="colorPrimaryDark">@color/material_red_900</item>
+        <item name="colorSecondary">@color/dark_accent_red</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Red</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Red</item>
     </style>
 
     <style name="ThemeAmoledDark.Purple" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_purple_500</item>
-        <item name="colorPrimaryDark">@color/material_purple_700</item>
-        <item name="colorSecondary">@color/material_purple_accent_700</item>
+        <item name="colorPrimary">@color/material_purple_700</item>
+        <item name="colorPrimaryDark">@color/material_purple_900</item>
+        <item name="colorSecondary">@color/dark_accent_purple</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.Purple</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.Purple</item>
     </style>
 
     <style name="ThemeAmoledDark.DeepPurple" parent="ThemeAmoledDark">
-        <item name="colorPrimary">@color/material_deep_purple_500</item>
-        <item name="colorPrimaryDark">@color/material_deep_purple_700</item>
-        <item name="colorSecondary">@color/material_deep_purple_accent_700</item>
+        <item name="colorPrimary">@color/material_deep_purple_700</item>
+        <item name="colorPrimaryDark">@color/material_deep_purple_900</item>
+        <item name="colorSecondary">@color/dark_accent_deep_purple</item>
         <item name="alertDialogTheme">@style/DialogThemeAmoledDark.DeepPurple</item>
         <item name="android:alertDialogTheme">@style/DialogThemeAmoledDark.DeepPurple</item>
     </style>
 
 
     <style name="DialogThemeAmoledDark.LightBlue" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_light_blue_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_light_blue</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Blue" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_blue_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_blue</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Indigo" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_indigo_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_indigo</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Orange" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_orange_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_orange</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Yellow" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_yellow_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_yellow</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Amber" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_amber_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_amber</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Grey" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">#FFFFFF</item> //@color/material_grey_700
+        <item name="colorSecondary">@color/dark_accent_grey</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Brown" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_brown_700</item>
+        <item name="colorSecondary">@color/dark_accent_brown</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Cyan" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_cyan_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_cyan</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Teal" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_teal_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_teal</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Lime" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_lime_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_lime</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Green" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_green_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_green</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Pink" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_pink_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_pink</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Red" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_red_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_red</item>
     </style>
 
     <style name="DialogThemeAmoledDark.Purple" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_purple_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_purple</item>
     </style>
 
     <style name="DialogThemeAmoledDark.DeepPurple" parent="DialogThemeAmoledDark">
-        <item name="colorSecondary">@color/material_deep_purple_accent_700</item>
+        <item name="colorSecondary">@color/dark_accent_deep_purple</item>
     </style>
 
     <style name="ThemeAmoledDark.AboutActivity" parent="ThemeAmoledDark">

@@ -13,6 +13,7 @@ import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.thirtydegreesray.openhub.AppConfig;
 import com.thirtydegreesray.openhub.R;
+import com.thirtydegreesray.openhub.util.DarkModeDimTransformation;
 
 /**
  * Created by ThirtyDegreesRay on 2017/8/26 22:47:20
@@ -29,7 +30,8 @@ public class MyAppGlideModel extends AppGlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         super.applyOptions(context, builder);
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context, AppConfig.IMAGE_MAX_CACHE_SIZE));
-        RequestOptions requestOptions = RequestOptions.placeholderOf(R.mipmap.logo);
+        RequestOptions requestOptions = RequestOptions.placeholderOf(R.mipmap.logo)
+                .transform(new DarkModeDimTransformation());
         builder.setDefaultRequestOptions(requestOptions);
     }
 

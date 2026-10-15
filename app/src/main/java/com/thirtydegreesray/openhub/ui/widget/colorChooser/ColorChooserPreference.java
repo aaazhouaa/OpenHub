@@ -14,6 +14,7 @@ import android.view.View;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.ui.activity.base.BaseActivity;
+import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.PrefUtils;
 
 import java.util.ArrayList;
@@ -103,8 +104,8 @@ public class ColorChooserPreference extends Preference implements ColorChooserDi
 
     @NonNull
     private int[] getAccentColors() {
-        int[] colorsResId = getContext().getResources().getIntArray(R.array.accent_color_array);
-        return colorsResId;
+        int arrayRes = AppUtils.isNightMode() ? R.array.dark_accent_color_array : R.array.accent_color_array;
+        return getContext().getResources().getIntArray(arrayRes);
     }
 
     private int getColorByIndex(int index) {
@@ -120,7 +121,8 @@ public class ColorChooserPreference extends Preference implements ColorChooserDi
     }
 
     private List<Integer> getColorList() {
-        int[] colorsResId = getContext().getResources().getIntArray(R.array.accent_color_array);
+        int arrayRes = AppUtils.isNightMode() ? R.array.dark_accent_color_array : R.array.accent_color_array;
+        int[] colorsResId = getContext().getResources().getIntArray(arrayRes);
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < colorsResId.length; i++) {
             list.add(colorsResId[i]);
