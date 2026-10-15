@@ -40,7 +40,8 @@
     <color name="dark_accent_deep_purple">#552899</color>
 
     <style name="ThemeDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">#2D3035</item>
+        <item name="android:statusBarColor">@color/dark_card_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorPrimary">@color/dark_color_primary</item>
         <item name="colorPrimaryDark">@color/dark_color_primary_dark</item>

@@ -19,7 +19,8 @@
     <color name="amoled_dark_selected_color">#26282C</color>
 
     <style name="ThemeAmoledDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:statusBarColor">@color/amoled_dark_card_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorPrimary">@color/amoled_dark_color_primary</item>
         <item name="colorPrimaryDark">@color/amoled_dark_color_primary_dark</item>

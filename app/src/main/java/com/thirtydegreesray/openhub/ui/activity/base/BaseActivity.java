@@ -519,7 +519,7 @@ BaseActivity<P extends IBaseContract.Presenter>
             WindowInsetsControllerCompat controller =
                     WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
             if (controller != null) {
-                controller.setAppearanceLightStatusBars(ThemeHelper.isLightMode());
+                controller.setAppearanceLightStatusBars(true);
             }
         }
     }
@@ -538,7 +538,7 @@ BaseActivity<P extends IBaseContract.Presenter>
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            if (Build.VERSION.SDK_INT >= 23 && ThemeHelper.isLightMode()) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 option |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             }
             decorView.setSystemUiVisibility(option);

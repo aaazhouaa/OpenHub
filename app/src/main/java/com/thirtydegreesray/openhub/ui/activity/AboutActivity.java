@@ -43,7 +43,7 @@ public class AboutActivity extends MaterialAboutActivity {
             WindowInsetsControllerCompat controller =
                     WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
             if (controller != null) {
-                controller.setAppearanceLightStatusBars(ThemeHelper.isLightMode());
+                controller.setAppearanceLightStatusBars(true);
             }
         }
     }
