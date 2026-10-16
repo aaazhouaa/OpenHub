@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
+import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
 
 public class StarredReposPagerFragment extends Fragment {
 
@@ -40,6 +41,19 @@ public class StarredReposPagerFragment extends Fragment {
         com.thirtydegreesray.openhub.util.ViewUtils.alignTabContentBottom(tabLayout);
 
         return view;
+    }
+
+    /**
+     * Forwards the scroll to the currently shown page, so a double click on the
+     * toolbar works here like it does on the plain list pages.
+     */
+    public void scrollToTop() {
+        if (viewPager == null || viewPager.getAdapter() == null) return;
+        Fragment page = getChildFragmentManager().findFragmentByTag(
+                "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem());
+        if (page instanceof BaseFragment) {
+            ((BaseFragment) page).scrollToTop();
+        }
     }
 
     private class StarredPagerAdapter extends FragmentPagerAdapter {

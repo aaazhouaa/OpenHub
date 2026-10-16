@@ -3,6 +3,7 @@
 package com.thirtydegreesray.openhub.ui.widget;
 
 import androidx.annotation.NonNull;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -39,6 +40,36 @@ public class DoubleClickHandler {
                 return false;
             }
         });
+    }
+
+    /**
+     * Reports a double tap without consuming the touch stream, so the view keeps its own
+     * click handling. The returned listener remains owned by the caller, as required by
+     * NavigationBarView#setItemOnTouchListener.
+     */
+    @NonNull
+    public static View.OnTouchListener createDoubleTapListener(@NonNull final View view,
+                                                               @NonNull final DoubleClickListener listener){
+        final GestureDetector detector = new GestureDetector(view.getContext(),
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDown(@NonNull MotionEvent e) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onDoubleTap(@NonNull MotionEvent e) {
+                        listener.onDoubleClick(view);
+                        return true;
+                    }
+                });
+        return new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                detector.onTouchEvent(event);
+                return false;
+            }
+        };
     }
 
     public interface DoubleClickListener{

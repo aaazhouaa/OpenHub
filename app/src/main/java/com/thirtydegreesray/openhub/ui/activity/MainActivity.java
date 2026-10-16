@@ -46,6 +46,7 @@ import com.thirtydegreesray.openhub.ui.fragment.StarredReposPagerFragment;
 import com.thirtydegreesray.openhub.ui.fragment.TopicsFragment;
 import com.thirtydegreesray.openhub.ui.fragment.TraceFragment;
 import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
+import com.thirtydegreesray.openhub.ui.widget.DoubleClickHandler;
 import com.thirtydegreesray.openhub.ui.widget.NewYearWishesDialog;
 import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.StringUtils;
@@ -167,6 +168,12 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
         tabLayout.setVisibility(View.GONE);
 
         if (bottomNavigation != null) {
+            // item views are rebuilt whenever the menu changes, so the touch listener is
+            // registered through the view instead of being attached to the item views
+            bottomNavigation.setItemOnTouchListener(R.id.nav_starred,
+                    DoubleClickHandler.createDoubleTapListener(bottomNavigation, view -> scrollToTopLater()));
+            bottomNavigation.setItemOnTouchListener(R.id.nav_owned,
+                    DoubleClickHandler.createDoubleTapListener(bottomNavigation, view -> scrollToTopLater()));
             bottomNavigation.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
                 if (id == R.id.nav_starred || id == R.id.nav_owned) {
@@ -355,10 +362,26 @@ public class MainActivity extends BaseDrawerActivity<MainPresenter>
     @Override
     protected void onToolbarDoubleClick() {
         super.onToolbarDoubleClick();
+        scrollToTop();
+    }
+
+    private void scrollToTop() {
         Fragment fragment = getVisibleFragment();
-        if (fragment != null && fragment instanceof BaseFragment) {
+        if (fragment instanceof BaseFragment) {
             ((BaseFragment) fragment).scrollToTop();
+        } else if (fragment instanceof StarredReposPagerFragment) {
+            // the starred page wraps its lists in a pager, so it forwards the scroll itself
+            ((StarredReposPagerFragment) fragment).scrollToTop();
         }
+    }
+
+    /**
+     * The double click lands in the middle of the page switch it triggers, and the
+     * fragment transaction is committed asynchronously, so the scroll is deferred
+     * until the page being scrolled is the one actually shown.
+     */
+    private void scrollToTopLater() {
+        bottomNavigation.post(this::scrollToTop);
     }
 
     private void handlerEndDrawerClick(MenuItem item) {

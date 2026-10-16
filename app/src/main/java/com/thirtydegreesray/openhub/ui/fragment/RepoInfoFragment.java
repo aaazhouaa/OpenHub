@@ -169,27 +169,36 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
     //TODO fix scroll conflict when have tables
     @Override
     public void showReadMe(String source, String baseUrl) {
-        if (!isReadmeSetted) {
-            isReadmeSetted = true;
-            webView.setMdSource(source, baseUrl, true);
-            readmeLoader.setVisibility(View.VISIBLE);
-            readmeLoader.setIndeterminate(false);
-            webView.setVisibility(View.VISIBLE);
-        }
+        if (isReadmeSetted) return;
+        isReadmeSetted = true;
+        webView.setMdSource(source, baseUrl, true);
+        webView.setVisibility(View.VISIBLE);
+        readmeLoader.setVisibility(View.VISIBLE);
+        readmeLoader.setIndeterminate(false);
     }
 
     @Override
     public void showReadMeLoader() {
         isReadmeSetted = false;
+        readmeTitle.setText(R.string.readme);
         readmeLoader.setVisibility(View.VISIBLE);
         readmeLoader.setIndeterminate(true);
         webView.setVisibility(View.GONE);
     }
 
     @Override
+    public void showReadMeLoadError(String tip) {
+        readmeTitle.setText(R.string.readme);
+        readmeLoader.setVisibility(View.GONE);
+        webView.setVisibility(View.GONE);
+        if (!StringUtils.isBlank(tip)) showErrorToast(tip);
+    }
+
+    @Override
     public void showNoReadMe() {
         readmeTitle.setText(R.string.no_readme);
         readmeLoader.setVisibility(View.GONE);
+        webView.setVisibility(View.GONE);
     }
 
     @OnClick({R2.id.issues_lay, R2.id.stargazers_lay, R2.id.froks_lay, R2.id.watchers_lay,

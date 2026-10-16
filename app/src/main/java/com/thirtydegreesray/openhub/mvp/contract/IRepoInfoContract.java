@@ -16,6 +16,7 @@ public interface IRepoInfoContract {
         void showRepoInfo(Repository repository);
         void showReadMe(String content, String baseUrl);
         void showReadMeLoader();
+        void showReadMeLoadError(String tip);
         void showNoReadMe();
     }
 

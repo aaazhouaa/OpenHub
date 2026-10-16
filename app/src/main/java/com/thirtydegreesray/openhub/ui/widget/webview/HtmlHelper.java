@@ -4,12 +4,14 @@ package com.thirtydegreesray.openhub.ui.widget.webview;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.thirtydegreesray.openhub.mvp.model.GitHubName;
 import com.thirtydegreesray.openhub.util.AppUtils;
 import com.thirtydegreesray.openhub.util.GitHubHelper;
 import com.thirtydegreesray.openhub.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -23,7 +25,8 @@ import java.util.regex.Pattern;
 
 class HtmlHelper {
     private static final Pattern LINK_PATTERN = Pattern.compile("href=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
-    private static final Pattern IMAGE_PATTERN = Pattern.compile("src=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
+    //the lookbehind keeps attributes such as data-src or data-canonical-src out of the match
+    private static final Pattern IMAGE_PATTERN = Pattern.compile("(?<![-\\w])src=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
 
     static String generateImageHtml(@NonNull String imageUrl, @NonNull String backgroundColor) {
         boolean isDark = AppUtils.isNightMode();
@@ -202,11 +205,15 @@ class HtmlHelper {
         if (StringUtils.isBlank(owner) || StringUtils.isBlank(repo)) return source;
 
         String branch = "master";
+        String baseDir = "";
         if (baseUrl.contains("blob/")) {
             int blobIndex = baseUrl.indexOf("blob/") + 5;
-            int nextSlash = baseUrl.indexOf("/", blobIndex);
-            if (nextSlash != -1) {
-                branch = baseUrl.substring(blobIndex, nextSlash);
+            int branchEnd = baseUrl.indexOf("/", blobIndex);
+            if (branchEnd != -1) {
+                branch = baseUrl.substring(blobIndex, branchEnd);
+                String path = baseUrl.substring(branchEnd + 1);
+                int lastSlash = path.lastIndexOf('/');
+                baseDir = lastSlash == -1 ? "" : path.substring(0, lastSlash + 1);
             } else {
                 branch = baseUrl.substring(blobIndex);
             }
@@ -221,7 +228,7 @@ class HtmlHelper {
                 continue;
             }
 
-            String cleanUrl = cleanRelativePrefix(oriUrl);
+            String cleanUrl = resolveRelativeUrl(baseDir, oriUrl);
             String subUrl = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
             String fixedUrl;
             if (!GitHubHelper.isImage(cleanUrl)) {
@@ -254,7 +261,7 @@ class HtmlHelper {
                 continue;
             }
 
-            String cleanUrl = cleanRelativePrefix(oriUrl);
+            String cleanUrl = resolveRelativeUrl(baseDir, oriUrl);
             String fixedUrl;
             // 避免对已包含仓库前缀的相对路径重复拼接
             if (cleanUrl.startsWith("/" + owner + "/" + repo + "/raw/") ||
@@ -275,15 +282,27 @@ class HtmlHelper {
         return source;
     }
 
-    private static String cleanRelativePrefix(@NonNull String url) {
+    /**
+     * Resolves a repository-relative link against the folder holding the page, so
+     * links such as ../img/x.png of a nested README point at the right file.
+     */
+    @NonNull
+    private static String resolveRelativeUrl(@NonNull String baseDir, @NonNull String url) {
         String res = url.trim();
-        while (res.startsWith("./")) {
-            res = res.substring(2);
+        if (res.startsWith("/") || res.contains("://")) return res;
+        ArrayList<String> parts = new ArrayList<>();
+        for (String segment : baseDir.split("/")) {
+            if (!segment.isEmpty()) parts.add(segment);
         }
-        while (res.startsWith("../")) {
-            res = res.substring(3);
+        for (String segment : res.split("/")) {
+            if (segment.isEmpty() || ".".equals(segment)) continue;
+            if ("..".equals(segment)) {
+                if (!parts.isEmpty()) parts.remove(parts.size() - 1);
+            } else {
+                parts.add(segment);
+            }
         }
-        return res;
+        return TextUtils.join("/", parts);
     }
 
     static String generateDiffHtml(@NonNull String diffSource, boolean isDark,
