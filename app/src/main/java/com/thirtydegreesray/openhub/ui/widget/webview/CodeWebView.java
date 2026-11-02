@@ -16,10 +16,12 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.thirtydegreesray.openhub.AppData;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.AppUtils;
@@ -30,7 +32,12 @@ import com.thirtydegreesray.openhub.util.ViewUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created on 2017/8/20 12:10:56
@@ -307,6 +314,11 @@ public class CodeWebView extends WebView {
         }
 
         @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            return interceptRawRequest(request.getUrl());
+        }
+
+        @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             handler.proceed();
         }
@@ -324,6 +336,12 @@ public class CodeWebView extends WebView {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             startActivity(Uri.parse(url));
             return true;
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            return interceptRawRequest(Uri.parse(url));
         }
 
         @Override
@@ -348,6 +366,47 @@ public class CodeWebView extends WebView {
     private void startActivity(Uri uri){
         if(uri == null) return;
         AppOpener.launchUrl(getContext(), uri);
+    }
+
+    /**
+     * 私人仓库的 raw 图片需要认证 token 才能访问，而 WebView 的 &lt;img&gt; 请求不带认证头。
+     * 拦截 raw.githubusercontent.com 的请求，用 OkHttp 带上登录 token 重新拉取。
+     */
+    @Nullable
+    private WebResourceResponse interceptRawRequest(@NonNull Uri uri) {
+        String url = uri.toString();
+        if (StringUtils.isBlank(url) || !url.contains("raw.githubusercontent.com")) {
+            return null;
+        }
+        String token = AppData.INSTANCE.getAccessToken();
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
+        try {
+            OkHttpClient client = new OkHttpClient.Builder().build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "token " + token)
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) {
+                response.close();
+                return null;
+            }
+            okhttp3.ResponseBody body = response.body();
+            if (body == null) {
+                response.close();
+                return null;
+            }
+            byte[] bytes = body.bytes();
+            String mime = body.contentType() != null
+                    ? body.contentType().toString() : "application/octet-stream";
+            response.close();
+            return new WebResourceResponse(mime, "utf-8",
+                    new ByteArrayInputStream(bytes));
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
 
