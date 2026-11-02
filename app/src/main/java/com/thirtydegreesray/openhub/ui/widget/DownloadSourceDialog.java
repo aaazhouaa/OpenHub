@@ -2,16 +2,20 @@ package com.thirtydegreesray.openhub.ui.widget;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.mvp.model.DownloadSource;
 import com.thirtydegreesray.openhub.mvp.model.Release;
 import com.thirtydegreesray.openhub.mvp.model.ReleaseAsset;
 import com.thirtydegreesray.openhub.ui.adapter.DownloadSourcesAdapter;
 import com.thirtydegreesray.openhub.util.StringUtils;
+import com.thirtydegreesray.openhub.util.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -29,17 +33,20 @@ public class DownloadSourceDialog {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
-        new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.DialogStyle_OpenHub_Download)
                 .setCancelable(true)
                 .setTitle(R.string.download)
                 .setView(recyclerView)
-                .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
+                .setPositiveButton(R.string.close, (dialog, which) -> dialog.cancel());
+
+        Drawable bg = builder.getBackground();
+        if (bg instanceof MaterialShapeDrawable) {
+            ((MaterialShapeDrawable) bg).setFillColor(
+                    ColorStateList.valueOf(ViewUtils.getWindowBackground(context)));
+            ((MaterialShapeDrawable) bg).setElevation(0f);
+        }
+
+        builder.show();
     }
 
     private static ArrayList<DownloadSource> getDownloadSources(Context context, Release release){

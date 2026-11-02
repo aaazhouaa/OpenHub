@@ -1,6 +1,8 @@
 package com.thirtydegreesray.openhub.ui.fragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +81,7 @@ public class ImagePreviewDialogFragment extends DialogFragment {
         if (window != null) {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         }
         return dialog;
     }

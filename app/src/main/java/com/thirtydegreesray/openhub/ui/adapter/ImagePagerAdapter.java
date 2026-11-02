@@ -7,12 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
-import com.thirtydegreesray.openhub.common.GlideApp;
-import com.thirtydegreesray.openhub.util.PrefUtils;
+import com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView;
 
 import java.util.List;
 
@@ -50,7 +47,7 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
 
     static class ImageHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R2.id.image_view) PhotoView imageView;
+        @BindView(R2.id.web_view) CodeWebView webView;
 
         ImageHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,12 +55,7 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
         }
 
         void bind(@NonNull String url) {
-            GlideApp.with(imageView)
-                    .load(url)
-                    .placeholder(null)
-                    .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(imageView);
+            webView.loadImage(url);
         }
     }
 }

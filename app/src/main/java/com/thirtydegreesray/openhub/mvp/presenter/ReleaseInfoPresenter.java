@@ -27,7 +27,9 @@ public class ReleaseInfoPresenter extends BasePresenter<IReleaseInfoContract.Vie
     @AutoAccess String owner;
     @AutoAccess String repoName;
     @AutoAccess String tagName;
-    @AutoAccess Release release;
+    // 发布说明的 HTML 可能有几百 KB，序列化进 savedState 会在切后台时
+    // 撑爆 Binder 事务上限；重建后按 tagName 重新拉取即可。
+    private Release release;
     private ReleaseCommitDao releaseCommitDao;
     private String commitSha;
 

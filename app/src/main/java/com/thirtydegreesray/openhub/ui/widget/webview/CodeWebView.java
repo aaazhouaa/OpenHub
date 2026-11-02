@@ -32,12 +32,18 @@ import com.thirtydegreesray.openhub.util.ViewUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.ByteArrayInputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Created on 2017/8/20 12:10:56
@@ -50,6 +56,9 @@ public class CodeWebView extends WebView {
     private ContentChangedListener contentChangedListener;
     private OnImageClickListener imageClickListener;
     private int backgroundColor ;
+
+    // 图片请求量大，复用同一个 client 的连接池，避免每张图重新 DNS/TLS 握手
+    private static final OkHttpClient rawImageClient = new OkHttpClient.Builder().build();
 
     public interface ContentChangedListener {
         void onContentChanged(int progress);
@@ -216,12 +225,16 @@ public class CodeWebView extends WebView {
 
     public void loadImage(@NonNull String url) {
         WebSettings settings = getSettings();
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        // SINGLE_COLUMN 会把内容压成单列高度，body 的 height:100% 失效，
+        // 图片就不能在视口里垂直居中。
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        // 预览页固定黑底，不跟随主题/布局属性
+        setBackgroundColor(android.graphics.Color.BLACK);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
-        String html = HtmlHelper.generateImageHtml(url, getCodeBackgroundColor());
+        String html = HtmlHelper.generateImageHtml(url, "#000000");
         // loadData() URL-decodes its input, so the '#' of the CSS background colour
         // truncates everything after it (including the <img> tag) and nothing shows.
         // loadDataWithBaseURL loads the markup verbatim.
@@ -383,29 +396,67 @@ public class CodeWebView extends WebView {
             return null;
         }
         try {
-            OkHttpClient client = new OkHttpClient.Builder().build();
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("Authorization", "token " + token)
                     .build();
-            Response response = client.newCall(request).execute();
+            Response response = rawImageClient.newCall(request).execute();
             if (!response.isSuccessful()) {
                 response.close();
                 return null;
             }
-            okhttp3.ResponseBody body = response.body();
+            ResponseBody body = response.body();
             if (body == null) {
                 response.close();
                 return null;
             }
-            byte[] bytes = body.bytes();
-            String mime = body.contentType() != null
-                    ? body.contentType().toString() : "application/octet-stream";
-            response.close();
-            return new WebResourceResponse(mime, "utf-8",
-                    new ByteArrayInputStream(bytes));
+            MediaType contentType = body.contentType();
+            String mime = contentType != null
+                    ? contentType.type() + "/" + contentType.subtype()
+                    : "application/octet-stream";
+            WebResourceResponse resource = new WebResourceResponse(mime, null,
+                    new ResponseBodyStream(body, response));
+            Map<String, String> headers = new HashMap<>();
+            copyHeader(response, headers, "Cache-Control");
+            copyHeader(response, headers, "ETag");
+            copyHeader(response, headers, "Last-Modified");
+            copyHeader(response, headers, "Content-Length");
+            if (!headers.isEmpty()) {
+                resource.setResponseHeaders(headers);
+            }
+            return resource;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    private static void copyHeader(@NonNull Response response, @NonNull Map<String, String> target,
+                                   @NonNull String name) {
+        String value = response.header(name);
+        if (!StringUtils.isBlank(value)) {
+            target.put(name, value);
+        }
+    }
+
+    /**
+     * 边读边交给 WebView，避免把整张图读进内存；关闭时释放 OkHttp 连接。
+     */
+    private static class ResponseBodyStream extends FilterInputStream {
+
+        private final Response response;
+
+        ResponseBodyStream(@NonNull ResponseBody body, @NonNull Response response) throws IOException {
+            super(body.byteStream());
+            this.response = response;
+        }
+
+        @Override
+        public void close() throws IOException {
+            try {
+                super.close();
+            } finally {
+                response.close();
+            }
         }
     }
 }

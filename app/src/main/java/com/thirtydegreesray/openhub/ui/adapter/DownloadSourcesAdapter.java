@@ -2,7 +2,8 @@ package com.thirtydegreesray.openhub.ui.adapter;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +17,6 @@ import com.thirtydegreesray.openhub.util.AppOpener;
 import com.thirtydegreesray.openhub.util.StringUtils;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by ThirtyDegreesRay on 2017/9/16 15:53:46
@@ -47,48 +47,75 @@ public class DownloadSourcesAdapter extends BaseAdapter<DownloadSourcesAdapter.V
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         DownloadSource model = data.get(position);
-        holder.icon.setImageResource(model.isSourceCode() ? R.drawable.ic_source : R.drawable.ic_collection);
         holder.name.setText(model.getName());
-        if(model.getSize() != 0){
+
+        boolean hasSize = model.getSize() != 0;
+        if (hasSize) {
             holder.size.setVisibility(View.VISIBLE);
             holder.size.setText(StringUtils.getSizeString(model.getSize()));
-        }else{
-            holder.size.setVisibility(View.INVISIBLE);
+        } else {
+            holder.size.setVisibility(View.GONE);
         }
-        if(model.getDownloadCount() > 0){
-            holder.downloadCount.setVisibility(View.VISIBLE);
-            holder.downloadCount.setText(context.getString(R.string.download_count,
-                    model.getDownloadCount()));
-        }else{
-            holder.downloadCount.setVisibility(View.GONE);
-        }
-        if(model.getCreatedAt() != null){
+
+        boolean hasCreatedAt = model.getCreatedAt() != null;
+        if (hasCreatedAt) {
             holder.createdAt.setVisibility(View.VISIBLE);
-            holder.createdAt.setText(context.getString(R.string.uploaded_at,
-                    StringUtils.getNewsTimeStr(context, model.getCreatedAt())));
-        }else{
+            holder.createdAt.setText(StringUtils.getNewsTimeStr(context, model.getCreatedAt()));
+        } else {
             holder.createdAt.setVisibility(View.GONE);
+        }
+
+        boolean hasDownloadCount = model.getDownloadCount() > 0;
+        if (hasDownloadCount) {
+            if (holder.downloadLayout != null) {
+                holder.downloadLayout.setVisibility(View.VISIBLE);
+            }
+            holder.downloadCount.setText(String.valueOf(model.getDownloadCount()));
+        } else {
+            if (holder.downloadLayout != null) {
+                holder.downloadLayout.setVisibility(View.GONE);
+            }
+        }
+
+        if (holder.dot1 != null) {
+            holder.dot1.setVisibility(hasDownloadCount && (hasCreatedAt || hasSize) ? View.VISIBLE : View.GONE);
+        }
+        if (holder.dot2 != null) {
+            holder.dot2.setVisibility(hasCreatedAt && hasSize ? View.VISIBLE : View.GONE);
+        }
+
+        if (holder.divider != null) {
+            holder.divider.setVisibility(position == getItemCount() - 1 ? View.GONE : View.VISIBLE);
         }
     }
 
     class ViewHolder extends BaseViewHolder {
 
-        @BindView(R2.id.icon) AppCompatImageView icon;
         @BindView(R2.id.name) TextView name;
         @BindView(R2.id.size) TextView size;
         @BindView(R2.id.download_count) TextView downloadCount;
         @BindView(R2.id.created_at) TextView createdAt;
+        @Nullable View downloadLayout;
+        @Nullable View dot1;
+        @Nullable View dot2;
+        @Nullable View divider;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-        }
+            downloadLayout = itemView.findViewById(R.id.download_layout);
+            dot1 = itemView.findViewById(R.id.dot_1);
+            dot2 = itemView.findViewById(R.id.dot_2);
+            divider = itemView.findViewById(R.id.divider);
 
-        @OnClick(R2.id.download_bn)
-        public void onDownloadClick(){
-            DownloadSource source = data.get(getAdapterPosition());
-            String fileName = repoName.concat("-").concat(tagName)
-                    .concat("-").concat(source.getName());
-            AppOpener.startDownload(context, source.getUrl(), fileName);
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && data != null && position < data.size()) {
+                    DownloadSource source = data.get(position);
+                    String fileName = repoName.concat("-").concat(tagName)
+                            .concat("-").concat(source.getName());
+                    AppOpener.startDownload(context, source.getUrl(), fileName);
+                }
+            });
         }
 
     }

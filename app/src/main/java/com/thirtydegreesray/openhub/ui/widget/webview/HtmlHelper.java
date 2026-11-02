@@ -35,10 +35,13 @@ class HtmlHelper {
         String imgFilter = isDark ? "opacity: 0.70; filter: brightness(0.70);" : "";
         return "<html>" +
                 "<head>" +
+                "<meta charset=\"utf-8\" />" +
                 "<meta name=\"referrer\" content=\"no-referrer\" />" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />" +
                 "<style>" +
-                "img{height: auto; width: 100%; " + imgFilter + "}" +
-                "body{background: " + backgroundColor + ";}" +
+                "html,body{margin:0;padding:0;height:100%;}" +
+                "body{background:" + backgroundColor + ";display:flex;align-items:center;justify-content:center;}" +
+                "img{max-width:100%;max-height:100%;height:auto;width:auto;" + imgFilter + "}" +
                 "</style>" +
                 "</head>" +
                 "<body><img src=\"" + imageUrl + "\"/></body>" +

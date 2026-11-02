@@ -53,9 +53,10 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
-    <!-- FAB Shape -->
-    <style name="ShapeAppearance.OpenHub.Material3.FAB" parent="ShapeAppearance.OpenHub.Material3.Corner.Full">
+    <!-- FAB Shape - Modern Material 3 squircle -->
+    <style name="ShapeAppearance.OpenHub.Material3.FAB" parent="ShapeAppearance.OpenHub.Material3.Corner.Medium">
         <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
     <!-- Chip Shape -->

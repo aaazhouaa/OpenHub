@@ -116,9 +116,15 @@
         android:id="@+id/download_bn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_download_title"
-        android:tint="?icon_color"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/spacing_large"/>
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_download_title"
+        app:tint="?colorAccent"
+        app:backgroundTint="?attr/card_background"
+        app:elevation="@dimen/elevation_medium"
+        app:pressedTranslationZ="@dimen/elevation_high"
+        app:maxImageSize="24dp"
+        app:borderWidth="0dp"
+        android:contentDescription="@string/download" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
