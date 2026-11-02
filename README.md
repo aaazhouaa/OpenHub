@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="art/5.0.0-download-apk.jpg" width="32%" alt="下载弹窗 apk 高亮" />
+  <img src="art/5.0.0-repo-info.jpg" width="32%" alt="仓库信息页" />
+  <img src="art/5.0.0-starred.jpg" width="32%" alt="星标仓库列表" />
+</p>
+
 > [!Important]
 > **This project is discontinued, feel free to fork it.**
 

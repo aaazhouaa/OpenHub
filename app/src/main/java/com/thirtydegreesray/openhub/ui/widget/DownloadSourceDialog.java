@@ -1,9 +1,11 @@
 package com.thirtydegreesray.openhub.ui.widget;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +16,7 @@ import com.thirtydegreesray.openhub.mvp.model.DownloadSource;
 import com.thirtydegreesray.openhub.mvp.model.Release;
 import com.thirtydegreesray.openhub.mvp.model.ReleaseAsset;
 import com.thirtydegreesray.openhub.ui.adapter.DownloadSourcesAdapter;
+import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.StringUtils;
 import com.thirtydegreesray.openhub.util.ViewUtils;
 
@@ -33,9 +36,19 @@ public class DownloadSourceDialog {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
 
+        View titleView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_download_title, null);
+        TextView apkFilter = titleView.findViewById(R.id.apk_filter);
+        ColorStateList apkFilterDefaultColor = apkFilter.getTextColors();
+        applyApkFilterColor(apkFilter, apkFilterDefaultColor, context);
+        apkFilter.setOnClickListener(v -> {
+            PrefUtils.set(PrefUtils.DOWNLOAD_APK_FILTER, !PrefUtils.isDownloadApkFilterEnabled());
+            applyApkFilterColor(apkFilter, apkFilterDefaultColor, context);
+            adapter.notifyDataSetChanged();
+        });
+
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.DialogStyle_OpenHub_Download)
                 .setCancelable(true)
-                .setTitle(R.string.download)
+                .setCustomTitle(titleView)
                 .setView(recyclerView)
                 .setPositiveButton(R.string.close, (dialog, which) -> dialog.cancel());
 
@@ -47,6 +60,14 @@ public class DownloadSourceDialog {
         }
 
         builder.show();
+    }
+
+    private static void applyApkFilterColor(TextView view, ColorStateList defaultColor, Context context) {
+        if (PrefUtils.isDownloadApkFilterEnabled()) {
+            view.setTextColor(ViewUtils.getAccentColor(context));
+        } else {
+            view.setTextColor(defaultColor);
+        }
     }
 
     private static ArrayList<DownloadSource> getDownloadSources(Context context, Release release){

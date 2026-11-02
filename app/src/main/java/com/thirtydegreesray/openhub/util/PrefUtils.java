@@ -50,6 +50,7 @@ public class PrefUtils {
     public final static String START_PAGE = "startPage";
     public final static String CACHE_FIRST_ENABLE = "cacheFirstEnable";
     public final static String SYSTEM_DOWNLOADER = "systemDownloader";
+    public final static String DOWNLOAD_APK_FILTER = "downloadApkFilter";
     public final static String LANGUAGE = "language";
     public final static String LOGOUT = "logout";
     public final static String CODE_WRAP = "codeWrap";
@@ -170,6 +171,10 @@ public class PrefUtils {
 
     public static boolean isSystemDownloader(){
         return getDefaultSp(AppApplication.get()).getBoolean(SYSTEM_DOWNLOADER, false);
+    }
+
+    public static boolean isDownloadApkFilterEnabled(){
+        return getDefaultSp(AppApplication.get()).getBoolean(DOWNLOAD_APK_FILTER, true);
     }
 
     public static boolean isCustomTabsEnable(){

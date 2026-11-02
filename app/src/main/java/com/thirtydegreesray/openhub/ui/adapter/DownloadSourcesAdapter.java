@@ -4,6 +4,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,7 +17,9 @@ import com.thirtydegreesray.openhub.mvp.model.DownloadSource;
 import com.thirtydegreesray.openhub.ui.adapter.base.BaseAdapter;
 import com.thirtydegreesray.openhub.ui.adapter.base.BaseViewHolder;
 import com.thirtydegreesray.openhub.util.AppOpener;
+import com.thirtydegreesray.openhub.util.PrefUtils;
 import com.thirtydegreesray.openhub.util.StringUtils;
+import com.thirtydegreesray.openhub.util.ViewUtils;
 
 import butterknife.BindView;
 
@@ -47,7 +52,7 @@ public class DownloadSourcesAdapter extends BaseAdapter<DownloadSourcesAdapter.V
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         DownloadSource model = data.get(position);
-        holder.name.setText(model.getName());
+        holder.name.setText(buildName(model.getName()));
 
         boolean hasSize = model.getSize() != 0;
         if (hasSize) {
@@ -87,6 +92,26 @@ public class DownloadSourcesAdapter extends BaseAdapter<DownloadSourcesAdapter.V
         if (holder.divider != null) {
             holder.divider.setVisibility(position == getItemCount() - 1 ? View.GONE : View.VISIBLE);
         }
+    }
+
+    /**
+     * 开启 apk 筛选时，.apk 文件的整个文件名用主题色；否则只高亮后缀。
+     */
+    private CharSequence buildName(@Nullable String name) {
+        if (StringUtils.isBlank(name)) return name;
+        int accent = ViewUtils.getAccentColor(context);
+        SpannableString spannable = new SpannableString(name);
+        if (PrefUtils.isDownloadApkFilterEnabled()
+                && name.toLowerCase().endsWith(".apk")) {
+            spannable.setSpan(new ForegroundColorSpan(accent),
+                    0, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return spannable;
+        }
+        int dot = name.lastIndexOf('.');
+        if (dot < 0 || dot == name.length() - 1) return name;
+        spannable.setSpan(new ForegroundColorSpan(accent),
+                dot, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
     }
 
     class ViewHolder extends BaseViewHolder {
