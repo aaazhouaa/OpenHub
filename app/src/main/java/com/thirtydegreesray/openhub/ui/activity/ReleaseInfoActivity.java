@@ -11,7 +11,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -77,8 +76,6 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
     @BindView(R2.id.commit_sha) TextView commitShaTv;
     @BindView(R2.id.download_bn) FloatingActionButton downloadBn;
     @BindView(R2.id.loader) ProgressBar loader;
-
-    private final int RELEASE_EDIT_REQUEST_CODE = 300;
 
     @Override
     public void showReleaseInfo(Release release) {
@@ -166,31 +163,7 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_release_info, menu);
-        MenuItem editItem = menu.findItem(R.id.action_edit_release);
-        editItem.setVisible(mPresenter != null && mPresenter.getRelease() != null
-                && mPresenter.canEdit());
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_edit_release) {
-            editRelease();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void editRelease() {
-        if (mPresenter == null || mPresenter.getRelease() == null) return;
-        mPresenter.loadReleaseForEdit();
-    }
-
-    @Override
-    public void onReleaseBodyLoadedForEdit(String body) {
-        MarkdownEditorActivity.show(getActivity(), R.string.edit_release,
-                RELEASE_EDIT_REQUEST_CODE, body);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @OnClick(R2.id.download_bn)
@@ -222,17 +195,5 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
     protected void onToolbarDoubleClick() {
         super.onToolbarDoubleClick();
         scrollView.scrollTo(0, 0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK || data == null) return;
-        if (requestCode == RELEASE_EDIT_REQUEST_CODE) {
-            String text = data.getStringExtra("text");
-            if (text != null) {
-                mPresenter.updateReleaseBody(text);
-            }
-        }
     }
 }

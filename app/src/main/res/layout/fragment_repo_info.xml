@@ -264,19 +264,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/readme_edit_bn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="10dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/edit_readme"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_edit"
-                    app:tint="?icon_color" />
-
                 <ProgressBar
                     android:id="@+id/readme_loader"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"

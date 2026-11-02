@@ -1,14 +1,11 @@
 package com.thirtydegreesray.openhub.mvp.presenter;
 
 import com.thirtydegreesray.dataautoaccess.annotation.AutoAccess;
-import com.thirtydegreesray.openhub.AppData;
-import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.dao.DaoSession;
 import com.thirtydegreesray.openhub.dao.ReleaseCommit;
 import com.thirtydegreesray.openhub.dao.ReleaseCommitDao;
 import com.thirtydegreesray.openhub.http.core.HttpObserver;
 import com.thirtydegreesray.openhub.http.core.HttpResponse;
-import com.thirtydegreesray.openhub.http.model.ReleaseRequestModel;
 import com.thirtydegreesray.openhub.mvp.contract.IReleaseInfoContract;
 import com.thirtydegreesray.openhub.mvp.model.Release;
 import com.thirtydegreesray.openhub.mvp.model.RepoCommitExt;
@@ -73,8 +70,7 @@ public class ReleaseInfoPresenter extends BasePresenter<IReleaseInfoContract.Vie
         generalRxHttpExecute(new IObservableCreator<Release>() {
             @Override
             public Observable<Response<Release>> createObservable(boolean forceNetWork) {
-                // 默认 JSON 媒体类型：body 为原始 markdown（供编辑），body_html 为 HTML（供展示）。
-                return getRepoService().getReleaseRawByTagName(forceNetWork, owner, repoName, tagName);
+                return getRepoService().getReleaseByTagName(forceNetWork, owner, repoName, tagName);
             }
         }, httpObserver, true);
     }
@@ -145,68 +141,5 @@ public class ReleaseInfoPresenter extends BasePresenter<IReleaseInfoContract.Vie
 
     public String getOwner() {
         return owner;
-    }
-
-    /**
-     * 当前用户是否可编辑该 release（仓库 owner 本人）。
-     */
-    public boolean canEdit() {
-        if (release == null || release.getAuthor() == null) return false;
-        if (AppData.INSTANCE.getLoggedUser() == null) return false;
-        String logged = AppData.INSTANCE.getLoggedUser().getLogin();
-        return owner.equalsIgnoreCase(logged);
-    }
-
-    /**
-     * 拉取 release 的原始 markdown 说明供编辑（默认 JSON 媒体类型，body 为 markdown）。
-     */
-    @Override
-    public void loadReleaseForEdit() {
-        if (release == null) return;
-        HttpObserver<Release> httpObserver = new HttpObserver<Release>() {
-            @Override
-            public void onError(Throwable error) {
-                mView.showErrorToast(getErrorTip(error));
-            }
-
-            @Override
-            public void onSuccess(HttpResponse<Release> response) {
-                Release raw = response.body();
-                if (raw != null) {
-                    release.setBody(raw.getBody());
-                }
-                String body = StringUtils.isBlank(release.getBody())
-                        ? "" : release.getBody();
-                mView.onReleaseBodyLoadedForEdit(body);
-            }
-        };
-        generalRxHttpExecute(forceNetWork ->
-                getRepoService().getReleaseRawByTagName(forceNetWork, owner, repoName,
-                        release.getTagName()),
-                httpObserver, false);
-    }
-
-    /**
-     * 更新 release 的说明（body）。
-     */
-    public void updateReleaseBody(String body) {
-        if (release == null) return;
-        ReleaseRequestModel model = new ReleaseRequestModel(body);
-        HttpObserver<Release> httpObserver = new HttpObserver<Release>() {
-            @Override
-            public void onError(Throwable error) {
-                mView.showErrorToast(getErrorTip(error));
-            }
-
-            @Override
-            public void onSuccess(HttpResponse<Release> response) {
-                release = response.body();
-                mView.showReleaseInfo(release);
-                mView.showSuccessToast(getString(R.string.release_update_success));
-            }
-        };
-        generalRxHttpExecute(forceNetWork ->
-                getRepoService().updateRelease(owner, repoName, release.getTagName(), model),
-                httpObserver, false, mView.getProgressDialog(getLoadTip()));
     }
 }

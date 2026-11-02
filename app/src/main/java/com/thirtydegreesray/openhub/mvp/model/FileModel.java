@@ -18,8 +18,6 @@ public class FileModel implements Parcelable {
     private String sha;
     private int size;
     private String url;
-    private String content;
-    private String encoding;
     @SerializedName("html_url") private String htmlUrl;
     @SerializedName("git_url") private String gitUrl;
     @SerializedName("download_url") private String downloadUrl;
@@ -67,22 +65,6 @@ public class FileModel implements Parcelable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
     }
 
     public String getHtmlUrl() {
@@ -138,8 +120,6 @@ public class FileModel implements Parcelable {
         dest.writeString(this.sha);
         dest.writeInt(this.size);
         dest.writeString(this.url);
-        dest.writeString(this.content);
-        dest.writeString(this.encoding);
         dest.writeString(this.htmlUrl);
         dest.writeString(this.gitUrl);
         dest.writeString(this.downloadUrl);
@@ -152,8 +132,6 @@ public class FileModel implements Parcelable {
         this.sha = in.readString();
         this.size = in.readInt();
         this.url = in.readString();
-        this.content = in.readString();
-        this.encoding = in.readString();
         this.htmlUrl = in.readString();
         this.gitUrl = in.readString();
         this.downloadUrl = in.readString();

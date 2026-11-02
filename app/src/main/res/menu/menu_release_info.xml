@@ -6,12 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_edit_release"
-        android:title="@string/edit_release"
-        android:icon="@drawable/ic_edit"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/action_download_zip"
         android:title="@string/source_code_zip"
         android:icon="@drawable/ic_download_title"

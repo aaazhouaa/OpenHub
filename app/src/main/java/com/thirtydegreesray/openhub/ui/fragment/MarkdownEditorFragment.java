@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import android.text.Editable;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -58,10 +59,18 @@ public class MarkdownEditorFragment extends BaseFragment
 
     @Override
     protected void initFragment(Bundle savedInstanceState) {
+        // 显式启用惯性滚动（fling），长文快速滑动松手后仍能继续滚动。
+        markdownEdit.setMovementMethod(ScrollingMovementMethod.getInstance());
         if (!StringUtils.isBlank(text)) {
             isTextChanged = true;
             markdownEdit.setText(text);
-            markdownEdit.setSelection(text.length());
+            // setSelection 需在布局完成后才生效，否则视图仍停在顶部。
+            // 延迟到 layout 后再把光标定位到末尾，让视图滚到可继续编辑的位置。
+            markdownEdit.post(() -> {
+                if (markdownEdit != null) {
+                    markdownEdit.setSelection(text.length());
+                }
+            });
         }
     }
 
@@ -72,6 +81,7 @@ public class MarkdownEditorFragment extends BaseFragment
     @OnTextChanged(value = R2.id.markdown_edit, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void afterTextChanged(Editable s){
         int cursorIndex = markdownEdit.getSelectionStart();
+        if (cursorIndex < 0) return;
         String curContent = markdownEdit.getText().toString();
         String preStr = curContent.substring(0, cursorIndex);
         if(preStr.endsWith("@")){

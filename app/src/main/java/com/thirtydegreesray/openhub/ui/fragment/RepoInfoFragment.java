@@ -2,9 +2,7 @@
 
 package com.thirtydegreesray.openhub.ui.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.core.widget.NestedScrollView;
 import android.text.Spannable;
@@ -31,7 +29,6 @@ import com.thirtydegreesray.openhub.mvp.model.Repository;
 import com.thirtydegreesray.openhub.mvp.presenter.RepoInfoPresenter;
 import com.thirtydegreesray.openhub.ui.activity.IssuesActivity;
 import com.thirtydegreesray.openhub.ui.activity.ImageGalleryActivity;
-import com.thirtydegreesray.openhub.ui.activity.MarkdownEditorActivity;
 import com.thirtydegreesray.openhub.ui.activity.ProfileActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepoListActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepositoryActivity;
@@ -76,12 +73,10 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
     @BindView(R2.id.watchers_num_text) TextView watchersNumText;
 
     @BindView(R2.id.readme_title) TextView readmeTitle;
-    @BindView(R2.id.readme_edit_bn) View readmeEditBn;
     @BindView(R2.id.readme_loader) ProgressBar readmeLoader;
     @BindView(R2.id.web_view) CodeWebView webView;
 
     private boolean isReadmeSetted = false;
-    private final int README_EDIT_REQUEST_CODE = 200;
 
     @Override
     public void onAttach(Context context) {
@@ -180,10 +175,6 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
         webView.setVisibility(View.VISIBLE);
         readmeLoader.setVisibility(View.VISIBLE);
         readmeLoader.setIndeterminate(false);
-        if (readmeEditBn != null) {
-            readmeEditBn.setVisibility(mPresenter != null && mPresenter.canEdit()
-                    ? View.VISIBLE : View.GONE);
-        }
     }
 
     @Override
@@ -208,24 +199,6 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
         readmeTitle.setText(R.string.no_readme);
         readmeLoader.setVisibility(View.GONE);
         webView.setVisibility(View.GONE);
-        if (readmeEditBn != null) readmeEditBn.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onReadmeEditContentLoaded(String content) {
-        MarkdownEditorActivity.show(getActivity(), R.string.edit_readme, README_EDIT_REQUEST_CODE, content);
-    }
-
-    @Override
-    public void onReadmeUpdated() {
-        showSuccessToast(getString(R.string.readme_update_success));
-    }
-
-    @OnClick(R2.id.readme_edit_bn)
-    public void onReadmeEditClick() {
-        if (mPresenter != null && mPresenter.canEdit()) {
-            mPresenter.loadReadmeForEdit();
-        }
     }
 
     @OnClick({R2.id.issues_lay, R2.id.stargazers_lay, R2.id.froks_lay, R2.id.watchers_lay,
@@ -308,17 +281,5 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
     public void scrollToTop() {
         super.scrollToTop();
         nestedScrollView.scrollTo(0, 0);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK || data == null) return;
-        if (requestCode == README_EDIT_REQUEST_CODE) {
-            String text = data.getStringExtra("text");
-            if (mPresenter != null && text != null) {
-                mPresenter.updateReadme(text);
-            }
-        }
     }
 }

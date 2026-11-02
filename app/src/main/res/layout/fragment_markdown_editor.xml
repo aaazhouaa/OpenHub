@@ -122,7 +122,6 @@
         android:layout_weight="1"
         android:gravity="top|start"
         android:scrollbars="vertical"
-        android:overScrollMode="always"
         android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/text_normal"/>
 
