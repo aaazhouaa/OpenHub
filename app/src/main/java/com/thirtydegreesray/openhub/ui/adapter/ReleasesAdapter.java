@@ -44,6 +44,13 @@ public class ReleasesAdapter extends BaseAdapter<ReleasesAdapter.ViewHolder, Rel
         super.onBindViewHolder(holder, position);
         Release model = data.get(position);
         holder.releaseName.setText(model.getDisplayName());
+        int downloadCount = model.getTotalDownloadCount();
+        if (downloadCount > 0) {
+            holder.downloadCount.setVisibility(View.VISIBLE);
+            holder.downloadCount.setText(context.getString(R.string.download_count, downloadCount));
+        } else {
+            holder.downloadCount.setVisibility(View.GONE);
+        }
         holder.time.setText(model.getPublishedAt() == null ? ""
                 : StringUtils.getNewsTimeStr(context, model.getPublishedAt()));
         if(!StringUtils.isBlank(model.getBodyHtml())){
@@ -58,6 +65,7 @@ public class ReleasesAdapter extends BaseAdapter<ReleasesAdapter.ViewHolder, Rel
     class ViewHolder extends BaseViewHolder {
 
         @BindView(R2.id.release_name) TextView releaseName;
+        @BindView(R2.id.download_count) TextView downloadCount;
         @BindView(R2.id.time) TextView time;
         @BindView(R2.id.body) TextView body;
 

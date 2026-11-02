@@ -1,5 +1,7 @@
 package com.thirtydegreesray.openhub.mvp.model;
 
+import java.util.Date;
+
 /**
  * Created by ThirtyDegreesRay on 2017/9/16 15:55:57
  */
@@ -10,6 +12,8 @@ public class DownloadSource {
     private boolean isSourceCode;
     private String name;
     private long size;
+    private int downloadCount;
+    private Date createdAt;
 
     public DownloadSource(String url, boolean isSourceCode, String name) {
         this.url = url;
@@ -22,6 +26,16 @@ public class DownloadSource {
         this.isSourceCode = isSourceCode;
         this.name = name;
         this.size = size;
+    }
+
+    public DownloadSource(String url, boolean isSourceCode, String name, long size,
+                          int downloadCount, Date createdAt) {
+        this.url = url;
+        this.isSourceCode = isSourceCode;
+        this.name = name;
+        this.size = size;
+        this.downloadCount = downloadCount;
+        this.createdAt = createdAt;
     }
 
     public String getUrl() {
@@ -54,5 +68,21 @@ public class DownloadSource {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public int getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(int downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

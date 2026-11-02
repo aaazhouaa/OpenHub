@@ -18,10 +18,15 @@ public interface IRepoInfoContract {
         void showReadMeLoader();
         void showReadMeLoadError(String tip);
         void showNoReadMe();
+        void onReadmeEditContentLoaded(String content);
+        void onReadmeUpdated();
     }
 
     interface Presenter extends IBasePagerContract.Presenter<IRepoInfoContract.View>{
         void loadReadMe();
+        boolean canEdit();
+        void loadReadmeForEdit();
+        void updateReadme(String content);
     }
 
 }

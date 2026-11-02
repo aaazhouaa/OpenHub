@@ -11,6 +11,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -77,6 +78,8 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
     @BindView(R2.id.download_bn) FloatingActionButton downloadBn;
     @BindView(R2.id.loader) ProgressBar loader;
 
+    private final int RELEASE_EDIT_REQUEST_CODE = 300;
+
     @Override
     public void showReleaseInfo(Release release) {
         downloadBn.setVisibility(View.VISIBLE);
@@ -112,9 +115,11 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
                 ? "" : release.getAuthor().getLogin();
         String str = authorLogin.concat(" ").concat(timeStr);
         SpannableStringBuilder spannable = new SpannableStringBuilder(str);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ViewUtils.getAccentColor(getActivity()));
-        spannable.setSpan(colorSpan, 0, release.getAuthor().getLogin().length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (!StringUtils.isBlank(authorLogin)) {
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(ViewUtils.getAccentColor(getActivity()));
+            spannable.setSpan(colorSpan, 0, authorLogin.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         userName.setText(spannable);
     }
 
@@ -161,7 +166,31 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_release_info, menu);
+        MenuItem editItem = menu.findItem(R.id.action_edit_release);
+        editItem.setVisible(mPresenter != null && mPresenter.getRelease() != null
+                && mPresenter.canEdit());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_edit_release) {
+            editRelease();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editRelease() {
+        if (mPresenter == null || mPresenter.getRelease() == null) return;
+        mPresenter.loadReleaseForEdit();
+    }
+
+    @Override
+    public void onReleaseBodyLoadedForEdit(String body) {
+        MarkdownEditorActivity.show(getActivity(), R.string.edit_release,
+                RELEASE_EDIT_REQUEST_CODE, body);
     }
 
     @OnClick(R2.id.download_bn)
@@ -193,5 +222,17 @@ public class ReleaseInfoActivity extends BaseActivity<ReleaseInfoPresenter>
     protected void onToolbarDoubleClick() {
         super.onToolbarDoubleClick();
         scrollView.scrollTo(0, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK || data == null) return;
+        if (requestCode == RELEASE_EDIT_REQUEST_CODE) {
+            String text = data.getStringExtra("text");
+            if (text != null) {
+                mPresenter.updateReleaseBody(text);
+            }
+        }
     }
 }

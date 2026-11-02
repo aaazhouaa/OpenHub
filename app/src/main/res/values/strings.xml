@@ -118,6 +118,11 @@
     <string name="forks">Forks</string>
     <string name="watchers">Watchers</string>
     <string name="readme">README</string>
+    <string name="edit_readme">Edit README</string>
+    <string name="readme_update_success">README updated</string>
+    <string name="readme_load_failed">Failed to load README</string>
+    <string name="edit_release">Edit release</string>
+    <string name="release_update_success">Release updated</string>
     <string name="no_readme">NO README</string>
     <string name="warning_dialog_tile">Warning</string>
     <string name="cancel">Cancel</string>
@@ -229,6 +234,8 @@
     <string name="released_this">released this</string>
     <string name="on">on</string>
     <string name="download">Download</string>
+    <string name="download_count">%d downloads</string>
+    <string name="uploaded_at">Uploaded %s</string>
     <string name="download_complete">Download complete</string>
     <string name="download_failed">Download failed</string>
     <string name="downloading">Downloading</string>

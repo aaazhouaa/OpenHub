@@ -140,6 +140,20 @@ public class Release implements Parcelable {
         return assets;
     }
 
+    /**
+     * 该版本所有 asset 的下载次数之和。
+     */
+    public int getTotalDownloadCount() {
+        if (assets == null) {
+            return 0;
+        }
+        int total = 0;
+        for (ReleaseAsset asset : assets) {
+            total += asset.getDownloadCout();
+        }
+        return total;
+    }
+
     public void setAssets(List<ReleaseAsset> assets) {
         this.assets = assets;
     }

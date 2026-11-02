@@ -78,8 +78,11 @@ public class ReleasesFragment extends ListFragment<ReleasesPresenter, ReleasesAd
     @Override
     public void onItemClick(int position, @NonNull View view) {
         super.onItemClick(position, view);
+        // 只传 tagName，不传整个 release 对象，避免长说明/多 assets 序列化后
+        // 超过 Binder 1MB 限制导致 "bundle data is too large" 崩溃。
+        Release release = adapter.getData().get(position);
         ReleaseInfoActivity.show(getActivity(), mPresenter.getOwner(), mPresenter.getRepoName(),
-                adapter.getData().get(position));
+                release.getTagName());
     }
 
     @Override

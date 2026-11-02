@@ -20,7 +20,7 @@ public class ReleaseAsset implements Parcelable {
     @SerializedName("content_type") private String contentType;
     private String state;
     private long size;
-    private int downloadCout;
+    @SerializedName("download_count") private int downloadCout;
     @SerializedName("created_at") private Date createdAt;
     @SerializedName("updated_at") private Date updatedAt;
     @SerializedName("browser_download_url") private String downloadUrl;

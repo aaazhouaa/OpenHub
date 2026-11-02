@@ -55,6 +55,20 @@ public class DownloadSourcesAdapter extends BaseAdapter<DownloadSourcesAdapter.V
         }else{
             holder.size.setVisibility(View.INVISIBLE);
         }
+        if(model.getDownloadCount() > 0){
+            holder.downloadCount.setVisibility(View.VISIBLE);
+            holder.downloadCount.setText(context.getString(R.string.download_count,
+                    model.getDownloadCount()));
+        }else{
+            holder.downloadCount.setVisibility(View.GONE);
+        }
+        if(model.getCreatedAt() != null){
+            holder.createdAt.setVisibility(View.VISIBLE);
+            holder.createdAt.setText(context.getString(R.string.uploaded_at,
+                    StringUtils.getNewsTimeStr(context, model.getCreatedAt())));
+        }else{
+            holder.createdAt.setVisibility(View.GONE);
+        }
     }
 
     class ViewHolder extends BaseViewHolder {
@@ -62,6 +76,8 @@ public class DownloadSourcesAdapter extends BaseAdapter<DownloadSourcesAdapter.V
         @BindView(R2.id.icon) AppCompatImageView icon;
         @BindView(R2.id.name) TextView name;
         @BindView(R2.id.size) TextView size;
+        @BindView(R2.id.download_count) TextView downloadCount;
+        @BindView(R2.id.created_at) TextView createdAt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

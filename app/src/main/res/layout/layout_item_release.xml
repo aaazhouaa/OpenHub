@@ -42,6 +42,15 @@
                 tools:text="v4.0.4" />
 
             <TextView
+                android:id="@+id/download_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="12sp"
+                tools:text="123 downloads" />
+
+            <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

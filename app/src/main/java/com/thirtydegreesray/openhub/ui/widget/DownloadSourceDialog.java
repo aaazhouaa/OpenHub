@@ -46,7 +46,8 @@ public class DownloadSourceDialog {
         ArrayList<DownloadSource> sources = new ArrayList<>();
         if(release.getAssets() != null){
             for(ReleaseAsset asset : release.getAssets()){
-                sources.add(new DownloadSource(asset.getDownloadUrl(), false, asset.getName(), asset.getSize()));
+                sources.add(new DownloadSource(asset.getDownloadUrl(), false, asset.getName(),
+                        asset.getSize(), asset.getDownloadCout(), asset.getCreatedAt()));
             }
         }
         if(!StringUtils.isBlank(release.getZipballUrl())){

@@ -12,10 +12,13 @@ public interface IReleaseInfoContract {
     interface View extends IBaseContract.View{
         void showReleaseInfo(Release release);
         void showCommitSha(String commitSha);
+        void onReleaseBodyLoadedForEdit(String body);
     }
 
     interface Presenter extends IBaseContract.Presenter<IReleaseInfoContract.View>{
-
+        void loadReleaseForEdit();
+        void updateReleaseBody(String body);
+        boolean canEdit();
     }
 
 }
