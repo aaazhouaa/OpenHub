@@ -27,6 +27,8 @@ class HtmlHelper {
     private static final Pattern LINK_PATTERN = Pattern.compile("href=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
     //the lookbehind keeps attributes such as data-src or data-canonical-src out of the match
     private static final Pattern IMAGE_PATTERN = Pattern.compile("(?<![-\\w])src=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
+    // <source srcset="..."> 用于 <picture> 响应式图片（暗色/亮色切换）
+    private static final Pattern SRCSET_PATTERN = Pattern.compile("srcset=[\"'](.*?)[\"']", Pattern.CASE_INSENSITIVE);
 
     static String generateImageHtml(@NonNull String imageUrl, @NonNull String backgroundColor) {
         boolean isDark = AppUtils.isNightMode();
@@ -241,45 +243,85 @@ class HtmlHelper {
 
         Matcher imagesMatcher = IMAGE_PATTERN.matcher(source);
         while (imagesMatcher.find()) {
-            String oriUrl = imagesMatcher.group(1);
-            if (StringUtils.isBlank(oriUrl)) continue;
+            String attr = imagesMatcher.group(1);
+            String fixed = fixImageUrl(attr, owner, repo, branch, baseDir);
+            if (fixed == null) continue;
+            source = source.replace(imagesMatcher.group(0), "src=\"" + fixed + "\"");
+        }
 
-            // GitHub blob 地址返回的是 HTML 页面，作为 img src 必定无法渲染，转换为 raw 资源链接
-            if (oriUrl.contains("github.com") && oriUrl.contains("/blob/")) {
-                String fixedUrl = oriUrl.replace("github.com", "raw.githubusercontent.com")
-                        .replace("/blob/", "/");
-                source = source.replace(imagesMatcher.group(0), "src=\"" + fixedUrl + "\"");
-                continue;
-            }
-
-            // 已经是完整网络链接
-            if (oriUrl.startsWith("http://") || oriUrl.startsWith("https://")) {
-                continue;
-            }
-            if (oriUrl.startsWith("//")) {
-                source = source.replace(imagesMatcher.group(0), "src=\"https:" + oriUrl + "\"");
-                continue;
-            }
-
-            String cleanUrl = resolveRelativeUrl(baseDir, oriUrl);
-            String fixedUrl;
-            // 避免对已包含仓库前缀的相对路径重复拼接
-            if (cleanUrl.startsWith("/" + owner + "/" + repo + "/raw/") ||
-                    cleanUrl.startsWith(owner + "/" + repo + "/raw/")) {
-                String sub = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
-                fixedUrl = "https://raw.githubusercontent.com" + sub;
-            } else if (cleanUrl.startsWith("/" + owner + "/" + repo + "/blob/") ||
-                    cleanUrl.startsWith(owner + "/" + repo + "/blob/")) {
-                String sub = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
-                fixedUrl = "https://raw.githubusercontent.com" + sub.replace("/blob/", "/");
-            } else {
-                String subUrl = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
-                fixedUrl = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + subUrl;
-            }
-            source = source.replace(imagesMatcher.group(0), "src=\"" + fixedUrl + "\"");
+        // <picture> 响应式图片的 <source srcset> 使用暗色/适配变体，需同样转换，
+        // 否则暗色模式下走 srcset 的相对路径会解析失败。
+        Matcher srcsetMatcher = SRCSET_PATTERN.matcher(source);
+        while (srcsetMatcher.find()) {
+            String attr = srcsetMatcher.group(1);
+            String fixed = fixImageUrl(attr, owner, repo, branch, baseDir);
+            if (fixed == null) continue;
+            source = source.replace(srcsetMatcher.group(0), "srcset=\"" + fixed + "\"");
         }
 
         return source;
+    }
+
+    /**
+     * Normalizes a README-relative image URL (used by both src and srcset) into an
+     * absolute raw.githubusercontent.com URL. Returns null when no change is needed.
+     */
+    @Nullable
+    private static String fixImageUrl(@NonNull String oriUrl, @NonNull String owner,
+                                      @NonNull String repo, @NonNull String branch,
+                                      @NonNull String baseDir) {
+        if (StringUtils.isBlank(oriUrl)) return null;
+
+        // GitHub 网页 URL（blob 或 raw 视图）返回的是 HTML 页面，作为 img src 必定无法渲染，
+        // 转换为 raw.githubusercontent.com 原始文件地址，并规范化反斜杠引入的双斜杠。
+        if (oriUrl.contains("github.com")
+                && (oriUrl.contains("/blob/") || oriUrl.contains("/raw/"))) {
+            String fixed = oriUrl.replace('\\', '/')
+                    .replace("github.com", "raw.githubusercontent.com")
+                    .replace("/blob/", "/")
+                    .replace("/raw/", "/");
+            return normalizePathSlashes(fixed);
+        }
+
+        // 已经是完整网络链接
+        if (oriUrl.startsWith("http://") || oriUrl.startsWith("https://")) {
+            return null;
+        }
+        if (oriUrl.startsWith("//")) {
+            return "https:" + oriUrl;
+        }
+
+        String cleanUrl = resolveRelativeUrl(baseDir, oriUrl);
+        // 已含仓库前缀的 GitHub raw 视图路径：/owner/repo/raw/{branch}/{path}
+        // 需剥离 /raw/ 前缀，并规范化反斜杠转换引入的多余斜杠
+        if (cleanUrl.startsWith("/" + owner + "/" + repo + "/raw/") ||
+                cleanUrl.startsWith(owner + "/" + repo + "/raw/")) {
+            String sub = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
+            String rawPrefix = "/" + owner + "/" + repo + "/raw/";
+            String path = sub.substring(rawPrefix.length()).replaceAll("/+", "/");
+            return "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + path;
+        }
+        if (cleanUrl.startsWith("/" + owner + "/" + repo + "/blob/") ||
+                cleanUrl.startsWith(owner + "/" + repo + "/blob/")) {
+            String sub = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
+            return "https://raw.githubusercontent.com" + sub.replace("/blob/", "/");
+        }
+
+        String subUrl = cleanUrl.startsWith("/") ? cleanUrl : "/" + cleanUrl;
+        return "https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + subUrl;
+    }
+
+    /**
+     * Collapses duplicate slashes in the path portion of a URL, leaving the scheme's
+     * "://" intact. e.g. "https://x/main//imgs/icon.webp" -> "https://x/main/imgs/icon.webp".
+     */
+    @NonNull
+    private static String normalizePathSlashes(@NonNull String url) {
+        int schemeEnd = url.indexOf("://");
+        if (schemeEnd < 0) return url.replaceAll("/+", "/");
+        String scheme = url.substring(0, schemeEnd + 3);
+        String rest = url.substring(schemeEnd + 3).replaceAll("/+", "/");
+        return scheme + rest;
     }
 
     /**
