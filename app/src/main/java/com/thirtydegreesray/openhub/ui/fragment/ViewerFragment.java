@@ -11,6 +11,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.thirtydegreesray.dataautoaccess.annotation.AutoAccess;
+import android.graphics.drawable.Drawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
 import com.thirtydegreesray.openhub.inject.component.AppComponent;
@@ -21,6 +28,7 @@ import com.thirtydegreesray.openhub.mvp.model.CommitFile;
 import com.thirtydegreesray.openhub.mvp.model.FileModel;
 import com.thirtydegreesray.openhub.mvp.presenter.ViewerPresenter;
 import com.thirtydegreesray.openhub.ui.activity.ViewerActivity;
+import com.thirtydegreesray.openhub.common.GlideApp;
 import com.thirtydegreesray.openhub.ui.fragment.base.BaseFragment;
 import com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView;
 import com.thirtydegreesray.openhub.util.BundleHelper;
@@ -38,6 +46,7 @@ public class ViewerFragment extends BaseFragment<ViewerPresenter>
         CodeWebView.ContentChangedListener{
 
     @BindView(R2.id.web_view) CodeWebView webView;
+    @BindView(R2.id.image_view) PhotoView imageView;
     @BindView(R2.id.loader) ProgressBar loader;
 
     @AutoAccess boolean wrap = false;
@@ -158,8 +167,33 @@ public class ViewerFragment extends BaseFragment<ViewerPresenter>
 
     @Override
     public void loadImageUrl(@NonNull String url) {
-        webView.loadImage(url);
-        webView.setContentChangedListener(this);
+        // Render images with PhotoView + Glide so they can be zoomed and panned,
+        // instead of the old WebView <img> which could not zoom.
+        webView.setVisibility(View.GONE);
+        imageView.setVisibility(View.VISIBLE);
+        loader.setVisibility(View.VISIBLE);
+        GlideApp.with(this)
+                .load(url)
+                .placeholder(null)
+                .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
+                        loader.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                                                   Target<Drawable> target, DataSource dataSource,
+                                                   boolean isFirstResource) {
+                        loader.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(imageView);
     }
 
     @Override

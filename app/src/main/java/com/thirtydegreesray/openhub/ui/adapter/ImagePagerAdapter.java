@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.thirtydegreesray.openhub.R;
 import com.thirtydegreesray.openhub.R2;
-import com.thirtydegreesray.openhub.ui.widget.webview.CodeWebView;
+import com.thirtydegreesray.openhub.common.GlideApp;
+import com.thirtydegreesray.openhub.util.PrefUtils;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * One zoomable image per page for {@link com.thirtydegreesray.openhub.ui.activity.ImageGalleryActivity}.
+ * One zoomable image per page for the in-place image preview dialog.
  */
 public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.ImageHolder> {
 
@@ -37,7 +40,7 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
 
     @Override
     public void onBindViewHolder(@NonNull ImageHolder holder, int position) {
-        holder.webView.loadImage(imageUrls.get(position));
+        holder.bind(imageUrls.get(position));
     }
 
     @Override
@@ -47,11 +50,20 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
 
     static class ImageHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R2.id.web_view) CodeWebView webView;
+        @BindView(R2.id.image_view) PhotoView imageView;
 
         ImageHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        void bind(@NonNull String url) {
+            GlideApp.with(imageView)
+                    .load(url)
+                    .placeholder(null)
+                    .onlyRetrieveFromCache(!PrefUtils.isLoadImageEnable())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(imageView);
         }
     }
 }

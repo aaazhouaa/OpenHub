@@ -14,6 +14,13 @@
         android:layout_height="match_parent"
         app:webview_background="?android:windowBackground"/>
 
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
     <ProgressBar
         android:id="@+id/loader"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"

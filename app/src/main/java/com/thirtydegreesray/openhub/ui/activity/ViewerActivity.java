@@ -127,6 +127,13 @@ public class ViewerActivity extends SingleFragmentActivity<IBaseContract.Present
             title = this.title;
         }
         setToolbarTitle(title);
+        if (ViewerType.Image.equals(viewerType)) {
+            // Open the single-image viewer directly full screen, but without setting
+            // isFullScreen so a single back press closes it (returns to the list/commit).
+            getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            if (toolbar != null) toolbar.setVisibility(android.view.View.GONE);
+        }
     }
 
     @Override

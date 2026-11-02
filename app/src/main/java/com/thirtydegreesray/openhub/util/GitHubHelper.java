@@ -16,7 +16,8 @@ import java.util.regex.Pattern;
 
 public class GitHubHelper {
 
-    private static final String[] IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg"};
+    private static final String[] IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg",
+            ".webp", ".bmp", ".avif", ".tif", ".tiff", ".ico"};
 
     private static final String[] MARKDOWN_EXTENSIONS = {
             ".md", ".mkdn", ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron", ".rst", "adoc"

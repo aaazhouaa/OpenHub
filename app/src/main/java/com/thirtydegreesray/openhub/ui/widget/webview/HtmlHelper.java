@@ -288,7 +288,9 @@ class HtmlHelper {
      */
     @NonNull
     private static String resolveRelativeUrl(@NonNull String baseDir, @NonNull String url) {
-        String res = url.trim();
+        // Some README files use Windows-style backslashes (e.g. <img src="\imgs\icon.webp">),
+        // which are invalid in a URL and break the image. Normalize them to forward slashes.
+        String res = url.trim().replace('\\', '/');
         if (res.startsWith("/") || res.contains("://")) return res;
         ArrayList<String> parts = new ArrayList<>();
         for (String segment : baseDir.split("/")) {

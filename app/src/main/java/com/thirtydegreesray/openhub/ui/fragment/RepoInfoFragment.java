@@ -28,7 +28,6 @@ import com.thirtydegreesray.openhub.mvp.model.Branch;
 import com.thirtydegreesray.openhub.mvp.model.Repository;
 import com.thirtydegreesray.openhub.mvp.presenter.RepoInfoPresenter;
 import com.thirtydegreesray.openhub.ui.activity.IssuesActivity;
-import com.thirtydegreesray.openhub.ui.activity.ImageGalleryActivity;
 import com.thirtydegreesray.openhub.ui.activity.ProfileActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepoListActivity;
 import com.thirtydegreesray.openhub.ui.activity.RepositoryActivity;
@@ -106,7 +105,10 @@ public class RepoInfoFragment extends BaseFragment<RepoInfoPresenter>
 
     @Override
     public void onImageClick(@NonNull ArrayList<String> imageUrls, int index) {
-        ImageGalleryActivity.show(getActivity(), imageUrls, index);
+        // In-place full-screen preview, no activity jump.
+        ImagePreviewDialogFragment fragment =
+                ImagePreviewDialogFragment.newInstance(imageUrls, index);
+        fragment.show(getChildFragmentManager(), "image_preview");
     }
 
     @Override

@@ -124,7 +124,6 @@
         <activity android:name=".ui.activity.WorkflowRunsActivity"/>
         <activity android:name=".ui.activity.WorkflowRunDetailActivity"/>
         <activity android:name=".ui.activity.ViewerActivity"/>
-        <activity android:name=".ui.activity.ImageGalleryActivity"/>
         <activity android:name=".ui.activity.ReleaseInfoActivity"/>
         <activity android:name=".ui.activity.IssuesActivity"/>
         <activity android:name=".ui.activity.IssueDetailActivity"/>

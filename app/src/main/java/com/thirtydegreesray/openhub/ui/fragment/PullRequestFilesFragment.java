@@ -75,7 +75,7 @@ public class PullRequestFilesFragment extends ListFragment<PullRequestFilesPrese
         if (model.getTypePosition() == 1) {
             CommitFile commitFile = model.getM2();
             if (GitHubHelper.isImage(commitFile.getFileName())) {
-                ViewerActivity.showImage(getActivity(), commitFile.getRawUrl());
+                ImagePreviewDialogFragment.showSingle(this, commitFile.getRawUrl());
             } else {
                 ViewerActivity.showForDiff(getActivity(), commitFile);
             }

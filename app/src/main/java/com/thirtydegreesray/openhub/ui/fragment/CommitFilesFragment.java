@@ -78,7 +78,7 @@ public class CommitFilesFragment extends ListFragment<CommitFilesPresenter, Comm
         if(adapter.getData().get(position).getTypePosition() == 1){
             CommitFile commitFile = adapter.getData().get(position).getM2();
             if(GitHubHelper.isImage(commitFile.getFileName())){
-                ViewerActivity.showImage(getActivity(), commitFile.getRawUrl());
+                ImagePreviewDialogFragment.showSingle(this, commitFile.getRawUrl());
             } else {
                 ViewerActivity.showForDiff(getActivity(), commitFile);
             }

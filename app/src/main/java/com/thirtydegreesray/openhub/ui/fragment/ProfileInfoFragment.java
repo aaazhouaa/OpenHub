@@ -170,7 +170,7 @@ public class ProfileInfoFragment extends BaseFragment<ProfileInfoPresenter>
             case R.id.user_avatar:
                 String avatarUrl = mPresenter.getUser().getAvatarUrl();
                 if (!StringUtils.isBlank(avatarUrl)) {
-                    ViewerActivity.showImage(getActivity(), mPresenter.getUser().getLogin(), avatarUrl);
+                    ImagePreviewDialogFragment.showSingle(this, avatarUrl);
                 }
                 break;
             case R.id.followers_lay:
