@@ -55,6 +55,8 @@ public class CodeWebView extends WebView {
 
     private ContentChangedListener contentChangedListener;
     private OnImageClickListener imageClickListener;
+    private OnZoomChangedListener zoomChangedListener;
+    private OnPanEdgeListener panEdgeListener;
     private int backgroundColor ;
 
     // 图片请求量大，复用同一个 client 的连接池，避免每张图重新 DNS/TLS 握手
@@ -72,6 +74,20 @@ public class CodeWebView extends WebView {
      */
     public interface OnImageClickListener {
         void onImageClick(@NonNull ArrayList<String> imageUrls, int index);
+    }
+
+    /**
+     * 图片页内缩放（只缩放图片元素，不缩放页面）时回调，供手势仲裁用。
+     */
+    public interface OnZoomChangedListener {
+        void onScaleChanged(float scale);
+    }
+
+    /**
+     * 图片已拖到水平边界仍继续拖时回调，调用方可把手势交还给外层翻页。
+     */
+    public interface OnPanEdgeListener {
+        void onPanEdge(int direction);
     }
 
     /**
@@ -180,6 +196,38 @@ public class CodeWebView extends WebView {
         }
     }
 
+    public void setOnZoomChangedListener(@Nullable OnZoomChangedListener listener) {
+        zoomChangedListener = listener;
+        if (listener != null) {
+            addJavascriptInterface(new ZoomBridge(), "OpenHubZoom");
+        }
+    }
+
+    public void setOnPanEdgeListener(@Nullable OnPanEdgeListener listener) {
+        panEdgeListener = listener;
+    }
+
+    /**
+     * 来自页面内的图片缩放回调，运行在 WebView 的 JS 线程。
+     */
+    private class ZoomBridge {
+        @JavascriptInterface
+        public void onScale(float scale) {
+            OnZoomChangedListener listener = zoomChangedListener;
+            if (listener != null) {
+                listener.onScaleChanged(scale);
+            }
+        }
+
+        @JavascriptInterface
+        public void onPanEdge(final int direction) {
+            final OnPanEdgeListener listener = panEdgeListener;
+            if (listener != null) {
+                post(() -> listener.onPanEdge(direction));
+            }
+        }
+    }
+
     private void injectImageClickScript(@NonNull WebView view) {
         if (imageClickListener == null) return;
         view.evaluateJavascript(IMAGE_CLICK_SCRIPT, null);
@@ -225,15 +273,13 @@ public class CodeWebView extends WebView {
 
     public void loadImage(@NonNull String url) {
         WebSettings settings = getSettings();
-        // SINGLE_COLUMN 会把内容压成单列高度，body 的 height:100% 失效，
-        // 图片就不能在视口里垂直居中。
+        // 页面不缩放，缩放交给页面内脚本只作用于图片元素，背景保持不动
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-        // 预览页固定黑底，不跟随主题/布局属性
+        settings.setSupportZoom(false);
+        settings.setBuiltInZoomControls(false);
+        settings.setDisplayZoomControls(false);
         setBackgroundColor(android.graphics.Color.BLACK);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
         String html = HtmlHelper.generateImageHtml(url, "#000000");
         // loadData() URL-decodes its input, so the '#' of the CSS background colour
         // truncates everything after it (including the <img> tag) and nothing shows.

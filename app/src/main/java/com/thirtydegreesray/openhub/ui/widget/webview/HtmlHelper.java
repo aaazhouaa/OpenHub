@@ -32,20 +32,49 @@ class HtmlHelper {
 
     static String generateImageHtml(@NonNull String imageUrl, @NonNull String backgroundColor) {
         boolean isDark = AppUtils.isNightMode();
-        String imgFilter = isDark ? "opacity: 0.70; filter: brightness(0.70);" : "";
-        return "<html>" +
-                "<head>" +
-                "<meta charset=\"utf-8\" />" +
-                "<meta name=\"referrer\" content=\"no-referrer\" />" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />" +
+        String imgFilter = isDark ? "opacity:0.70;filter:brightness(0.70);" : "";
+        return "<!DOCTYPE html><html><head>" +
+                "<meta charset=\"utf-8\">" +
+                "<meta name=\"referrer\" content=\"no-referrer\">" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\">" +
                 "<style>" +
-                "html,body{margin:0;padding:0;height:100%;}" +
-                "body{background:" + backgroundColor + ";display:flex;align-items:center;justify-content:center;}" +
-                "img{max-width:100%;max-height:100%;height:auto;width:auto;" + imgFilter + "}" +
-                "</style>" +
-                "</head>" +
-                "<body><img src=\"" + imageUrl + "\"/></body>" +
-                "</html>";
+                "html,body{margin:0;padding:0;width:100%;height:100%;background:" + backgroundColor + ";overflow:hidden;touch-action:none;}" +
+                "#container{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;}" +
+                "#img{max-width:100%;max-height:100%;transform-origin:center center;will-change:transform;" + imgFilter + "}" +
+                "</style></head><body>" +
+                "<div id=\"container\"><img id=\"img\" src=\"" + imageUrl + "\"></div>" +
+                "<script>" +
+                // 只缩放图片元素，背景保持不动
+                "(function(){" +
+                "var img=document.getElementById('img'),c=document.getElementById('container');" +
+                "var scale=1,tx=0,ty=0,startScale=1,startDist=0,startX=0,startY=0,startTx=0,startTy=0,panning=false,edgeNotified=false;" +
+                "function notify(){try{if(window.OpenHubZoom){OpenHubZoom.onScale(scale);}}catch(e){}}" +
+                "function notifyEdge(dir){edgeNotified=true;try{if(window.OpenHubZoom){OpenHubZoom.onPanEdge(dir);}}catch(e){}}" +
+                "function clamp(){var iw=img.clientWidth*scale,ih=img.clientHeight*scale;" +
+                "var maxTx=Math.max(0,(iw-c.clientWidth)/2),maxTy=Math.max(0,(ih-c.clientHeight)/2);" +
+                "tx=Math.max(-maxTx,Math.min(maxTx,tx));ty=Math.max(-maxTy,Math.min(maxTy,ty));}" +
+                "function apply(){img.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';notify();}" +
+                "function dist(t){var dx=t[0].clientX-t[1].clientX,dy=t[0].clientY-t[1].clientY;return Math.sqrt(dx*dx+dy*dy);}" +
+                "document.addEventListener('touchstart',function(e){" +
+                "if(e.touches.length===2){startDist=dist(e.touches);startScale=scale;panning=false;}" +
+                "else if(e.touches.length===1&&scale>1){panning=true;edgeNotified=false;startX=e.touches[0].clientX;startY=e.touches[0].clientY;startTx=tx;startTy=ty;}" +
+                "},{passive:true});" +
+                "document.addEventListener('touchmove',function(e){" +
+                "if(e.touches.length===2){e.preventDefault();var d=dist(e.touches);" +
+                "if(startDist>0){scale=Math.max(1,Math.min(5,startScale*d/startDist));clamp();apply();}}" +
+                "else if(e.touches.length===1&&panning&&scale>1){e.preventDefault();" +
+                "var nx=startTx+(e.touches[0].clientX-startX),ny=startTy+(e.touches[0].clientY-startY);" +
+                // 拖到水平边界后继续拖，交还给外层翻页
+                "if(!edgeNotified){var mx=Math.max(0,(img.clientWidth*scale-c.clientWidth)/2);" +
+                "if(nx<-mx-40){notifyEdge(1);}else if(nx>mx+40){notifyEdge(-1);}}" +
+                "tx=nx;ty=ny;clamp();apply();}" +
+                "},{passive:false});" +
+                "document.addEventListener('touchend',function(e){" +
+                "if(e.touches.length<2)startDist=0;" +
+                "if(e.touches.length===0){panning=false;if(scale<1.05){scale=1;tx=0;ty=0;apply();}}" +
+                "});" +
+                "})();" +
+                "</script></body></html>";
     }
 
     static String generateHtmlSourceHtml(@NonNull String htmlSource, @NonNull String backgroundColor,

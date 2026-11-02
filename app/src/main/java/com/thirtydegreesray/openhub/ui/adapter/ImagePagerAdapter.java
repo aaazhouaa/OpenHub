@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,36 +51,41 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
 
         @BindView(R2.id.web_view) CodeWebView webView;
 
-        private float initialScale;
+        private volatile boolean zoomed;
 
         ImageHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            webView.setOnZoomChangedListener(scale -> zoomed = scale > 1.01f);
+            // 拖到图片水平边界还继续拖时，把手势还给 ViewPager2 翻页
+            webView.setOnPanEdgeListener(direction -> {
+                ViewParent parent = webView.getParent();
+                if (parent != null) {
+                    parent.requestDisallowInterceptTouchEvent(false);
+                }
+            });
             webView.setOnTouchListener(this::onWebViewTouch);
         }
 
         void bind(@NonNull String url) {
-            initialScale = 0f;
+            zoomed = false;
             webView.loadImage(url);
         }
 
         /**
          * ViewPager2 会在横向拖动时抢走手势。默认允许它拦截（保证翻页正常），
-         * 只有图片已放大或出现双指时，才禁止父级拦截，让 WebView 处理拖动/缩放。
+         * 图片已放大或出现双指时，才禁止父级拦截，把拖动/缩放留给图片。
          */
         private boolean onWebViewTouch(@NonNull View view, @NonNull MotionEvent event) {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
-                    if (initialScale <= 0f) {
-                        initialScale = webView.getScale();
-                    }
-                    view.getParent().requestDisallowInterceptTouchEvent(isZoomed());
+                    view.getParent().requestDisallowInterceptTouchEvent(zoomed);
                     break;
                 case MotionEvent.ACTION_POINTER_DOWN:
                     view.getParent().requestDisallowInterceptTouchEvent(true);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    if (event.getPointerCount() > 1 || isZoomed()) {
+                    if (event.getPointerCount() > 1 || zoomed) {
                         view.getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     break;
@@ -91,10 +97,6 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
                     break;
             }
             return false;
-        }
-
-        private boolean isZoomed() {
-            return webView.getScale() > initialScale + 0.01f;
         }
     }
 }
